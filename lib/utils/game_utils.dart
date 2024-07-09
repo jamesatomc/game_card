@@ -31,6 +31,7 @@ class Game {
 
   //methods
   void initGame() {
+    
     // Shuffle the cards and cards_list
     cards.shuffle(Random());
     cards_list.shuffle(Random());

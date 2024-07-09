@@ -23,12 +23,13 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
     super.initState();
     _game.initGame();
   }
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Level 2"),
+        title: const Text("Level 1"),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -106,6 +107,24 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
                           });
                         }
                       }
+
+                            showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Card Tapped'),
+            content: Text('You tapped on card index: $index'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Dismiss the dialog
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
                     },
                     child: Container(
                       padding: EdgeInsets.all(
