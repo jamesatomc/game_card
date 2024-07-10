@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cardgame/components/info_card.dart';
-import 'package:flutter_cardgame/utils/game_utils.dart';
+import 'package:flutter_cardgame/utils/game_utils2.dart';
 
 class LevelTwoScreen extends StatefulWidget {
   const LevelTwoScreen({super.key});

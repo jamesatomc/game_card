@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_cardgame/components/info_card.dart';
 import 'package:flutter_cardgame/utils/game_utils.dart';
+
+import 'LevelTwoScreen.dart';
 
 class LevelOneScreen extends StatefulWidget {
   const LevelOneScreen({super.key});
@@ -18,12 +22,93 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
   int tries = 0;
   int score = 0;
 
+  int matchedPairs = 0;
+  late Timer _timer;
+  int _timeLeft = 110; // 1:50 นาที = 110 วินาที
+
   @override
   void initState() {
     super.initState();
     _game.initGame();
+    startTimer();
+  }
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_timeLeft == 0) {
+          setState(() {
+            timer.cancel();
+            showTimeUpDialog();
+          });
+        } else {
+          setState(() {
+            _timeLeft--;
+          });
+        }
+      },
+    );
   }
   
+  void showLevelCompleteDialog() {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Level Complete!'),
+        content: Text('Congratulations! You\'ve completed Level 1.'),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Next Level'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LevelTwoScreen()),
+              );
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void showTimeUpDialog() {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Time\'s Up!'),
+        content: Text('Sorry, you ran out of time.'),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Try Again'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              restartLevel();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void restartLevel() {
+  setState(() {
+    _game.initGame();
+    tries = 0;
+    score = 0;
+    matchedPairs = 0;
+    _timeLeft = 110;
+  });
+  startTimer();
+}
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +140,15 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
             const SizedBox(
               height: 24.0,
             ),
+            
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 info_card("Tries", "$tries"),
                 info_card("Score", "$score"),
+                info_card("Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
+
               ],
             ),
             SizedBox(
@@ -86,45 +174,28 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
                         print(_game.matchCheck.first);
                       });
                       if (_game.matchCheck.length == 2) {
-                        if (_game.matchCheck[0].values.first ==
-                            _game.matchCheck[1].values.first) {
+                        if (_game.matchCheck[0].values.first == _game.matchCheck[1].values.first) {
                           print("true");
-                          //incrementing the score
                           score += 100;
+                          matchedPairs++;
                           _game.matchCheck.clear();
+                          if (matchedPairs == _game.cardCount ~/ 2) {
+                            _timer.cancel();
+                            showLevelCompleteDialog();
+                          }
                         } else {
                           print("false");
 
                           Future.delayed(Duration(milliseconds: 500), () {
                             print(_game.gameColors);
                             setState(() {
-                              _game.gameImg![_game.matchCheck[0].keys.first] =
-                                  _game.hiddenCardpath;
-                              _game.gameImg![_game.matchCheck[1].keys.first] =
-                                  _game.hiddenCardpath;
+                              _game.gameImg![_game.matchCheck[0].keys.first] = _game.hiddenCardpath;
+                              _game.gameImg![_game.matchCheck[1].keys.first] = _game.hiddenCardpath;
                               _game.matchCheck.clear();
                             });
                           });
                         }
                       }
-
-                            showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Card Tapped'),
-            content: Text('You tapped on card index: $index'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Dismiss the dialog
-                },
-                child: const Text('Close'),
-              ),
-            ],
-          );
-        },
-      );
                     },
                     child: Container(
                       padding: EdgeInsets.all(
