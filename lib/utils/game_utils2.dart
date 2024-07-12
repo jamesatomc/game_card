@@ -26,7 +26,7 @@ class Game {
     "assets/images/star.png",
     "assets/images/triangle.png",
     "assets/images/star.png",
-    "assets/images/heart.png",
+     "assets/images/star.png",
     "assets/images/star.png",
     "assets/images/heart.png",
   ];

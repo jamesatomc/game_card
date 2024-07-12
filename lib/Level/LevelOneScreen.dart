@@ -26,10 +26,15 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
   late Timer _timer;
   int _timeLeft = 110; // 1:50 นาที = 110 วินาที
 
+  List<int> revealedCards = [];
+  List<int> matchedCardIndices = []; // เพิ่ม list สำหรับเก็บ index ของไพ่ที่จับคู่กันแล้ว
+
   @override
   void initState() {
     super.initState();
     _game.initGame();
+    revealedCards.clear();
+    matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
     startTimer();
   }
 
@@ -51,64 +56,104 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
       },
     );
   }
-  
+
   void showLevelCompleteDialog() {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Level Complete!'),
-        content: Text('Congratulations! You\'ve completed Level 1.'),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Next Level'),
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const LevelTwoScreen()),
-              );
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Level Complete!'),
+          content: Text('Congratulations! You\'ve completed Level 1.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Next Level'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LevelTwoScreen()),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-void showTimeUpDialog() {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Time\'s Up!'),
-        content: Text('Sorry, you ran out of time.'),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Try Again'),
-            onPressed: () {
-              Navigator.of(context).pop();
-              restartLevel();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
+  void showTimeUpDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Time\'s Up!'),
+          content: Text('Sorry, you ran out of time.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Try Again'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                restartLevel();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-void restartLevel() {
-  setState(() {
-    _game.initGame();
-    tries = 0;
-    score = 0;
-    matchedPairs = 0;
-    _timeLeft = 110;
-  });
-  startTimer();
-}
+  void restartLevel() {
+    setState(() {
+      _game.initGame();
+      tries = 0;
+      score = 0;
+      matchedPairs = 0;
+      _timeLeft = 110;
+      revealedCards.clear();
+      matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
+    });
+    startTimer();
+  }
+
+  void checkMatch() {
+    if (_game.matchCheck.length == 2) {
+      int firstIndex = _game.matchCheck[0].keys.first;
+      int secondIndex = _game.matchCheck[1].keys.first;
+
+      if (_game.matchCheck[0].values.first == _game.matchCheck[1].values.first) {
+        setState(() {
+          score += 10;
+          matchedPairs++;
+          matchedCardIndices.addAll([firstIndex, secondIndex]); // เพิ่ม index ของไพ่ที่จับคู่กันแล้ว
+        });
+
+        if (matchedPairs == _game.cardCount ~/ 2) {
+          _timer.cancel();
+          showLevelCompleteDialog();
+        }
+      } else {
+        // จับคู่ผิด ไม่ให้คะแนน และอาจลดคะแนนถ้าต้องการ
+        setState(() {
+          score = score > 0 ? score - 5 : 0; // ลดคะแนน 1 คะแนนเมื่อจับคู่ผิด แต่ไม่ติดลบ
+        });
+        Future.delayed(Duration(milliseconds: 500), () {
+          setState(() {
+            _game.gameImg![firstIndex] = _game.hiddenCardpath;
+            _game.gameImg![secondIndex] = _game.hiddenCardpath;
+          });
+        });
+      }
+
+      Future.delayed(Duration(milliseconds: 500), () {
+        setState(() {
+          _game.matchCheck.clear();
+          revealedCards.clear();
+        });
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,15 +175,15 @@ void restartLevel() {
           children: [
             const Center(
               child: Text(
-                "Level 1",
+                "คำใบ้",
                 style: TextStyle(
-                  fontSize: 48.0,
+                  fontSize: 16.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             const SizedBox(
-              height: 24.0,
+              height: 1.0,
             ),
             
             Row(
@@ -147,83 +192,69 @@ void restartLevel() {
               children: [
                 info_card("Tries", "$tries"),
                 info_card("Score", "$score"),
-                info_card("Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
-
+                info_card(
+                    "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
               ],
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.width,
-              width: MediaQuery.of(context).size.width,
-              child: GridView.builder(
-                itemCount: _game.gameImg!.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                ),
-                padding: EdgeInsets.all(16.0),
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      print(_game.matchCheck);
-                      setState(() {
-                        //incrementing the clicks
-                        tries++;
-                        _game.gameImg![index] = _game.cards_list[index];
-                        _game.matchCheck.add({index: _game.cards_list[index]});
-                        print(_game.matchCheck.first);
-                      });
-                      if (_game.matchCheck.length == 2) {
-                        if (_game.matchCheck[0].values.first == _game.matchCheck[1].values.first) {
-                          print("true");
-                          score += 100;
-                          matchedPairs++;
-                          _game.matchCheck.clear();
-                          if (matchedPairs == _game.cardCount ~/ 2) {
-                            _timer.cancel();
-                            showLevelCompleteDialog();
-                          }
-                        } else {
-                          print("false");
-
-                          Future.delayed(Duration(milliseconds: 500), () {
-                            print(_game.gameColors);
-                            setState(() {
-                              _game.gameImg![_game.matchCheck[0].keys.first] = _game.hiddenCardpath;
-                              _game.gameImg![_game.matchCheck[1].keys.first] = _game.hiddenCardpath;
-                              _game.matchCheck.clear();
-                            });
-                          });
-                        }
-                      }
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(
-                          MediaQuery.of(context).size.width *
-                              0.04), // 4% of screen width
-                      decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .surface, // Use theme color
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
-                          ),
-                        ],
-                        image: DecorationImage(
-                          image: AssetImage(_game.gameImg![index]),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+             Padding(
+               padding: const EdgeInsets.all(50.0),
+               child: SizedBox(
+                 height: MediaQuery.of(context).size.width,
+                 width: MediaQuery.of(context).size.width,
+                 child: GridView.builder(
+                   itemCount: _game.gameImg!.length,
+                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                     crossAxisCount: 8,
+                     crossAxisSpacing: 16.0,
+                     mainAxisSpacing: 16.0,
+                   ),
+                   padding: EdgeInsets.all(16.0),
+                   itemBuilder: (context, index) {
+                     return GestureDetector(
+                       onTap: () {
+                         if (!revealedCards.contains(index) &&
+                             revealedCards.length < 2 &&
+                             !matchedCardIndices.contains(index)) {
+                           setState(() {
+                             tries++;
+                             _game.gameImg![index] = _game.cards_list[index];
+                             revealedCards.add(index);
+                             _game.matchCheck.add({index: _game.cards_list[index]});
+                           });
+                       
+                           if (revealedCards.length == 2) {
+                             checkMatch();
+                           }
+                         }
+                       },
+                       child: Container(
+                         padding: EdgeInsets.all(
+                             MediaQuery.of(context).size.width *
+                                 0.04), // 4% of screen width
+                         decoration: BoxDecoration(
+                           color: Theme.of(context)
+                               .colorScheme
+                               .surface, // Use theme color
+                           borderRadius: BorderRadius.circular(12),
+                           boxShadow: [
+                             BoxShadow(
+                               color: Colors.grey.withOpacity(0.5),
+                               spreadRadius: 2,
+                               blurRadius: 7,
+                               offset: const Offset(0, 3), // changes position of shadow
+                             ),
+                           ],
+                           image: DecorationImage(
+                             image: AssetImage(_game.gameImg![index]),
+                             fit: BoxFit.cover,
+                           ),
+                         ),
+                       ),
+                     );
+                   },
+                 ),
+               ),
+             ),
           ],
         ),
       ),
