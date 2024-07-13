@@ -122,7 +122,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
       int firstIndex = _game.matchCheck[0].keys.first;
       int secondIndex = _game.matchCheck[1].keys.first;
 
-      if (_game.matchCheck[0].values.first == _game.matchCheck[1].values.first) {
+      if (_game.checkMatch(firstIndex, secondIndex)) {
         setState(() {
           score += 10;
           matchedPairs++;
