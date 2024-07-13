@@ -1,11 +1,17 @@
-// Define MenuScreen widget
 import 'package:flutter/material.dart';
-import 'package:flutter_cardgame/Level/LevelOneScreen.dart';
-import 'package:flutter_cardgame/Level/LevelTwoScreen.dart';
+import 'package:flutter_cardgame/Level/Level1Screen.dart';
+import 'package:flutter_cardgame/Level/Level2Screen.dart';
+import 'package:flutter_cardgame/Level/Level3Screen.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Import shared_preferences
 
 class MenuScreen extends StatelessWidget {
-
   const MenuScreen({super.key});
+
+  // Function to reset high score
+  Future<void> resetHighScore() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('highScore'); // Remove high score from storage
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +39,16 @@ class MenuScreen extends StatelessWidget {
                 );
               },
             ),
-            // Add more buttons for additional levels here
+            const SizedBox(height: 10),
+            ElevatedButton(
+              child: const Text('Level Two'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LevelThreeScreen()),
+                );
+              },
+            ),
           ],
         ),
       ),

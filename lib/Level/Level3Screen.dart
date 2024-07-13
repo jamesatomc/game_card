@@ -2,18 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cardgame/components/info_card.dart';
-import 'package:flutter_cardgame/utils/game_utils.dart';
+import 'package:flutter_cardgame/utils/game_utils3.dart';
 
-import 'LevelTwoScreen.dart';
 
-class LevelOneScreen extends StatefulWidget {
-  const LevelOneScreen({super.key});
+class LevelThreeScreen extends StatefulWidget {
+  const LevelThreeScreen({super.key});
 
   @override
-  _LevelOneScreenState createState() => _LevelOneScreenState();
+  _LevelThreeScreenState createState() => _LevelThreeScreenState();
 }
 
-class _LevelOneScreenState extends State<LevelOneScreen> {
+class _LevelThreeScreenState extends State<LevelThreeScreen> {
   //setting text style
   bool hideTest = false;
   final Game _game = Game();
@@ -24,7 +23,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
 
   int matchedPairs = 0;
   late Timer _timer;
-  int _timeLeft = 110; // 1:50 นาที = 110 วินาที
+  int _timeLeft = 80; // 1:50 นาที = 110 วินาที
 
   List<int> revealedCards = [];
   List<int> matchedCardIndices = []; // เพิ่ม list สำหรับเก็บ index ของไพ่ที่จับคู่กันแล้ว
@@ -39,7 +38,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
   }
 
   void startTimer() {
-    const oneSec = const Duration(seconds: 1);
+    const oneSec =  Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
       (Timer timer) {
@@ -72,7 +71,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
                 Navigator.of(context).pop();
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const LevelTwoScreen()),
+                  MaterialPageRoute(builder: (context) => const LevelThreeScreen()),
                 );
               },
             ),
@@ -110,7 +109,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
       tries = 0;
       score = 0;
       matchedPairs = 0;
-      _timeLeft = 110;
+      _timeLeft = 80;
       revealedCards.clear();
       matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
     });
@@ -206,9 +205,9 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                      crossAxisCount: 
                          MediaQuery.of(context).orientation == Orientation.portrait
-                             ? 4
-                             : 8, // ปรับจำนวนคอลัมน์ตามแนวการวาง
-                     crossAxisSpacing: 16.0,
+                             ? 6
+                             : 4, // ปรับจำนวนคอลัมน์ตามแนวการวาง
+                     crossAxisSpacing:16.0,
                      mainAxisSpacing: 16.0,
                    ),
                    padding: EdgeInsets.all(16.0),
