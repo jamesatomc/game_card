@@ -203,8 +203,11 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
                  width: MediaQuery.of(context).size.width,
                  child: GridView.builder(
                    itemCount: _game.gameImg!.length,
-                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                     crossAxisCount: 8,
+                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                     crossAxisCount: 
+                         MediaQuery.of(context).orientation == Orientation.portrait
+                             ? 4
+                             : 8, // ปรับจำนวนคอลัมน์ตามแนวการวาง
                      crossAxisSpacing: 16.0,
                      mainAxisSpacing: 16.0,
                    ),
