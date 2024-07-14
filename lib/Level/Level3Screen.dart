@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_cardgame/components/info_card.dart';
 import 'package:flutter_cardgame/utils/game_utils3.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 
 class LevelThreeScreen extends StatefulWidget {
@@ -20,6 +22,7 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
   //game stats
   int tries = 0;
   int score = 0;
+  int level3HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 2
 
   int matchedPairs = 0;
   late Timer _timer;
@@ -35,6 +38,21 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
     revealedCards.clear();
     matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
     startTimer();
+    _loadHighScore(); // เรียกใช้ฟังก์ชัน _loadHighScore() ใน initState()
+  }
+
+  // ฟังก์ชันสำหรับโหลด high score จาก SharedPreferences
+  Future<void> _loadHighScore() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      level3HighScore = prefs.getInt('level3HighScore') ?? 0; // โหลด high score จาก SharedPreferences
+    });
+  }
+
+  // ฟังก์ชันสำหรับบันทึก high score ลง SharedPreferences
+  Future<void> _saveHighScore() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('level3HighScore', score); // บันทึก high score ลง SharedPreferences
   }
 
   void startTimer() {
@@ -63,10 +81,10 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Level Complete!'),
-          content: Text('Congratulations! You\'ve completed Level 1.'),
+          content: Text('Congratulations! You\'ve completed Level 3.'),
           actions: <Widget>[
             TextButton(
-              child: Text('Next Level'),
+              child: Text('Next Leve 4'),
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.pushReplacement(
@@ -130,6 +148,7 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
 
         if (matchedPairs == _game.cardCount ~/ 2) {
           _timer.cancel();
+          _saveHighScore(); // บันทึก high score เมื่อจบด่าน
           showLevelCompleteDialog();
         }
       } else {
@@ -158,7 +177,7 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Level 1"),
+        title: const Text("Level 3"),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -192,6 +211,8 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
                 info_card("Tries", "$tries"),
                 info_card("Score", "$score"),
                 info_card(
+                    "Level 3 High Score", "$level3HighScore"), // แสดง high score ของ Level 2
+                info_card(
                     "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
               ],
             ),
@@ -203,8 +224,7 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
                  child: GridView.builder(
                    itemCount: _game.gameImg!.length,
                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                     crossAxisCount: 
-                         MediaQuery.of(context).orientation == Orientation.portrait
+                     crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait
                              ? 6
                              : 4, // ปรับจำนวนคอลัมน์ตามแนวการวาง
                      crossAxisSpacing:16.0,
@@ -231,8 +251,7 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
                        },
                        child: Container(
                          padding: EdgeInsets.all(
-                             MediaQuery.of(context).size.width *
-                                 0.04), // 4% of screen width
+                             MediaQuery.of(context).size.width * 0.04), // 4% of screen width
                          decoration: BoxDecoration(
                            color: Theme.of(context)
                                .colorScheme

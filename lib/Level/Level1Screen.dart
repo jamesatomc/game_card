@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_cardgame/components/info_card.dart';
 import 'package:flutter_cardgame/utils/game_utils1.dart';
-import 'Level2Screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'Level3Screen.dart'; // เพิ่ม import สำหรับ SharedPreferences
 
 class LevelOneScreen extends StatefulWidget {
   const LevelOneScreen({super.key});
@@ -20,6 +22,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
   //game stats
   int tries = 0;
   int score = 0;
+  int level1HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 1
 
   int matchedPairs = 0;
   late Timer _timer;
@@ -35,10 +38,25 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
     revealedCards.clear();
     matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
     startTimer();
+    _loadHighScore(); // เรียกใช้ฟังก์ชัน _loadHighScore() ใน initState()
+  }
+
+  // ฟังก์ชันสำหรับโหลด high score จาก SharedPreferences
+  Future<void> _loadHighScore() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      level1HighScore = prefs.getInt('level1HighScore') ?? 0; // โหลด high score จาก SharedPreferences
+    });
+  }
+
+  // ฟังก์ชันสำหรับบันทึก high score ลง SharedPreferences
+  Future<void> _saveHighScore() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('level1HighScore', score); // บันทึก high score ลง SharedPreferences
   }
 
   void startTimer() {
-    const oneSec =  Duration(seconds: 1);
+    const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
       (Timer timer) {
@@ -66,12 +84,12 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
           content: Text('Congratulations! You\'ve completed Level 1.'),
           actions: <Widget>[
             TextButton(
-              child: Text('Next Level'),
+              child: Text('Next Leve 2'),
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const LevelTwoScreen()),
+                  MaterialPageRoute(builder: (context) => const LevelThreeScreen()),
                 );
               },
             ),
@@ -130,6 +148,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
 
         if (matchedPairs == _game.cardCount ~/ 2) {
           _timer.cancel();
+          _saveHighScore(); // บันทึก high score เมื่อจบด่าน
           showLevelCompleteDialog();
         }
       } else {
@@ -158,7 +177,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Level 1"),
+        title: const Text("Level 1"), // แก้ชื่อเป็น Level 1
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -184,7 +203,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
             const SizedBox(
               height: 1.0,
             ),
-            
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -192,71 +211,71 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
                 info_card("Tries", "$tries"),
                 info_card("Score", "$score"),
                 info_card(
+                    "Level 1 High Score", "$level1HighScore"), // แสดง high score ของ Level 1
+                info_card(
                     "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
               ],
             ),
-             Padding(
-               padding: const EdgeInsets.all(50.0),
-               child: SizedBox(
-                 height: MediaQuery.of(context).size.width,
-                 width: MediaQuery.of(context).size.width,
-                 child: GridView.builder(
-                   itemCount: _game.gameImg!.length,
-                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                     crossAxisCount: 
-                         MediaQuery.of(context).orientation == Orientation.portrait
-                             ? 6
-                             : 4, // ปรับจำนวนคอลัมน์ตามแนวการวาง
-                     crossAxisSpacing:16.0,
-                     mainAxisSpacing: 16.0,
-                   ),
-                   padding: EdgeInsets.all(16.0),
-                   itemBuilder: (context, index) {
-                     return GestureDetector(
-                       onTap: () {
-                         if (!revealedCards.contains(index) &&
-                             revealedCards.length < 2 &&
-                             !matchedCardIndices.contains(index)) {
-                           setState(() {
-                             tries++;
-                             _game.gameImg![index] = _game.cards_list[index];
-                             revealedCards.add(index);
-                             _game.matchCheck.add({index: _game.cards_list[index]});
-                           });
-                       
-                           if (revealedCards.length == 2) {
-                             checkMatch();
-                           }
-                         }
-                       },
-                       child: Container(
-                         padding: EdgeInsets.all(
-                             MediaQuery.of(context).size.width *
-                                 0.04), // 4% of screen width
-                         decoration: BoxDecoration(
-                           color: Theme.of(context)
-                               .colorScheme
-                               .surface, // Use theme color
-                           borderRadius: BorderRadius.circular(12),
-                           boxShadow: [
-                             BoxShadow(
-                               color: Colors.grey.withOpacity(0.5),
-                               spreadRadius: 2,
-                               blurRadius: 7,
-                               offset: const Offset(0, 3), // changes position of shadow
-                             ),
-                           ],
-                           image: DecorationImage(
-                             image: AssetImage(_game.gameImg![index]),
-                             fit: BoxFit.cover,
-                           ),
-                         ),
-                       ),
-                     );
-                   },
-                 ),
-               ),
-             ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width,
+                child: GridView.builder(
+                  itemCount: _game.gameImg!.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 6
+                        : 4, // ปรับจำนวนคอลัมน์ตามแนวการวาง
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0,
+                  ),
+                  padding: EdgeInsets.all(16.0),
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        if (!revealedCards.contains(index) &&
+                            revealedCards.length < 2 &&
+                            !matchedCardIndices.contains(index)) {
+                          setState(() {
+                            tries++;
+                            _game.gameImg![index] = _game.cards_list[index];
+                            revealedCards.add(index);
+                            _game.matchCheck.add({index: _game.cards_list[index]});
+                          });
+
+                          if (revealedCards.length == 2) {
+                            checkMatch();
+                          }
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(
+                            MediaQuery.of(context).size.width * 0.04), // 4% of screen width
+                        decoration: BoxDecoration(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .surface, // Use theme color
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 7,
+                              offset: const Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                          image: DecorationImage(
+                            image: AssetImage(_game.gameImg![index]),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),

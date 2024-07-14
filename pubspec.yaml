@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   dynamic_color: ^1.7.0
   shared_preferences: ^2.2.3
+  audioplayers: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +55,7 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   assets:
+    - assets/
     - assets/images/hidden.png
     - assets/images/im1/
     - assets/images/im2/
