@@ -5,7 +5,7 @@ import 'package:flutter/painting.dart';
 Widget info_card(String title, String info) {
   return Expanded(
     child: Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.only(left: 16.0, right: 16.0), // ปรับ padding ให้เล็กลง
       child: Card(
         shadowColor: Colors.brown,
         color: Colors.white,

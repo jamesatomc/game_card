@@ -21,7 +21,7 @@ class _LevelTwoScreenState extends State<LevelTwoScreen> {
 
   //game stats
   int tries = 0;
-  int score = 0;
+  double score = 0; // เปลี่ยน score เป็น double เพื่อเก็บคะแนนทศนิยม
   int level2HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 2
 
   int matchedPairs = 0;
@@ -52,7 +52,7 @@ class _LevelTwoScreenState extends State<LevelTwoScreen> {
   // ฟังก์ชันสำหรับบันทึก high score ลง SharedPreferences
   Future<void> _saveHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('level2HighScore', score); // บันทึก high score ลง SharedPreferences
+    prefs.setInt('level2HighScore', score.toInt()); // บันทึก high score ลง SharedPreferences
   }
 
   void startTimer() {
@@ -86,13 +86,27 @@ class _LevelTwoScreenState extends State<LevelTwoScreen> {
             TextButton(
               child: Text('Next Leve 3'),
               onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LevelThreeScreen()),
-                );
+                if (score >= 6) { // เพิ่มเงื่อนไขตรวจสอบคะแนน
+                  Navigator.of(context).pop();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LevelThreeScreen()),
+                  );
+                } else {
+                  // แสดงข้อความแจ้งเตือนว่าคะแนนไม่ถึง
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('You need at least 6 points to proceed to Level 2.')),
+                  );
+                }
               },
             ),
+            TextButton(
+              child: Text('Play Again'),
+              onPressed: () {
+                Navigator.of(context).pop(); // ปิด AlertDialog
+                restartLevel(); // เริ่มเล่นใหม่
+              },
+            ),            
           ],
         );
       },
@@ -141,7 +155,7 @@ class _LevelTwoScreenState extends State<LevelTwoScreen> {
 
       if (_game.checkMatch(firstIndex, secondIndex)) {
         setState(() {
-          score += 10;
+          score += 2.5; // เพิ่มคะแนน 2.5 คะแนนเมื่อจับคู่ถูก
           matchedPairs++;
           matchedCardIndices.addAll([firstIndex, secondIndex]); // เพิ่ม index ของไพ่ที่จับคู่กันแล้ว
         });
@@ -154,7 +168,7 @@ class _LevelTwoScreenState extends State<LevelTwoScreen> {
       } else {
         // จับคู่ผิด ไม่ให้คะแนน และอาจลดคะแนนถ้าต้องการ
         setState(() {
-          score = score > 0 ? score - 5 : 0; // ลดคะแนน 1 คะแนนเมื่อจับคู่ผิด แต่ไม่ติดลบ
+          score = score > 1.5 ? score - 1.5 : 0; // ลดคะแนน 1.5 คะแนนเมื่อจับคู่ผิด แต่ไม่ติดลบ
         });
         Future.delayed(Duration(milliseconds: 500), () {
           setState(() {
@@ -176,104 +190,89 @@ class _LevelTwoScreenState extends State<LevelTwoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Level 2"), // แก้ชื่อเป็น Level 2
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            // This line pops the current screen off the navigation stack
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: SingleChildScrollView(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Center(
-              child: Text(
-                "คำใบ้",
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
             const SizedBox(
-              height: 1.0,
+              height: 15.0,
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    // This line pops the current screen off the navigation stack
+                    Navigator.pop(context);
+                  },
+                ),
+                Text('Level 2', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
                 info_card("Tries", "$tries"),
                 info_card("Score", "$score"),
                 info_card(
-                    "Level 2 High Score", "$level2HighScore"), // แสดง high score ของ Level 2
+                    "High Score", "$level2HighScore"), // แสดง high score ของ Level 2
                 info_card(
                     "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(50.0),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.width,
-                width: MediaQuery.of(context).size.width,
-                child: GridView.builder(
-                  itemCount: _game.gameImg!.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait
-                        ? 6
-                        : 4, // ปรับจำนวนคอลัมน์ตามแนวการวาง
-                    crossAxisSpacing: 16.0,
-                    mainAxisSpacing: 16.0,
-                  ),
-                  padding: EdgeInsets.all(16.0),
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        if (!revealedCards.contains(index) &&
-                            revealedCards.length < 2 &&
-                            !matchedCardIndices.contains(index)) {
-                          setState(() {
-                            tries++;
-                            _game.gameImg![index] = _game.cards_list[index];
-                            revealedCards.add(index);
-                            _game.matchCheck.add({index: _game.cards_list[index]});
-                          });
-
-                          if (revealedCards.length == 2) {
-                            checkMatch();
-                          }
+            SizedBox(
+              height: 5.0,
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7, // ปรับความสูงให้เหมาะสมกับหน้าจอแนวนอน
+              child: GridView.builder(
+                itemCount: _game.gameImg!.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 6, // ปรับจำนวนคอลัมน์ให้เป็น 4 คอลัมน์
+                  crossAxisSpacing: 8.0,
+                  mainAxisSpacing: 8.0,
+                ),
+                padding: EdgeInsets.only(left: 16.0, right: 16.0), // เพิ่ม padding รอบๆ GridView
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      if (!revealedCards.contains(index) &&
+                          revealedCards.length < 2 &&
+                          !matchedCardIndices.contains(index)) {
+                        setState(() {
+                          tries++;
+                          _game.gameImg![index] = _game.cards_list[index];
+                          revealedCards.add(index);
+                          _game.matchCheck.add({index: _game.cards_list[index]});
+                        });
+            
+                        if (revealedCards.length == 2) {
+                          checkMatch();
                         }
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.width * 0.04), // 4% of screen width
-                        decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .surface, // Use theme color
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 7,
-                              offset: const Offset(0, 3), // changes position of shadow
-                            ),
-                          ],
-                          image: DecorationImage(
-                            image: AssetImage(_game.gameImg![index]),
-                            fit: BoxFit.cover,
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(
+                          MediaQuery.of(context).size.width * 0.04), // 4% of screen width
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surface, // Use theme color
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3), // changes position of shadow
                           ),
+                        ],
+                        image: DecorationImage(
+                          image: AssetImage(_game.gameImg![index]),
+                          fit: BoxFit.cover,
                         ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ],

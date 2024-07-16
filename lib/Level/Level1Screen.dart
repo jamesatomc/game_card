@@ -5,7 +5,7 @@ import 'package:flutter_cardgame/components/info_card.dart';
 import 'package:flutter_cardgame/utils/game_utils1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Level3Screen.dart'; // เพิ่ม import สำหรับ SharedPreferences
+import 'Level2Screen.dart'; // เพิ่ม import สำหรับ SharedPreferences
 
 class LevelOneScreen extends StatefulWidget {
   const LevelOneScreen({super.key});
@@ -21,7 +21,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
 
   //game stats
   int tries = 0;
-  int score = 0;
+  double score = 0; // เปลี่ยน score เป็น double เพื่อเก็บคะแนนทศนิยม
   int level1HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 1
 
   int matchedPairs = 0;
@@ -31,14 +31,20 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
   List<int> revealedCards = [];
   List<int> matchedCardIndices = []; // เพิ่ม list สำหรับเก็บ index ของไพ่ที่จับคู่กันแล้ว
 
+  bool _gameStarted = false; // Flag to track if the game has started
+
   @override
   void initState() {
     super.initState();
     _game.initGame();
     revealedCards.clear();
     matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
-    startTimer();
     _loadHighScore(); // เรียกใช้ฟังก์ชัน _loadHighScore() ใน initState()
+
+    // Reveal all cards initially
+    setState(() {
+      _game.gameImg = _game.cards_list;
+    });
   }
 
   // ฟังก์ชันสำหรับโหลด high score จาก SharedPreferences
@@ -52,7 +58,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
   // ฟังก์ชันสำหรับบันทึก high score ลง SharedPreferences
   Future<void> _saveHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('level1HighScore', score); // บันทึก high score ลง SharedPreferences
+    prefs.setInt('level1HighScore', score.toInt()); // บันทึก high score ลง SharedPreferences
   }
 
   void startTimer() {
@@ -86,13 +92,27 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
             TextButton(
               child: Text('Next Leve 2'),
               onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LevelThreeScreen()),
-                );
+                if (score >= 6) { // เพิ่มเงื่อนไขตรวจสอบคะแนน
+                  Navigator.of(context).pop();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LevelTwoScreen()),
+                  );
+                } else {
+                  // แสดงข้อความแจ้งเตือนว่าคะแนนไม่ถึง
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('You need at least 6 points to proceed to Level 2.')),
+                  );
+                }
               },
             ),
+            TextButton(
+              child: Text('Play Again'),
+              onPressed: () {
+                Navigator.of(context).pop(); // ปิด AlertDialog
+                restartLevel(); // เริ่มเล่นใหม่
+              },
+            ),            
           ],
         );
       },
@@ -130,8 +150,9 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
       _timeLeft = 80;
       revealedCards.clear();
       matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
+      _gameStarted = false; // Reset game started flag
+      _game.gameImg = _game.cards_list; // Reveal all cards again
     });
-    startTimer();
   }
 
   void checkMatch() {
@@ -141,7 +162,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
 
       if (_game.checkMatch(firstIndex, secondIndex)) {
         setState(() {
-          score += 10;
+          score += 2.5; // เพิ่มคะแนน 2.5 คะแนนเมื่อจับคู่ถูก
           matchedPairs++;
           matchedCardIndices.addAll([firstIndex, secondIndex]); // เพิ่ม index ของไพ่ที่จับคู่กันแล้ว
         });
@@ -154,7 +175,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
       } else {
         // จับคู่ผิด ไม่ให้คะแนน และอาจลดคะแนนถ้าต้องการ
         setState(() {
-          score = score > 0 ? score - 5 : 0; // ลดคะแนน 1 คะแนนเมื่อจับคู่ผิด แต่ไม่ติดลบ
+          score = score > 1.5 ? score - 1.5 : 0; // ลดคะแนน 1.5 คะแนนเมื่อจับคู่ผิด แต่ไม่ติดลบ
         });
         Future.delayed(Duration(milliseconds: 500), () {
           setState(() {
@@ -173,68 +194,74 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
     }
   }
 
+  void startGame() {
+    setState(() {
+      _gameStarted = true;
+      _game.gameImg = List.filled(_game.cardCount, _game.hiddenCardpath); // Hide cards
+      startTimer();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Level 1"), // แก้ชื่อเป็น Level 1
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            // This line pops the current screen off the navigation stack
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Center(
-              child: Text(
-                "คำใบ้",
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 15.0,
               ),
-            ),
-            const SizedBox(
-              height: 1.0,
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                info_card("Tries", "$tries"),
-                info_card("Score", "$score"),
-                info_card(
-                    "Level 1 High Score", "$level1HighScore"), // แสดง high score ของ Level 1
-                info_card(
-                    "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(50.0),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.width,
-                width: MediaQuery.of(context).size.width,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () {
+                      // This line pops the current screen off the navigation stack
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Text('Level 1', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                  info_card("Tries", "$tries"),
+                  info_card("Score", "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
+                  info_card(
+                      "High Score", "$level1HighScore"), // แสดง high score ของ Level 1
+                  info_card(
+                      "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
+                  // Wrap the button in an AnimatedCrossFade to control its visibility
+                  AnimatedCrossFade(
+                    firstChild: ElevatedButton(
+                      onPressed: _gameStarted ? null : startGame,
+                      child: Text('Start Game'),
+                    ),
+                    secondChild: SizedBox.shrink(), // Empty space when the button is hidden
+                    crossFadeState: _gameStarted ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                    duration: Duration(milliseconds: 300), // Animation duration
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.7, // ปรับความสูงให้เหมาะสมกับหน้าจอแนวนอน
                 child: GridView.builder(
                   itemCount: _game.gameImg!.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait
-                        ? 6
-                        : 4, // ปรับจำนวนคอลัมน์ตามแนวการวาง
-                    crossAxisSpacing: 16.0,
-                    mainAxisSpacing: 16.0,
+                    crossAxisCount: 6, // ปรับจำนวนคอลัมน์ให้เป็น 4 คอลัมน์
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
                   ),
-                  padding: EdgeInsets.all(16.0),
+                  padding: EdgeInsets.only(left: 16.0, right: 16.0), // เพิ่ม padding รอบๆ GridView
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        if (!revealedCards.contains(index) &&
+                        if (_gameStarted && // Check if the game has started
+                            !revealedCards.contains(index) &&
                             revealedCards.length < 2 &&
                             !matchedCardIndices.contains(index)) {
                           setState(() {
@@ -243,7 +270,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
                             revealedCards.add(index);
                             _game.matchCheck.add({index: _game.cards_list[index]});
                           });
-
+          
                           if (revealedCards.length == 2) {
                             checkMatch();
                           }
@@ -275,8 +302,8 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
                   },
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import services to access SystemChrome
 import 'package:dynamic_color/dynamic_color.dart';
@@ -13,6 +12,15 @@ void main() {
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,
   ]).then((_) {
+    // Hide status bar and set full-screen mode
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+      ),
+    );
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
     runApp(const MyApp()); // Run app after setting orientation
   });
 }
