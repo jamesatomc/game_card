@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_cardgame/components/info_card.dart';
-import 'package:flutter_cardgame/utils/game_utils3.dart';
+import 'package:flutter_cardgame/gamecard/components/info_card.dart';
+import 'package:flutter_cardgame/gamecard/utils/game_utils1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
+// import 'Level4Screen.dart'; // เพิ่ม import สำหรับ SharedPreferences
 
 class LevelThreeScreen extends StatefulWidget {
   const LevelThreeScreen({super.key});
@@ -21,15 +21,17 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
 
   //game stats
   int tries = 0;
-  double score = 0;
-  int level3HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 2
+  double score = 0; // เปลี่ยน score เป็น double เพื่อเก็บคะแนนทศนิยม
+  int level3HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 3
 
   int matchedPairs = 0;
   late Timer _timer;
-  int _timeLeft = 80; // 1:50 นาที = 110 วินาที
+  int _timeLeft = 80; // 1:20 นาที = 80 วินาที
 
   List<int> revealedCards = [];
   List<int> matchedCardIndices = []; // เพิ่ม list สำหรับเก็บ index ของไพ่ที่จับคู่กันแล้ว
+
+  bool _gameStarted = false; // Flag to track if the game has started
 
   @override
   void initState() {
@@ -37,8 +39,12 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
     _game.initGame();
     revealedCards.clear();
     matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
-    startTimer();
     _loadHighScore(); // เรียกใช้ฟังก์ชัน _loadHighScore() ใน initState()
+
+    // Reveal all cards initially
+    setState(() {
+      _game.gameImg = _game.cards_list;
+    });
   }
 
   // ฟังก์ชันสำหรับโหลด high score จาก SharedPreferences
@@ -56,7 +62,7 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
   }
 
   void startTimer() {
-    const oneSec =  Duration(seconds: 1);
+    const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
       (Timer timer) {
@@ -84,7 +90,7 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
           content: Text('Congratulations! You\'ve completed Level 3.'),
           actions: <Widget>[
             TextButton(
-              child: Text('Next Leve 4'),
+              child: Text('Next Leve 3'),
               onPressed: () {
                 if (score >= 6) { // เพิ่มเงื่อนไขตรวจสอบคะแนน
                   Navigator.of(context).pop();
@@ -95,7 +101,7 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
                 } else {
                   // แสดงข้อความแจ้งเตือนว่าคะแนนไม่ถึง
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('You need at least 6 points to proceed to Level 2.')),
+                    SnackBar(content: Text('You need at least 6 points to proceed to Level 3.')),
                   );
                 }
               },
@@ -106,7 +112,7 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
                 Navigator.of(context).pop(); // ปิด AlertDialog
                 restartLevel(); // เริ่มเล่นใหม่
               },
-            ),             
+            ),            
           ],
         );
       },
@@ -144,8 +150,9 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
       _timeLeft = 80;
       revealedCards.clear();
       matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
+      _gameStarted = false; // Reset game started flag
+      _game.gameImg = _game.cards_list; // Reveal all cards again
     });
-    startTimer();
   }
 
   void checkMatch() {
@@ -155,7 +162,7 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
 
       if (_game.checkMatch(firstIndex, secondIndex)) {
         setState(() {
-          score += 2.5;
+          score += 2.5; // เพิ่มคะแนน 2.5 คะแนนเมื่อจับคู่ถูก
           matchedPairs++;
           matchedCardIndices.addAll([firstIndex, secondIndex]); // เพิ่ม index ของไพ่ที่จับคู่กันแล้ว
         });
@@ -168,7 +175,7 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
       } else {
         // จับคู่ผิด ไม่ให้คะแนน และอาจลดคะแนนถ้าต้องการ
         setState(() {
-          score = score > 0 ? score - 1 : 0; // ลดคะแนน 1 คะแนนเมื่อจับคู่ผิด แต่ไม่ติดลบ
+          score = score > 1.5 ? score - 1.5 : 0; // ลดคะแนน 1.5 คะแนนเมื่อจับคู่ผิด แต่ไม่ติดลบ
         });
         Future.delayed(Duration(milliseconds: 500), () {
           setState(() {
@@ -185,6 +192,14 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
         });
       });
     }
+  }
+
+  void startGame() {
+    setState(() {
+      _gameStarted = true;
+      _game.gameImg = List.filled(_game.cardCount, _game.hiddenCardpath); // Hide cards
+      startTimer();
+    });
   }
 
   @override
@@ -211,11 +226,21 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
                 ),
                 Text('Level 3', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
                 info_card("Tries", "$tries"),
-                info_card("Score", "$score"),
+                info_card("Score", "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
                 info_card(
-                    "High Score", "$level3HighScore"), // แสดง high score ของ Level 2
+                    "High Score", "$level3HighScore"), // แสดง high score ของ Level 3
                 info_card(
                     "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
+                // Wrap the button in an AnimatedCrossFade to control its visibility
+                AnimatedCrossFade(
+                  firstChild: ElevatedButton(
+                    onPressed: _gameStarted ? null : startGame,
+                    child: Text('Start Game'),
+                  ),
+                  secondChild: SizedBox.shrink(), // Empty space when the button is hidden
+                  crossFadeState: _gameStarted ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                  duration: Duration(milliseconds: 300), // Animation duration
+                ),
               ],
             ),
             SizedBox(
@@ -234,7 +259,8 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      if (!revealedCards.contains(index) &&
+                      if (_gameStarted && // Check if the game has started
+                          !revealedCards.contains(index) &&
                           revealedCards.length < 2 &&
                           !matchedCardIndices.contains(index)) {
                         setState(() {
@@ -243,7 +269,7 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
                           revealedCards.add(index);
                           _game.matchCheck.add({index: _game.cards_list[index]});
                         });
-            
+        
                         if (revealedCards.length == 2) {
                           checkMatch();
                         }

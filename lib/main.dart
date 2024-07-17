@@ -1,8 +1,9 @@
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import services to access SystemChrome
 import 'package:dynamic_color/dynamic_color.dart';
 
-import 'MenuScreen.dart'; // Import DynamicColorBuilder
+import 'gamecard/MenuScreen.dart'; // Import DynamicColorBuilder
 
 void main() {
   WidgetsFlutterBinding
@@ -50,9 +51,59 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         themeMode: ThemeMode.system,
-        home: MenuScreen(),
+        home: games(),
         debugShowCheckedModeBanner: false,
       ),
     );
+  }
+}
+
+
+class games extends StatefulWidget {
+  const games({ Key? key }) : super(key: key);
+
+  @override
+  _gamesState createState() => _gamesState();
+}
+
+class _gamesState extends State<games> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          children: [
+            OutlinedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MenuScreen()),
+                );
+              },
+              child: Text('Menu'),
+            ),
+            OutlinedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => GameWidget(game: MyGame())), // Wrap MyGame in GameWidget
+                );
+              },
+              child: Text('games 2'), // Changed the text to "MyGame"
+            ),
+          ]
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+class MyGame extends FlameGame {
+  @override
+  void onLoad() {
+    
   }
 }
