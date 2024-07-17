@@ -213,35 +213,38 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
             const SizedBox(
               height: 15.0,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    // This line pops the current screen off the navigation stack
-                    Navigator.pop(context);
-                  },
-                ),
-                Text('Level 1', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                info_card("Tries", "$tries"),
-                info_card("Score", "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
-                info_card(
-                    "High Score", "$level1HighScore"), // แสดง high score ของ Level 1
-                info_card(
-                    "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
-                // Wrap the button in an AnimatedCrossFade to control its visibility
-                AnimatedCrossFade(
-                  firstChild: ElevatedButton(
-                    onPressed: _gameStarted ? null : startGame,
-                    child: Text('Start Game'),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () {
+                      // This line pops the current screen off the navigation stack
+                      Navigator.pop(context);
+                    },
                   ),
-                  secondChild: SizedBox.shrink(), // Empty space when the button is hidden
-                  crossFadeState: _gameStarted ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                  duration: Duration(milliseconds: 300), // Animation duration
-                ),
-              ],
+                  Text('Level 1', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                  info_card("Tries", "$tries"),
+                  info_card("Score", "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
+                  info_card(
+                      "High Score", "$level1HighScore"), // แสดง high score ของ Level 1
+                  info_card(
+                      "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
+                  // Wrap the button in an AnimatedCrossFade to control its visibility
+                  AnimatedCrossFade(
+                    firstChild: ElevatedButton(
+                      onPressed: _gameStarted ? null : startGame,
+                      child: Text('Start Game'),
+                    ),
+                    secondChild: SizedBox.shrink(), // Empty space when the button is hidden
+                    crossFadeState: _gameStarted ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                    duration: Duration(milliseconds: 300), // Animation duration
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               height: 5.0,

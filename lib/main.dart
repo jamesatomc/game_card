@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import services to access SystemChrome
 import 'package:dynamic_color/dynamic_color.dart';
 
-import 'gamecard/MenuScreen.dart'; // Import DynamicColorBuilder
+import 'gamecard/GameCard.dart'; // Import DynamicColorBuilder
 
 void main() {
   WidgetsFlutterBinding
@@ -18,9 +18,12 @@ void main() {
       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light,
+        systemNavigationBarColor: Colors.transparent, // Hide navigation bar
+        systemNavigationBarDividerColor: Colors.transparent, // Hide navigation bar divider
+        systemNavigationBarIconBrightness: Brightness.light, // Set navigation bar icon brightness
       ),
     );
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky); // Full-screen mode
 
     runApp(const MyApp()); // Run app after setting orientation
   });
@@ -33,11 +36,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
       builder: (light, dark) => MaterialApp(
-        title: 'Flutter Demo',
+        title: 'ทดสอบ',
         theme: ThemeData(
           colorScheme: light ??
               ColorScheme.fromSeed(
-                seedColor: Colors.green,
+                seedColor: Colors.blueAccent,
                 brightness: Brightness.light,
               ),
           useMaterial3: true,
@@ -45,13 +48,13 @@ class MyApp extends StatelessWidget {
         darkTheme: ThemeData(
           colorScheme: dark ??
               ColorScheme.fromSeed(
-                seedColor: Colors.green,
+                seedColor: Colors.blueAccent,
                 brightness: Brightness.dark,
               ),
           useMaterial3: true,
         ),
         themeMode: ThemeMode.system,
-        home: games(),
+        home: ManuGame(),
         debugShowCheckedModeBanner: false,
       ),
     );
@@ -59,29 +62,31 @@ class MyApp extends StatelessWidget {
 }
 
 
-class games extends StatefulWidget {
-  const games({ Key? key }) : super(key: key);
+class ManuGame extends StatefulWidget {
+  const ManuGame({ Key? key }) : super(key: key);
 
   @override
-  _gamesState createState() => _gamesState();
+  _ManuGameState createState() => _ManuGameState();
 }
 
-class _gamesState extends State<games> {
+class _ManuGameState extends State<ManuGame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center, // This centers the buttons vertically in the Column
           children: [
             OutlinedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MenuScreen()),
+                  MaterialPageRoute(builder: (context) => const GameCardScreen()),
                 );
               },
-              child: Text('Menu'),
+              child: Text('Game Card'),
             ),
+            SizedBox(height: 16), // Add some spacing between the buttons
             OutlinedButton(
               onPressed: () {
                 Navigator.push(
@@ -89,17 +94,14 @@ class _gamesState extends State<games> {
                   MaterialPageRoute(builder: (context) => GameWidget(game: MyGame())), // Wrap MyGame in GameWidget
                 );
               },
-              child: Text('games 2'), // Changed the text to "MyGame"
+              child: Text('ManuGame 2'), // Changed the text to "MyGame"
             ),
-          ]
+          ],
         ),
       ),
     );
   }
 }
-
-
-
 
 class MyGame extends FlameGame {
   @override

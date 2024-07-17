@@ -40,14 +40,14 @@ class AudioManager {
   }
 }
 
-class MenuScreen extends StatefulWidget {
-  const MenuScreen({super.key});
+class GameCardScreen extends StatefulWidget {
+  const GameCardScreen({super.key});
 
   @override
-  State<MenuScreen> createState() => _MenuScreenState();
+  State<GameCardScreen> createState() => _GameCardScreenState();
 }
 
-class _MenuScreenState extends State<MenuScreen> {
+class _GameCardScreenState extends State<GameCardScreen> {
   int? level1HighScore;
   int? level2HighScore;
   int? level3HighScore;
@@ -89,6 +89,15 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Game Card'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Go back to the previous screen
+          },
+        ),
+      ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -322,7 +331,7 @@ class _MenuScreenState extends State<MenuScreen> {
               ],
             ),
             const SizedBox(width: 10),
-            // Modify MenuScreen to include a toggle button for music
+            // Modify GameCardScreen to include a toggle button for music
             // Add a button in the build method:
             IconButton(
               onPressed: () {
