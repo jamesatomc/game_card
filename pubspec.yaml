@@ -63,6 +63,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/audio/lofi.mp3
+#gamecard
     - assets/gamecard/images/hidden.png
     - assets/gamecard/images/im1/
     - assets/gamecard/images/im2/
@@ -74,6 +75,8 @@ flutter:
     - assets/gamecard/england/l3/
     - assets/gamecard/england/l4/
     - assets/gamecard/england/l5/
+#game2
+    - assets/images/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
