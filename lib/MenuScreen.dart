@@ -6,6 +6,40 @@ import 'Level/Level1Screen.dart';
 import 'Level/Level2Screen.dart';
 import 'Level/Level3Screen.dart';
 
+
+class AudioManager {
+  static final AudioPlayer _audioPlayer = AudioPlayer();
+  static bool _isPlaying = false;
+
+  static Future<void> init() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _isPlaying = prefs.getBool('musicEnabled') ?? true; // Default to true
+    if (_isPlaying) {
+      playMusic();
+    }
+  }
+
+  static void playMusic() async {
+    await _audioPlayer.play(AssetSource('audio/lofi.mp3'), volume: 0.5);
+    _isPlaying = true;
+  }
+
+  static void pauseMusic() async {
+    await _audioPlayer.pause();
+    _isPlaying = false;
+  }
+
+  static void toggleMusic() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (_isPlaying) {
+      pauseMusic();
+    } else {
+      playMusic();
+    }
+    prefs.setBool('musicEnabled', _isPlaying);
+  }
+}
+
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
 
@@ -39,7 +73,7 @@ class _MenuScreenState extends State<MenuScreen> {
   void initState() {
     super.initState();
     _loadHighScores();
-  
+    AudioManager.init(); // Initialize music when the app starts
   }
 
   void refreshScores() {
@@ -101,8 +135,36 @@ class _MenuScreenState extends State<MenuScreen> {
                         }
                       : null, // Disable button if Level 2 high score is not met
                 ),
+                const SizedBox(width: 10),
+                OutlinedButton(
+                  child: const Text('4'),
+                  onPressed: level1HighScore != null && level1HighScore! >= 6
+                      ? () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LevelTwoScreen()),
+                          );
+                        }
+                      : null, // Disable button if Level 1 high score is not met
+                ),
+                const SizedBox(width: 10),
+                // Level Three Button with Unlock Logic
+                OutlinedButton(
+                  child: const Text('5'),
+                  onPressed: level2HighScore != null && level2HighScore! >= 6
+                      ? () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LevelThreeScreen()),
+                          );
+                        }
+                      : null, // Disable button if Level 2 high score is not met
+                ),
               ],
             ),
+            const SizedBox(height: 10),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -135,6 +197,34 @@ class _MenuScreenState extends State<MenuScreen> {
                 // Level Three Button with Unlock Logic
                 OutlinedButton(
                   child: const Text('8'),
+                  onPressed: level2HighScore != null && level2HighScore! >= 6
+                      ? () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LevelThreeScreen()),
+                          );
+                        }
+                      : null, // Disable button if Level 2 high score is not met
+                ),
+                const SizedBox(width: 10),
+                // Level Three Button with Unlock Logic
+                OutlinedButton(
+                  child: const Text('9'),
+                  onPressed: level2HighScore != null && level2HighScore! >= 6
+                      ? () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LevelThreeScreen()),
+                          );
+                        }
+                      : null, // Disable button if Level 2 high score is not met
+                ),
+                const SizedBox(width: 10),
+                // Level Three Button with Unlock Logic
+                OutlinedButton(
+                  child: const Text('10'),
                   onPressed: level2HighScore != null && level2HighScore! >= 6
                       ? () {
                           Navigator.push(
@@ -231,52 +321,19 @@ class _MenuScreenState extends State<MenuScreen> {
                 ),
               ],
             ),
+            const SizedBox(width: 10),
             // Modify MenuScreen to include a toggle button for music
-// Add a button in the build method:
-ElevatedButton(
-  onPressed: () {
-    AudioManager.toggleMusic();
-    setState(() {}); // Update the UI based on music state change
-  },
-  child: Text(AudioManager._isPlaying ? 'Pause Music' : 'Play Music'),
-)
+            // Add a button in the build method:
+            IconButton(
+              onPressed: () {
+                AudioManager.toggleMusic();
+                setState(() {}); // Update the UI based on music state change
+              },
+              icon: Icon(AudioManager._isPlaying ? Icons.pause_circle : Icons.play_circle),
+            )
           ],
         ),
       ),
     );
-  }
-}
-
-
-class AudioManager {
-  static final AudioPlayer _audioPlayer = AudioPlayer();
-  static bool _isPlaying = false;
-
-  static Future<void> init() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _isPlaying = prefs.getBool('musicEnabled') ?? true; // Default to true
-    if (_isPlaying) {
-      playMusic();
-    }
-  }
-
-  static void playMusic() async {
-    await _audioPlayer.play(AssetSource('audio/lofi.mp3'), volume: 0.5);
-    _isPlaying = true;
-  }
-
-  static void pauseMusic() async {
-    await _audioPlayer.pause();
-    _isPlaying = false;
-  }
-
-  static void toggleMusic() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (_isPlaying) {
-      pauseMusic();
-    } else {
-      playMusic();
-    }
-    prefs.setBool('musicEnabled', _isPlaying);
   }
 }
