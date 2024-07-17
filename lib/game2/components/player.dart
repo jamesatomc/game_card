@@ -51,7 +51,7 @@ class Player2 extends SpriteAnimationComponent
     velocity.x = horizontal * moveSpeed;
     position += velocity * dt;
 
-    if ((horizontal < 0 && scale.x > 0) || (horizontal > 0 && scale.x < 0)) {}
+    if ((horizontal > 0 && scale.x < 0) || (horizontal < 0 && scale.x > 0)) {}
     }
   
 }
