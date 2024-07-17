@@ -26,7 +26,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
 
   int matchedPairs = 0;
   late Timer _timer;
-  int _timeLeft = 80; // 1:50 นาที = 110 วินาที
+  int _timeLeft = 80; // 1:20 นาที = 80 วินาที
 
   List<int> revealedCards = [];
   List<int> matchedCardIndices = []; // เพิ่ม list สำหรับเก็บ index ของไพ่ที่จับคู่กันแล้ว
@@ -147,7 +147,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
       tries = 0;
       score = 0;
       matchedPairs = 0;
-      _timeLeft = 80;
+      _timeLeft = 80; 
       revealedCards.clear();
       matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
       _gameStarted = false; // Reset game started flag
@@ -206,104 +206,102 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 15.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: () {
-                      // This line pops the current screen off the navigation stack
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Text('Level 1', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                  info_card("Tries", "$tries"),
-                  info_card("Score", "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
-                  info_card(
-                      "High Score", "$level1HighScore"), // แสดง high score ของ Level 1
-                  info_card(
-                      "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
-                  // Wrap the button in an AnimatedCrossFade to control its visibility
-                  AnimatedCrossFade(
-                    firstChild: ElevatedButton(
-                      onPressed: _gameStarted ? null : startGame,
-                      child: Text('Start Game'),
-                    ),
-                    secondChild: SizedBox.shrink(), // Empty space when the button is hidden
-                    crossFadeState: _gameStarted ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                    duration: Duration(milliseconds: 300), // Animation duration
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 5.0,
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.7, // ปรับความสูงให้เหมาะสมกับหน้าจอแนวนอน
-                child: GridView.builder(
-                  itemCount: _game.gameImg!.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 6, // ปรับจำนวนคอลัมน์ให้เป็น 4 คอลัมน์
-                    crossAxisSpacing: 8.0,
-                    mainAxisSpacing: 8.0,
-                  ),
-                  padding: EdgeInsets.only(left: 16.0, right: 16.0), // เพิ่ม padding รอบๆ GridView
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        if (_gameStarted && // Check if the game has started
-                            !revealedCards.contains(index) &&
-                            revealedCards.length < 2 &&
-                            !matchedCardIndices.contains(index)) {
-                          setState(() {
-                            tries++;
-                            _game.gameImg![index] = _game.cards_list[index];
-                            revealedCards.add(index);
-                            _game.matchCheck.add({index: _game.cards_list[index]});
-                          });
-          
-                          if (revealedCards.length == 2) {
-                            checkMatch();
-                          }
-                        }
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.width * 0.04), // 4% of screen width
-                        decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .surface, // Use theme color
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 7,
-                              offset: const Offset(0, 3), // changes position of shadow
-                            ),
-                          ],
-                          image: DecorationImage(
-                            image: AssetImage(_game.gameImg![index]),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    );
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(
+              height: 15.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    // This line pops the current screen off the navigation stack
+                    Navigator.pop(context);
                   },
                 ),
+                Text('Level 1', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                info_card("Tries", "$tries"),
+                info_card("Score", "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
+                info_card(
+                    "High Score", "$level1HighScore"), // แสดง high score ของ Level 1
+                info_card(
+                    "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
+                // Wrap the button in an AnimatedCrossFade to control its visibility
+                AnimatedCrossFade(
+                  firstChild: ElevatedButton(
+                    onPressed: _gameStarted ? null : startGame,
+                    child: Text('Start Game'),
+                  ),
+                  secondChild: SizedBox.shrink(), // Empty space when the button is hidden
+                  crossFadeState: _gameStarted ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                  duration: Duration(milliseconds: 300), // Animation duration
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 5.0,
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7, // ปรับความสูงให้เหมาะสมกับหน้าจอแนวนอน
+              child: GridView.builder(
+                itemCount: _game.gameImg!.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 6, // ปรับจำนวนคอลัมน์ให้เป็น 4 คอลัมน์
+                  crossAxisSpacing: 8.0,
+                  mainAxisSpacing: 8.0,
+                ),
+                padding: EdgeInsets.only(left: 16.0, right: 16.0), // เพิ่ม padding รอบๆ GridView
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      if (_gameStarted && // Check if the game has started
+                          !revealedCards.contains(index) &&
+                          revealedCards.length < 2 &&
+                          !matchedCardIndices.contains(index)) {
+                        setState(() {
+                          tries++;
+                          _game.gameImg![index] = _game.cards_list[index];
+                          revealedCards.add(index);
+                          _game.matchCheck.add({index: _game.cards_list[index]});
+                        });
+        
+                        if (revealedCards.length == 2) {
+                          checkMatch();
+                        }
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(
+                          MediaQuery.of(context).size.width * 0.04), // 4% of screen width
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surface, // Use theme color
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
+                        image: DecorationImage(
+                          image: AssetImage(_game.gameImg![index]),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

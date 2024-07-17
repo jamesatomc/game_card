@@ -26,10 +26,12 @@ class _LevelTwoScreenState extends State<LevelTwoScreen> {
 
   int matchedPairs = 0;
   late Timer _timer;
-  int _timeLeft = 80; // 1:50 นาที = 110 วินาที
+  int _timeLeft = 80; // 1:20 นาที = 80 วินาที
 
   List<int> revealedCards = [];
   List<int> matchedCardIndices = []; // เพิ่ม list สำหรับเก็บ index ของไพ่ที่จับคู่กันแล้ว
+
+  bool _gameStarted = false; // Flag to track if the game has started
 
   @override
   void initState() {
@@ -37,8 +39,12 @@ class _LevelTwoScreenState extends State<LevelTwoScreen> {
     _game.initGame();
     revealedCards.clear();
     matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
-    startTimer();
     _loadHighScore(); // เรียกใช้ฟังก์ชัน _loadHighScore() ใน initState()
+
+    // Reveal all cards initially
+    setState(() {
+      _game.gameImg = _game.cards_list;
+    });
   }
 
   // ฟังก์ชันสำหรับโหลด high score จาก SharedPreferences
@@ -95,7 +101,7 @@ class _LevelTwoScreenState extends State<LevelTwoScreen> {
                 } else {
                   // แสดงข้อความแจ้งเตือนว่าคะแนนไม่ถึง
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('You need at least 6 points to proceed to Level 2.')),
+                    SnackBar(content: Text('You need at least 6 points to proceed to Level 3.')),
                   );
                 }
               },
@@ -144,8 +150,9 @@ class _LevelTwoScreenState extends State<LevelTwoScreen> {
       _timeLeft = 80;
       revealedCards.clear();
       matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
+      _gameStarted = false; // Reset game started flag
+      _game.gameImg = _game.cards_list; // Reveal all cards again
     });
-    startTimer();
   }
 
   void checkMatch() {
@@ -187,6 +194,14 @@ class _LevelTwoScreenState extends State<LevelTwoScreen> {
     }
   }
 
+  void startGame() {
+    setState(() {
+      _gameStarted = true;
+      _game.gameImg = List.filled(_game.cardCount, _game.hiddenCardpath); // Hide cards
+      startTimer();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -209,13 +224,23 @@ class _LevelTwoScreenState extends State<LevelTwoScreen> {
                     Navigator.pop(context);
                   },
                 ),
-                Text('Level 2', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                Text('Level 1', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
                 info_card("Tries", "$tries"),
-                info_card("Score", "$score"),
+                info_card("Score", "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
                 info_card(
                     "High Score", "$level2HighScore"), // แสดง high score ของ Level 2
                 info_card(
                     "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
+                // Wrap the button in an AnimatedCrossFade to control its visibility
+                AnimatedCrossFade(
+                  firstChild: ElevatedButton(
+                    onPressed: _gameStarted ? null : startGame,
+                    child: Text('Start Game'),
+                  ),
+                  secondChild: SizedBox.shrink(), // Empty space when the button is hidden
+                  crossFadeState: _gameStarted ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                  duration: Duration(milliseconds: 300), // Animation duration
+                ),
               ],
             ),
             SizedBox(
@@ -234,7 +259,8 @@ class _LevelTwoScreenState extends State<LevelTwoScreen> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      if (!revealedCards.contains(index) &&
+                      if (_gameStarted && // Check if the game has started
+                          !revealedCards.contains(index) &&
                           revealedCards.length < 2 &&
                           !matchedCardIndices.contains(index)) {
                         setState(() {
@@ -243,7 +269,7 @@ class _LevelTwoScreenState extends State<LevelTwoScreen> {
                           revealedCards.add(index);
                           _game.matchCheck.add({index: _game.cards_list[index]});
                         });
-            
+        
                         if (revealedCards.length == 2) {
                           checkMatch();
                         }
