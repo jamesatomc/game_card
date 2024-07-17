@@ -5,16 +5,16 @@ import 'package:flutter_cardgame/gamecard/components/info_card.dart';
 import 'package:flutter_cardgame/gamecard/utils/game_utils1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Level2Screen.dart'; // เพิ่ม import สำหรับ SharedPreferences
+import 'Level3Screen.dart';
 
-class LevelOneScreen extends StatefulWidget {
-  const LevelOneScreen({super.key});
+class Level1Screen extends StatefulWidget {
+  const Level1Screen({super.key});
 
   @override
-  _LevelOneScreenState createState() => _LevelOneScreenState();
+  _Level1ScreenState createState() => _Level1ScreenState();
 }
 
-class _LevelOneScreenState extends State<LevelOneScreen> {
+class _Level1ScreenState extends State<Level1Screen> {
   //setting text style
   bool hideTest = false;
   final Game _game = Game();
@@ -96,7 +96,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
                   Navigator.of(context).pop();
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const LevelTwoScreen()),
+                    MaterialPageRoute(builder: (context) => const Level3Screen()),
                   );
                 } else {
                   // แสดงข้อความแจ้งเตือนว่าคะแนนไม่ถึง
@@ -222,8 +222,31 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
                   IconButton(
                     icon: Icon(Icons.arrow_back),
                     onPressed: () {
-                      // This line pops the current screen off the navigation stack
-                      Navigator.pop(context);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('ออกจากเกมส์'),
+                            content: Text('คุณต้องการออกจากเกมส์หรือไม่?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // ปิด AlertDialog
+                                  Navigator.pop(context); // กลับไปหน้าหลัก
+                                },
+                                child: Text('กลับหน้าหลัก'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // ปิด AlertDialog
+                                  // ออกจากเกมส์โดยไม่ทำอะไร
+                                },
+                                child: Text('เล่นต่อ'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                   ),
                   Text('Level 1', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
@@ -254,7 +277,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
               child: GridView.builder(
                 itemCount: _game.gameImg!.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 6, // ปรับจำนวนคอลัมน์ให้เป็น 4 คอลัมน์
+                  crossAxisCount: 7, // ปรับจำนวนคอลัมน์ให้เป็น 4 คอลัมน์
                   crossAxisSpacing: 8.0,
                   mainAxisSpacing: 8.0,
                 ),

@@ -5,16 +5,16 @@ import 'package:flutter_cardgame/gamecard/components/info_card.dart';
 import 'package:flutter_cardgame/gamecard/utils/game_utils1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// import 'Level4Screen.dart'; // เพิ่ม import สำหรับ SharedPreferences
+import 'Level5Screen.dart'; // เพิ่ม import สำหรับ SharedPreferences
 
-class LevelThreeScreen extends StatefulWidget {
-  const LevelThreeScreen({super.key});
+class Level4Screen extends StatefulWidget {
+  const Level4Screen({super.key});
 
   @override
-  _LevelThreeScreenState createState() => _LevelThreeScreenState();
+  _Level4ScreenState createState() => _Level4ScreenState();
 }
 
-class _LevelThreeScreenState extends State<LevelThreeScreen> {
+class _Level4ScreenState extends State<Level4Screen> {
   //setting text style
   bool hideTest = false;
   final Game _game = Game();
@@ -22,7 +22,7 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
   //game stats
   int tries = 0;
   double score = 0; // เปลี่ยน score เป็น double เพื่อเก็บคะแนนทศนิยม
-  int level3HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 3
+  int level4HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 4
 
   int matchedPairs = 0;
   late Timer _timer;
@@ -51,14 +51,14 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
   Future<void> _loadHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      level3HighScore = prefs.getInt('level3HighScore') ?? 0; // โหลด high score จาก SharedPreferences
+      level4HighScore = prefs.getInt('level4HighScore') ?? 0; // โหลด high score จาก SharedPreferences
     });
   }
 
   // ฟังก์ชันสำหรับบันทึก high score ลง SharedPreferences
   Future<void> _saveHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('level3HighScore', score.toInt()); // บันทึก high score ลง SharedPreferences
+    prefs.setInt('level4HighScore', score.toInt()); // บันทึก high score ลง SharedPreferences
   }
 
   void startTimer() {
@@ -87,21 +87,21 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Level Complete!'),
-          content: Text('Congratulations! You\'ve completed Level 3.'),
+          content: Text('Congratulations! You\'ve completed Level 4.'),
           actions: <Widget>[
             TextButton(
-              child: Text('Next Leve 3'),
+              child: Text('Next Leve 5'),
               onPressed: () {
                 if (score >= 6) { // เพิ่มเงื่อนไขตรวจสอบคะแนน
                   Navigator.of(context).pop();
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const LevelThreeScreen()),
+                    MaterialPageRoute(builder: (context) => const Level5Screen()),
                   );
                 } else {
                   // แสดงข้อความแจ้งเตือนว่าคะแนนไม่ถึง
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('You need at least 6 points to proceed to Level 3.')),
+                    SnackBar(content: Text('You need at least 6 points to proceed to Level 5.')),
                   );
                 }
               },
@@ -147,7 +147,7 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
       tries = 0;
       score = 0;
       matchedPairs = 0;
-      _timeLeft = 80;
+      _timeLeft = 80; 
       revealedCards.clear();
       matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
       _gameStarted = false; // Reset game started flag
@@ -213,35 +213,61 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
             const SizedBox(
               height: 15.0,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    // This line pops the current screen off the navigation stack
-                    Navigator.pop(context);
-                  },
-                ),
-                Text('Level 3', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                info_card("Tries", "$tries"),
-                info_card("Score", "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
-                info_card(
-                    "High Score", "$level3HighScore"), // แสดง high score ของ Level 3
-                info_card(
-                    "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
-                // Wrap the button in an AnimatedCrossFade to control its visibility
-                AnimatedCrossFade(
-                  firstChild: ElevatedButton(
-                    onPressed: _gameStarted ? null : startGame,
-                    child: Text('Start Game'),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('ออกจากเกมส์'),
+                            content: Text('คุณต้องการออกจากเกมส์หรือไม่?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // ปิด AlertDialog
+                                  Navigator.pop(context); // กลับไปหน้าหลัก
+                                },
+                                child: Text('กลับหน้าหลัก'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // ปิด AlertDialog
+                                  // ออกจากเกมส์โดยไม่ทำอะไร
+                                },
+                                child: Text('เล่นต่อ'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                   ),
-                  secondChild: SizedBox.shrink(), // Empty space when the button is hidden
-                  crossFadeState: _gameStarted ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                  duration: Duration(milliseconds: 300), // Animation duration
-                ),
-              ],
+                  Text('Level 4', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                  info_card("Tries", "$tries"),
+                  info_card("Score", "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
+                  info_card(
+                      "High Score", "$level4HighScore"), // แสดง high score ของ Level 4
+                  info_card(
+                      "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
+                  // Wrap the button in an AnimatedCrossFade to control its visibility
+                  AnimatedCrossFade(
+                    firstChild: ElevatedButton(
+                      onPressed: _gameStarted ? null : startGame,
+                      child: Text('Start Game'),
+                    ),
+                    secondChild: SizedBox.shrink(), // Empty space when the button is hidden
+                    crossFadeState: _gameStarted ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                    duration: Duration(milliseconds: 300), // Animation duration
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               height: 5.0,
@@ -251,7 +277,7 @@ class _LevelThreeScreenState extends State<LevelThreeScreen> {
               child: GridView.builder(
                 itemCount: _game.gameImg!.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 6, // ปรับจำนวนคอลัมน์ให้เป็น 4 คอลัมน์
+                  crossAxisCount: 7, // ปรับจำนวนคอลัมน์ให้เป็น 4 คอลัมน์
                   crossAxisSpacing: 8.0,
                   mainAxisSpacing: 8.0,
                 ),

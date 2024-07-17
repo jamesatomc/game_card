@@ -5,16 +5,16 @@ import 'package:flutter_cardgame/gamecard/components/info_card.dart';
 import 'package:flutter_cardgame/gamecard/utils/game_utils1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Level6Screen.dart'; // เพิ่ม import สำหรับ SharedPreferences
+import 'Level10Screen.dart'; // เพิ่ม import สำหรับ SharedPreferences
 
-class Level5Screen extends StatefulWidget {
-  const Level5Screen({super.key});
+class Level9Screen extends StatefulWidget {
+  const Level9Screen({super.key});
 
   @override
-  _Level5ScreenState createState() => _Level5ScreenState();
+  _Level9ScreenState createState() => _Level9ScreenState();
 }
 
-class _Level5ScreenState extends State<Level5Screen> {
+class _Level9ScreenState extends State<Level9Screen> {
   //setting text style
   bool hideTest = false;
   final Game _game = Game();
@@ -22,7 +22,7 @@ class _Level5ScreenState extends State<Level5Screen> {
   //game stats
   int tries = 0;
   double score = 0; // เปลี่ยน score เป็น double เพื่อเก็บคะแนนทศนิยม
-  int level5HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 5
+  int level9HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 9
 
   int matchedPairs = 0;
   late Timer _timer;
@@ -51,14 +51,14 @@ class _Level5ScreenState extends State<Level5Screen> {
   Future<void> _loadHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      level5HighScore = prefs.getInt('level5HighScore') ?? 0; // โหลด high score จาก SharedPreferences
+      level9HighScore = prefs.getInt('level9HighScore') ?? 0; // โหลด high score จาก SharedPreferences
     });
   }
 
   // ฟังก์ชันสำหรับบันทึก high score ลง SharedPreferences
   Future<void> _saveHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('level5HighScore', score.toInt()); // บันทึก high score ลง SharedPreferences
+    prefs.setInt('level9HighScore', score.toInt()); // บันทึก high score ลง SharedPreferences
   }
 
   void startTimer() {
@@ -87,21 +87,21 @@ class _Level5ScreenState extends State<Level5Screen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Level Complete!'),
-          content: Text('Congratulations! You\'ve completed Level 5.'),
+          content: Text('Congratulations! You\'ve completed Level 9.'),
           actions: <Widget>[
             TextButton(
-              child: Text('Next Leve 6'),
+              child: Text('Next Leve 10'),
               onPressed: () {
                 if (score >= 6) { // เพิ่มเงื่อนไขตรวจสอบคะแนน
                   Navigator.of(context).pop();
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const Level6Screen()),
+                    MaterialPageRoute(builder: (context) => const Level10Screen()),
                   );
                 } else {
                   // แสดงข้อความแจ้งเตือนว่าคะแนนไม่ถึง
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('You need at least 6 points to proceed to Level 6.')),
+                    SnackBar(content: Text('You need at least 6 points to proceed to Level 10.')),
                   );
                 }
               },
@@ -249,11 +249,11 @@ class _Level5ScreenState extends State<Level5Screen> {
                       );
                     },
                   ),
-                  Text('Level 5', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                  Text('Level 9', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
                   info_card("Tries", "$tries"),
                   info_card("Score", "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
                   info_card(
-                      "High Score", "$level5HighScore"), // แสดง high score ของ Level 5
+                      "High Score", "$level9HighScore"), // แสดง high score ของ Level 9
                   info_card(
                       "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
                   // Wrap the button in an AnimatedCrossFade to control its visibility

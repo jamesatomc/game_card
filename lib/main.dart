@@ -1,4 +1,4 @@
-import 'package:flame/game.dart';
+// import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import services to access SystemChrome
 import 'package:dynamic_color/dynamic_color.dart';
@@ -86,16 +86,16 @@ class _ManuGameState extends State<ManuGame> {
               },
               child: Text('Game Card'),
             ),
-            SizedBox(height: 16), // Add some spacing between the buttons
-            OutlinedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => GameWidget(game: MyGame())), // Wrap MyGame in GameWidget
-                );
-              },
-              child: Text('ManuGame 2'), // Changed the text to "MyGame"
-            ),
+            // SizedBox(height: 16), // Add some spacing between the buttons
+            // OutlinedButton(
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => GameWidget(game: MyGame())), // Wrap MyGame in GameWidget
+            //     );
+            //   },
+            //   child: Text('ManuGame 2'), // Changed the text to "MyGame"
+            // ),
           ],
         ),
       ),
@@ -103,9 +103,9 @@ class _ManuGameState extends State<ManuGame> {
   }
 }
 
-class MyGame extends FlameGame {
-  @override
-  void onLoad() {
+// class MyGame extends FlameGame {
+//   @override
+//   void onLoad() {
     
-  }
-}
+//   }
+// }
