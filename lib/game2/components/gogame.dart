@@ -3,26 +3,8 @@ import 'dart:async';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'player.dart';
-
-// class Gogame extends FlameGame {
-//   Gogame({super.children});
-
-//   @override
-//   FutureOr<void> onLoad() async {
-//     super.onLoad();
-
-//     world.add(Player(
-//       position: Vector2(0, 0),
-//       radius: 50
-//     ));
-//   }
-
-//   @override
-//   Color backgroundColor() => Color.fromARGB(255, 189, 235, 82);
-// }
 
 class MyGame extends FlameGame with HasKeyboardHandlerComponents {
   final player = Player2();
@@ -31,9 +13,55 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents {
   @override
   FutureOr<void> onLoad() {
     super.onLoad();
-
     player.position = Vector2(150, 50);
     add(player);
+    overlays.add('BackButton');
   }
 
+  @override
+  Color backgroundColor() => Color.fromARGB(255, 0, 0, 0);
+}
+
+
+class BackButtonOverlay extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const BackButtonOverlay({Key? key, required this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 20,
+      left: 20,
+      child: ElevatedButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('ออกจากเกมส์'),
+                content: const Text('คุณต้องการออกจากเกมส์หรือไม่?'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // ปิด dialog
+                    },
+                    child: const Text('ไม่'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // ปิด dialog
+                      onPressed(); // เรียกใช้ onPressed เพื่อกลับไปหน้าก่อนหน้า
+                    },
+                    child: const Text('ใช่'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: const Text('กลับ'),
+      ),
+    );
+  }
 }

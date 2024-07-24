@@ -1,32 +1,20 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Import services to access SystemChrome
+import 'package:flutter/services.dart';
 import 'package:dynamic_color/dynamic_color.dart';
+
+import 'gamecard/GameCard.dart';
+
 import 'package:flutter_cardgame/game2/components/gogame.dart';
 
-import 'gamecard/GameCard.dart'; // Import DynamicColorBuilder
-
 void main() {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // Ensure plugin services are initialized
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
-    // Set preferred orientations
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,
   ]).then((_) {
-    // Hide status bar and set full-screen mode
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-        systemNavigationBarColor: Colors.transparent, // Hide navigation bar
-        systemNavigationBarDividerColor: Colors.transparent, // Hide navigation bar divider
-        systemNavigationBarIconBrightness: Brightness.light, // Set navigation bar icon brightness
-      ),
-    );
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky); // Full-screen mode
-
-    runApp(const MyApp()); // Run app after setting orientation
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    runApp(const MyApp());
   });
 }
 
@@ -55,16 +43,15 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         themeMode: ThemeMode.system,
-        home: ManuGame(),
+        home: const ManuGame(),
         debugShowCheckedModeBanner: false,
       ),
     );
   }
 }
 
-
 class ManuGame extends StatefulWidget {
-  const ManuGame({ Key? key }) : super(key: key);
+  const ManuGame({Key? key}) : super(key: key);
 
   @override
   _ManuGameState createState() => _ManuGameState();
@@ -76,7 +63,7 @@ class _ManuGameState extends State<ManuGame> {
     return Scaffold(
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // This centers the buttons vertically in the Column
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             OutlinedButton(
               onPressed: () {
@@ -85,17 +72,28 @@ class _ManuGameState extends State<ManuGame> {
                   MaterialPageRoute(builder: (context) => const GameCardScreen()),
                 );
               },
-              child: Text('Game Card'),
+              child: const Text('Game Card'),
             ),
-            SizedBox(height: 16), // Add some spacing between the buttons
+            const SizedBox(height: 16),
             OutlinedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => GameWidget(game: MyGame())), // Wrap MyGame in GameWidget
+                  MaterialPageRoute(
+                    builder: (context) => GameWidget(
+                      game: MyGame(),
+                      overlayBuilderMap: {
+                        'BackButton': (context, game) => BackButtonOverlay(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      },
+                    ),
+                  ),
                 );
               },
-              child: Text('ManuGame 2'), // Changed the text to "MyGame"
+              child: const Text('ManuGame 2'),
             ),
           ],
         ),
@@ -103,5 +101,3 @@ class _ManuGameState extends State<ManuGame> {
     );
   }
 }
-
-
