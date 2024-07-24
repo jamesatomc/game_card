@@ -90,6 +90,13 @@ class _Level4ScreenState extends State<Level4Screen> {
           content: Text('Congratulations! You\'ve completed Level 4.'),
           actions: <Widget>[
             TextButton(
+              child: Text('Play Again'),
+              onPressed: () {
+                Navigator.of(context).pop(); // ปิด AlertDialog
+                restartLevel(); // เริ่มเล่นใหม่
+              },
+            ),
+            TextButton(
               child: Text('Next Leve 5'),
               onPressed: () {
                 if (score >= 6) { // เพิ่มเงื่อนไขตรวจสอบคะแนน
@@ -105,14 +112,7 @@ class _Level4ScreenState extends State<Level4Screen> {
                   );
                 }
               },
-            ),
-            TextButton(
-              child: Text('Play Again'),
-              onPressed: () {
-                Navigator.of(context).pop(); // ปิด AlertDialog
-                restartLevel(); // เริ่มเล่นใหม่
-              },
-            ),            
+            ),                        
           ],
         );
       },

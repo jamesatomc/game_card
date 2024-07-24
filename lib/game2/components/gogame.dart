@@ -19,7 +19,7 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents {
   }
 
   @override
-  Color backgroundColor() => Color.fromARGB(255, 0, 0, 0);
+  Color backgroundColor() => Color.fromARGB(255, 230, 18, 18);
 }
 
 

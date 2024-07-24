@@ -90,6 +90,13 @@ class _Level7ScreenState extends State<Level7Screen> {
           content: Text('Congratulations! You\'ve completed Level 7.'),
           actions: <Widget>[
             TextButton(
+              child: Text('Play Again'),
+              onPressed: () {
+                Navigator.of(context).pop(); // ปิด AlertDialog
+                restartLevel(); // เริ่มเล่นใหม่
+              },
+            ),
+            TextButton(
               child: Text('Next Leve 8'),
               onPressed: () {
                 if (score >= 6) { // เพิ่มเงื่อนไขตรวจสอบคะแนน
@@ -105,14 +112,7 @@ class _Level7ScreenState extends State<Level7Screen> {
                   );
                 }
               },
-            ),
-            TextButton(
-              child: Text('Play Again'),
-              onPressed: () {
-                Navigator.of(context).pop(); // ปิด AlertDialog
-                restartLevel(); // เริ่มเล่นใหม่
-              },
-            ),
+            ),            
           ],
         );
       },

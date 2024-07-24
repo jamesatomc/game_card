@@ -6,8 +6,8 @@ import 'package:flutter_cardgame/gamecard/components/info_card.dart';
 import 'package:flutter_cardgame/gamecard/utils/game_utils10.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Level10Screen.dart'; // เพิ่ม import สำหรับ SharedPreferences
 
+  
 class Level10Screen extends StatefulWidget {
   const Level10Screen({super.key});
 
@@ -97,7 +97,7 @@ class _Level10ScreenState extends State<Level10Screen> {
                   Navigator.of(context).pop();
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const Level10Screen()),
+                    MaterialPageRoute(builder: (context) => const GameCardScreen()),
                   );
                 } else {
                   // แสดงข้อความแจ้งเตือนว่าคะแนนไม่ถึง
