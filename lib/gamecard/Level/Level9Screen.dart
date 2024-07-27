@@ -99,7 +99,7 @@ class _Level9ScreenState extends State<Level9Screen> {
             TextButton(
               child: Text('Next Leve 10'),
               onPressed: () {
-                if (score >= 6) { // เพิ่มเงื่อนไขตรวจสอบคะแนน
+                if (score >= 7.5) { // เพิ่มเงื่อนไขตรวจสอบคะแนน
                   Navigator.of(context).pop();
                   Navigator.pushReplacement(
                     context,
@@ -108,7 +108,7 @@ class _Level9ScreenState extends State<Level9Screen> {
                 } else {
                   // แสดงข้อความแจ้งเตือนว่าคะแนนไม่ถึง
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('You need at least 6 points to proceed to Level 10.')),
+                    SnackBar(content: Text('You need at least 7.5 points to proceed to Level 10.')),
                   );
                 }
               },
@@ -162,7 +162,7 @@ class _Level9ScreenState extends State<Level9Screen> {
 
       if (_game.checkMatch(firstIndex, secondIndex)) {
         setState(() {
-          score += 2.5; // เพิ่มคะแนน 2.5 คะแนนเมื่อจับคู่ถูก
+          score += 1.666666666666667; // เพิ่มคะแนน 1.666666666666667 คะแนนเมื่อจับคู่ถูก
           matchedPairs++;
           matchedCardIndices.addAll([firstIndex, secondIndex]); // เพิ่ม index ของไพ่ที่จับคู่กันแล้ว
         });
@@ -175,7 +175,7 @@ class _Level9ScreenState extends State<Level9Screen> {
       } else {
         // จับคู่ผิด ไม่ให้คะแนน และอาจลดคะแนนถ้าต้องการ
         setState(() {
-          score = score > 1.5 ? score - 1.5 : 0; // ลดคะแนน 1.5 คะแนนเมื่อจับคู่ผิด แต่ไม่ติดลบ
+          score = score > 1 ? score - 1 : 0; // ลดคะแนน 1 คะแนนเมื่อจับคู่ผิด แต่ไม่ติดลบ
         });
         Future.delayed(Duration(milliseconds: 500), () {
           setState(() {

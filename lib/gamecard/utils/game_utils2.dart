@@ -14,17 +14,17 @@ class Game {
     Colors.blue,
     Colors.blue
   ];
-  final String hiddenCardpath = "assets/images/hidden.png";
+  final String hiddenCardpath = "assets/gamecard/images/hidden.png";
   // ignore: non_constant_identifier_names
   List<String> cards_list = [
-    "assets/england/l2/data_1.png",
-    "assets/england/l2/data_2.png",
-    "assets/england/l2/data_3.png",
-    "assets/england/l2/data_4.png",
-    "assets/images/im2/data_1.png",
-    "assets/images/im2/data_2.png",
-    "assets/images/im2/data_3.png",
-    "assets/images/im2/data_4.png",
+    "assets/gamecard/england/l2/data_1.png",
+    "assets/gamecard/england/l2/data_2.png",
+    "assets/gamecard/england/l2/data_3.png",
+    "assets/gamecard/england/l2/data_4.png",
+    "assets/gamecard/images/im2/data_1.png",
+    "assets/gamecard/images/im2/data_2.png",
+    "assets/gamecard/images/im2/data_3.png",
+    "assets/gamecard/images/im2/data_4.png",
   ];
   final int cardCount = 8;
   List<Map<int, String>> matchCheck = [];

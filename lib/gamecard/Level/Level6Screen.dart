@@ -99,7 +99,7 @@ class _Level6ScreenState extends State<Level6Screen> {
             TextButton(
               child: Text('Next Leve 7'),
               onPressed: () {
-                if (score >= 6) { // เพิ่มเงื่อนไขตรวจสอบคะแนน
+                if (score >= 7) { // เพิ่มเงื่อนไขตรวจสอบคะแนน
                   Navigator.of(context).pop();
                   Navigator.pushReplacement(
                     context,
@@ -108,7 +108,7 @@ class _Level6ScreenState extends State<Level6Screen> {
                 } else {
                   // แสดงข้อความแจ้งเตือนว่าคะแนนไม่ถึง
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('You need at least 6 points to proceed to Level 7.')),
+                    SnackBar(content: Text('You need at least 7 points to proceed to Level 7.')),
                   );
                 }
               },
@@ -162,7 +162,7 @@ class _Level6ScreenState extends State<Level6Screen> {
 
       if (_game.checkMatch(firstIndex, secondIndex)) {
         setState(() {
-          score += 2.5; // เพิ่มคะแนน 2.5 คะแนนเมื่อจับคู่ถูก
+          score += 2; // เพิ่มคะแนน 2 คะแนนเมื่อจับคู่ถูก
           matchedPairs++;
           matchedCardIndices.addAll([firstIndex, secondIndex]); // เพิ่ม index ของไพ่ที่จับคู่กันแล้ว
         });

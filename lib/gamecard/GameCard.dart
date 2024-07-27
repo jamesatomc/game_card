@@ -72,13 +72,13 @@ class _GameCardScreenState extends State<GameCardScreen> {
     level1HighScore = prefs.getInt('level1HighScore');
     level2HighScore = prefs.getInt('level2HighScore');
     level3HighScore = prefs.getInt('level3HighScore');
-    level4HighScore = prefs.getInt('level1HighScore');
-    level5HighScore = prefs.getInt('level2HighScore');
-    level6HighScore = prefs.getInt('level3HighScore');
-    level7HighScore = prefs.getInt('level3HighScore');
-    level8HighScore = prefs.getInt('level1HighScore');
-    level9HighScore = prefs.getInt('level2HighScore');
-    level10HighScore = prefs.getInt('level3HighScore');
+    level4HighScore = prefs.getInt('level4HighScore');
+    level5HighScore = prefs.getInt('level5HighScore');
+    level6HighScore = prefs.getInt('level6HighScore');
+    level7HighScore = prefs.getInt('level7HighScore');
+    level8HighScore = prefs.getInt('level8HighScore');
+    level9HighScore = prefs.getInt('level9HighScore');
+    level10HighScore = prefs.getInt('level10HighScore');
   }
 
   // Function to reset high score for all levels
@@ -265,7 +265,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                     shadowColor:
                         Colors.grey.withOpacity(0.5), // Set shadow color
                   ),
-                  onPressed: level1HighScore != null && level1HighScore! >= 6
+                  onPressed: level3HighScore != null && level3HighScore! >= 7
                       ? () {
                           Navigator.push(
                             context,
@@ -293,7 +293,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                     shadowColor:
                         Colors.grey.withOpacity(0.5), // Set shadow color
                   ),
-                  onPressed: level2HighScore != null && level2HighScore! >= 6
+                  onPressed: level4HighScore != null && level4HighScore! >= 7
                       ? () {
                           Navigator.push(
                             context,
@@ -327,7 +327,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                     shadowColor:
                         Colors.grey.withOpacity(0.5), // Set shadow color
                   ),
-                  onPressed: level1HighScore != null && level1HighScore! >= 6
+                  onPressed: level5HighScore != null && level5HighScore! >= 7
                       ? () {
                           Navigator.push(
                             context,
@@ -355,7 +355,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                     shadowColor:
                         Colors.grey.withOpacity(0.5), // Set shadow color
                   ),
-                  onPressed: level1HighScore != null && level1HighScore! >= 6
+                  onPressed: level6HighScore != null && level6HighScore! >= 7.5
                       ? () {
                           Navigator.push(
                             context,
@@ -382,7 +382,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                     shadowColor:
                         Colors.grey.withOpacity(0.5), // Set shadow color
                   ),
-                  onPressed: level2HighScore != null && level2HighScore! >= 6
+                  onPressed: level7HighScore != null && level7HighScore! >= 7.5
                       ? () {
                           Navigator.push(
                             context,
@@ -394,60 +394,51 @@ class _GameCardScreenState extends State<GameCardScreen> {
                   child: const Text('8'),
                 ),
                 const SizedBox(width: 10),
-                // Level Nine Button
-                // Level Nine Button with Unlock Logic
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple,
-                    textStyle: const TextStyle(fontSize: 18),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Add rounded corners
-                    ),
-                    elevation: 5, // Add elevation for shadow
-                    shadowColor:
-                        Colors.grey.withOpacity(0.5), // Set shadow color
+              // Level Nine Button with Unlock Logic
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple,
+                  textStyle: const TextStyle(fontSize: 18),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10), // Add rounded corners
                   ),
-                  onPressed: level2HighScore != null && level2HighScore! >= 6
-                      ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Level9Screen()),
-                          );
-                        }
-                      : null, // Disable button if Level 10 high score is not met
-                  child: const Text('9'),
+                  elevation: 5, // Add elevation for shadow
+                  shadowColor: Colors.grey.withOpacity(0.5), // Set shadow color
                 ),
-                const SizedBox(width: 10),
-                // Level Ten Button with Unlock Logic
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.pink,
-                    textStyle: const TextStyle(fontSize: 18),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Add rounded corners
-                    ),
-                    elevation: 5, // Add elevation for shadow
-                    shadowColor:
-                        Colors.grey.withOpacity(0.5), // Set shadow color
+                onPressed: level8HighScore != null && level8HighScore! >= 7.5
+                    ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Level9Screen()),
+                        );
+                      }
+                    : null, // Disable button if Level 9 high score is not met
+                child: const Text('9'),
+              ),
+              const SizedBox(width: 10),
+              // Level Ten Button with Unlock Logic
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.pink,
+                  textStyle: const TextStyle(fontSize: 18),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10), // Add rounded corners
                   ),
-                  onPressed: level2HighScore != null && level2HighScore! >= 6
-                      ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Level10Screen()),
-                          );
-                        }
-                      : null, // Disable button if Level 10 high score is not met
-                  child: const Text('10'),
+                  elevation: 5, // Add elevation for shadow
+                  shadowColor: Colors.grey.withOpacity(0.5), // Set shadow color
                 ),
+                onPressed: level9HighScore != null && level9HighScore! >= 8
+                    ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Level10Screen()),
+                        );
+                      }
+                    : null, // Disable button if Level 10 high score is not met
+                child: const Text('10'),
+              ),
               ],
             ),
             const SizedBox(height: 10),
