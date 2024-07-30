@@ -23,7 +23,7 @@ class _Level10ScreenState extends State<Level10Screen> {
   //game stats
   int tries = 0;
   double score = 0; // เปลี่ยน score เป็น double เพื่อเก็บคะแนนทศนิยม
-  int level10HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 1
+  int level10HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 10
 
   int matchedPairs = 0;
   late Timer _timer;
@@ -112,17 +112,6 @@ class _Level10ScreenState extends State<Level10Screen> {
               onPressed: () {
                 Navigator.of(context).pop(); // ปิด AlertDialog
                 restartLevel(); // เริ่มเล่นใหม่
-              },
-            ),
-            TextButton(
-              child: Text('Menu'),
-              onPressed: () {
-                Navigator.of(context).pop(); // ปิด AlertDialog
-                // Navigate to the menu screen
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const GameCardScreen()),
-                );
               },
             ),
           ],
@@ -262,11 +251,11 @@ class _Level10ScreenState extends State<Level10Screen> {
                       );
                     },
                   ),
-                  Text('Level 1', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                  Text('Level 10', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
                   info_card("Tries", "$tries"),
                   info_card("Score", "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
                   info_card(
-                      "High Score", "$level10HighScore"), // แสดง high score ของ Level 1
+                      "High Score", "$level10HighScore"), // แสดง high score ของ Level 10
                   info_card(
                       "Time", "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
                   // Wrap the button in an AnimatedCrossFade to control its visibility

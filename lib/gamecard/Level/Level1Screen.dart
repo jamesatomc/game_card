@@ -5,7 +5,7 @@ import 'package:flutter_cardgame/gamecard/components/info_card.dart';
 import 'package:flutter_cardgame/gamecard/utils/game_utils1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Level3Screen.dart';
+import 'Level2Screen.dart';
 
 class Level1Screen extends StatefulWidget {
   const Level1Screen({super.key});
@@ -103,12 +103,12 @@ class _Level1ScreenState extends State<Level1Screen> {
                   Navigator.of(context).pop();
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const Level3Screen()),
+                    MaterialPageRoute(builder: (context) => const Level2Screen()),
                   );
                 } else {
                   // แสดงข้อความแจ้งเตือนว่าคะแนนไม่ถึง
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('You need at least 6 points to proceed to Level 2.')),
+                    SnackBar(content: Text('You need at least 6 points to proceed to Level 1.')),
                   );
                 }
               },

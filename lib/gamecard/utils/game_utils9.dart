@@ -22,7 +22,7 @@ class Game {
     "assets/gamecard/england/l9/data_3.png",
     "assets/gamecard/england/l9/data_4.png",
     "assets/gamecard/england/l9/data_5.png",
-    "assets/gamecard/england/l8/data_6.png",    
+    "assets/gamecard/england/l9/data_6.png",    
     "assets/gamecard/images/im9/data_1.png",
     "assets/gamecard/images/im9/data_2.png",
     "assets/gamecard/images/im9/data_3.png",
