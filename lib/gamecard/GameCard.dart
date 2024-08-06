@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,39 +12,7 @@ import 'Level/Level7Screen.dart';
 import 'Level/Level8Screen.dart';
 import 'Level/Level9Screen.dart';
 import 'Level/Level10Screen.dart';
-
-class AudioManager {
-  static final AudioPlayer _audioPlayer = AudioPlayer();
-  static bool _isPlaying = false;
-
-  static Future<void> init() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _isPlaying = prefs.getBool('musicEnabled') ?? true; // Default to true
-    if (_isPlaying) {
-      playMusic();
-    }
-  }
-
-  static void playMusic() async {
-    await _audioPlayer.play(AssetSource('audio/lofi.mp3'), volume: 0.5);
-    _isPlaying = true;
-  }
-
-  static void pauseMusic() async {
-    await _audioPlayer.pause();
-    _isPlaying = false;
-  }
-
-  static void toggleMusic() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (_isPlaying) {
-      pauseMusic();
-    } else {
-      playMusic();
-    }
-    prefs.setBool('musicEnabled', _isPlaying);
-  }
-}
+import 'components/AudioManager.dart';
 
 class GameCardScreen extends StatefulWidget {
   const GameCardScreen({super.key});
@@ -54,7 +21,8 @@ class GameCardScreen extends StatefulWidget {
   State<GameCardScreen> createState() => _GameCardScreenState();
 }
 
-class _GameCardScreenState extends State<GameCardScreen> {
+class _GameCardScreenState extends State<GameCardScreen>{ 
+
   int? level1HighScore;
   int? level2HighScore;
   int? level3HighScore;
@@ -65,6 +33,21 @@ class _GameCardScreenState extends State<GameCardScreen> {
   int? level8HighScore;
   int? level9HighScore;
   int? level10HighScore;
+
+  
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadHighScores(); // Reload high scores when the widget becomes visible again
+  }
+
+  // refreshHighScores
+  void refreshHighScores() {
+    setState(() {
+      _loadHighScores(); // This will reload the high scores from SharedPreferences
+    });
+  }
 
   // Function to load high scores from SharedPreferences
   Future<void> _loadHighScores() async {
@@ -95,20 +78,19 @@ class _GameCardScreenState extends State<GameCardScreen> {
     prefs.remove('level9HighScore');
     prefs.remove('level10HighScore');
 
-
-      // Set levelHighScore variables to null
-  setState(() {
-    level1HighScore = null;
-    level2HighScore = null;
-    level3HighScore = null;
-    level4HighScore = null;
-    level5HighScore = null;
-    level6HighScore = null;
-    level7HighScore = null;
-    level8HighScore = null;
-    level9HighScore = null;
-    level10HighScore = null;
-  });
+    // Set levelHighScore variables to null
+    setState(() {
+      level1HighScore = null;
+      level2HighScore = null;
+      level3HighScore = null;
+      level4HighScore = null;
+      level5HighScore = null;
+      level6HighScore = null;
+      level7HighScore = null;
+      level8HighScore = null;
+      level9HighScore = null;
+      level10HighScore = null;
+    });
     _loadHighScores(); // Reload high scores after reset
   }
 
@@ -118,7 +100,6 @@ class _GameCardScreenState extends State<GameCardScreen> {
     _loadHighScores();
     AudioManager.init(); // Initialize music when the app starts
   }
-
 
   // Function to show the exit confirmation dialog
   Future<void> _showExitConfirmationDialog() async {
@@ -137,6 +118,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
             ),
             TextButton(
               onPressed: () {
+                AudioManager.stopMusic(); // Stop music when exiting
                 Navigator.pop(context); // Close the dialog
                 Navigator.pop(context); // Go back to the previous screen
               },
@@ -151,434 +133,452 @@ class _GameCardScreenState extends State<GameCardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Game Card'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed:
-              _showExitConfirmationDialog, // Show the dialog when back button is pressed
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/gamecard/two.gif'), // Replace with your GIF path
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        
+        child: Stack(
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Level 1 Button
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 18),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Add rounded corners
-                    ),
-                    elevation: 5, // Add elevation for shadow
-                    shadowColor:
-                        Colors.grey.withOpacity(0.5), // Set shadow color
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Level1Screen()),
-                    );
-                  },
-                  child: const Text('1'),
+            // Back button positioned at the top left corner
+            Positioned(
+              top: 16.0,
+              left: 16.0,
+              child: ElevatedButton(
+                onPressed: () {
+                  _showExitConfirmationDialog(); // Call the confirmation dialog
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  padding: const EdgeInsets.all(16.0),
+                  backgroundColor: Colors.transparent, // Make the button background transparent
                 ),
-                const SizedBox(width: 10),
-                // Level 2 Button
-                // Level Two Button with Unlock Logic
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 18),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Add rounded corners
-                    ),
-                    elevation: 5, // Add elevation for shadow
-                    shadowColor:
-                        Colors.grey.withOpacity(0.5), // Set shadow color
-                  ),
-                  onPressed: level1HighScore != null && level1HighScore! >= 6
-                      ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Level2Screen()),
-                          );
-                        }
-                      : null, // Disable button if Level 1 high score is not met
-                  child: const Text('2'),
+                child: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                  size: 32.0,
                 ),
-                const SizedBox(width: 10),
-                // Level 3 Button
-                // Level Three Button with Unlock Logic
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 18),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Add rounded corners
-                    ),
-                    elevation: 5, // Add elevation for shadow
-                    shadowColor:
-                        Colors.grey.withOpacity(0.5), // Set shadow color
-                  ),
-                  onPressed: level2HighScore != null && level2HighScore! >= 6
-                      ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Level3Screen()),
-                          );
-                        }
-                      : null, // Disable button if Level 2 high score is not met
-                  child: const Text('3'),
-                ),
-                const SizedBox(width: 10),
-                // Level 4 Button
-                // Level Four Button with Unlock Logic
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 18),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Add rounded corners
-                    ),
-                    elevation: 5, // Add elevation for shadow
-                    shadowColor:
-                        Colors.grey.withOpacity(0.5), // Set shadow color
-                  ),
-                  onPressed: level3HighScore != null && level3HighScore! >= 7
-                      ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Level4Screen()),
-                          );
-                        }
-                      : null, // Disable button if Level 1 high score is not met
-                  child: const Text('4'),
-                ),
-                const SizedBox(width: 10),
-                // Level 5 Button
-                // Level Five Button with Unlock Logic
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 18),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Add rounded corners
-                    ),
-                    elevation: 5, // Add elevation for shadow
-                    shadowColor:
-                        Colors.grey.withOpacity(0.5), // Set shadow color
-                  ),
-                  onPressed: level4HighScore != null && level4HighScore! >= 7
-                      ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Level5Screen()),
-                          );
-                        }
-                      : null, // Disable button if Level 2 high score is not met
-                  child: const Text('5'),
-                ),
-              ],
+              ),
             ),
-            const SizedBox(height: 10),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                // Level Six Button
-                // Level Six Button with Unlock Logic
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 18),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Add rounded corners
-                    ),
-                    elevation: 5, // Add elevation for shadow
-                    shadowColor:
-                        Colors.grey.withOpacity(0.5), // Set shadow color
-                  ),
-                  onPressed: level5HighScore != null && level5HighScore! >= 7
-                      ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Level6Screen()),
-                          );
-                        }
-                      : null, // Disable button if Level 7 high score is not met
-                  child: const Text('6'),
-                ),
-                const SizedBox(width: 10),
-                // Level Seven Button
-                // Level Seven Button with Unlock Logic
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 18),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Add rounded corners
-                    ),
-                    elevation: 5, // Add elevation for shadow
-                    shadowColor:
-                        Colors.grey.withOpacity(0.5), // Set shadow color
-                  ),
-                  onPressed: level6HighScore != null && level6HighScore! >= 7.5
-                      ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Level7Screen()),
-                          );
-                        }
-                      : null, // Disable button if Level 8 high score is not met
-                  child: const Text('7'),
-                ),
-                const SizedBox(width: 10),
-                // Level Eight Button with Unlock Logic
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 18),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Add rounded corners
-                    ),
-                    elevation: 5, // Add elevation for shadow
-                    shadowColor:
-                        Colors.grey.withOpacity(0.5), // Set shadow color
-                  ),
-                  onPressed: level7HighScore != null && level7HighScore! >= 7.5
-                      ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Level8Screen()),
-                          );
-                        }
-                      : null, // Disable button if Level 9 high score is not met
-                  child: const Text('8'),
-                ),
-                const SizedBox(width: 10),
-                // Level Nine Button with Unlock Logic
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 18),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Add rounded corners
-                    ),
-                    elevation: 5, // Add elevation for shadow
-                    shadowColor:
-                        Colors.grey.withOpacity(0.5), // Set shadow color
-                  ),
-                  onPressed: level8HighScore != null && level8HighScore! >= 7.5
-                      ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Level9Screen()),
-                          );
-                        }
-                      : null, // Disable button if Level 9 high score is not met
-                  child: const Text('9'),
-                ),
-                const SizedBox(width: 10),
-                // Level Nine Button with Unlock Logic
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 18),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Add rounded corners
-                    ),
-                    elevation: 5, // Add elevation for shadow
-                    shadowColor:
-                        Colors.grey.withOpacity(0.5), // Set shadow color
-                  ),
-                  onPressed: level9HighScore != null && level9HighScore! >= 8
-                      ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Level10Screen()),
-                          );
-                        }
-                      : null, // Disable button if Level 9 high score is not met
-                  child: const Text('10'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Reset High Scores Button
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    textStyle: const TextStyle(fontSize: 18),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Add rounded corners
-                    ),
-                    elevation: 5, // Add elevation for shadow
-                    shadowColor:
-                        Colors.grey.withOpacity(0.5), // Set shadow color
-                  ),
-                  onPressed: resetHighScores,
-                  child: const Row(
-                    children: [
-                      Icon(Icons.refresh, color: Colors.white),
-                      SizedBox(width: 10),
-                      Text(
-                        'Reset High Scores',
-                        style: TextStyle(color: Colors.white),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Level 1 Button
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 18),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10), // Add rounded corners
+                        ),
+                        elevation: 5, // Add elevation for shadow
+                        shadowColor:
+                            Colors.grey.withOpacity(0.5), // Set shadow color
                       ),
-                    ],
-                  ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Level1Screen()),
+                        ).then((_) => refreshHighScores()); // Call refreshHighScores after Level1Screen is popped
+                      },
+                      child: const Text('1'),
+                    ),
+                    const SizedBox(width: 10),
+                    // Level 2 Button
+                    // Level Two Button with Unlock Logic
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 18),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10), // Add rounded corners
+                        ),
+                        elevation: 5, // Add elevation for shadow
+                        shadowColor:
+                            Colors.grey.withOpacity(0.5), // Set shadow color
+                      ),
+                      onPressed: level1HighScore != null && level1HighScore! >= 6
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const Level2Screen()),
+                              ).then((_) => refreshHighScores()); // Call refreshHighScores after Level1Screen is popped
+                            }
+                          : null, // Disable button if Level 1 high score is not met
+                      child: const Text('2'),
+                    ),
+                    const SizedBox(width: 10),
+                    // Level 3 Button
+                    // Level Three Button with Unlock Logic
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 18),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10), // Add rounded corners
+                        ),
+                        elevation: 5, // Add elevation for shadow
+                        shadowColor:
+                            Colors.grey.withOpacity(0.5), // Set shadow color
+                      ),
+                      onPressed: level2HighScore != null && level2HighScore! >= 6
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const Level3Screen()),
+                              ).then((_) => refreshHighScores()); // Call refreshHighScores after Level1Screen is popped
+                            }
+                          : null, // Disable button if Level 2 high score is not met
+                      child: const Text('3'),
+                    ),
+                    const SizedBox(width: 10),
+                    // Level 4 Button
+                    // Level Four Button with Unlock Logic
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 18),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10), // Add rounded corners
+                        ),
+                        elevation: 5, // Add elevation for shadow
+                        shadowColor:
+                            Colors.grey.withOpacity(0.5), // Set shadow color
+                      ),
+                      onPressed: level3HighScore != null && level3HighScore! >= 7
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const Level4Screen()),
+                              ).then((_) => refreshHighScores()); // Call refreshHighScores after Level1Screen is popped
+                            }
+                          : null, // Disable button if Level 1 high score is not met
+                      child: const Text('4'),
+                    ),
+                    const SizedBox(width: 10),
+                    // Level 5 Button
+                    // Level Five Button with Unlock Logic
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 18),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10), // Add rounded corners
+                        ),
+                        elevation: 5, // Add elevation for shadow
+                        shadowColor:
+                            Colors.grey.withOpacity(0.5), // Set shadow color
+                      ),
+                      onPressed: level4HighScore != null && level4HighScore! >= 7
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Level5Screen()),
+                              ).then((_) => refreshHighScores()); // Call refreshHighScores after Level1Screen is popped
+                            }
+                          : null, // Disable button if Level 2 high score is not met
+                      child: const Text('5'),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 10),
-                // View High Scores Button
-                FutureBuilder(
-                  future: _loadHighScores(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 74, 201, 55),
-                          textStyle: const TextStyle(fontSize: 18),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // Add rounded corners
+                const SizedBox(height: 10),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Level Six Button
+                    // Level Six Button with Unlock Logic
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 18),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10), // Add rounded corners
+                        ),
+                        elevation: 5, // Add elevation for shadow
+                        shadowColor:
+                            Colors.grey.withOpacity(0.5), // Set shadow color
+                      ),
+                      onPressed: level5HighScore != null && level5HighScore! >= 7
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Level6Screen()),
+                              ).then((_) => refreshHighScores()); // Call refreshHighScores after Level1Screen is popped
+                            }
+                          : null, // Disable button if Level 7 high score is not met
+                      child: const Text('6'),
+                    ),
+                    const SizedBox(width: 10),
+                    // Level Seven Button
+                    // Level Seven Button with Unlock Logic
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 18),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10), // Add rounded corners
+                        ),
+                        elevation: 5, // Add elevation for shadow
+                        shadowColor:
+                            Colors.grey.withOpacity(0.5), // Set shadow color
+                      ),
+                      onPressed: level6HighScore != null && level6HighScore! >= 7.5
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Level7Screen()),
+                              ).then((_) => refreshHighScores()); // Call refreshHighScores after Level1Screen is popped
+                            }
+                          : null, // Disable button if Level 8 high score is not met
+                      child: const Text('7'),
+                    ),
+                    const SizedBox(width: 10),
+                    // Level Eight Button with Unlock Logic
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 18),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10), // Add rounded corners
+                        ),
+                        elevation: 5, // Add elevation for shadow
+                        shadowColor:
+                            Colors.grey.withOpacity(0.5), // Set shadow color
+                      ),
+                      onPressed: level7HighScore != null && level7HighScore! >= 7.5
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const Level8Screen()),
+                              ).then((_) => refreshHighScores()); // Call refreshHighScores after Level1Screen is popped
+                            }
+                          : null, // Disable button if Level 9 high score is not met
+                      child: const Text('8'),
+                    ),
+                    const SizedBox(width: 10),
+                    // Level Nine Button with Unlock Logic
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 18),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10), // Add rounded corners
+                        ),
+                        elevation: 5, // Add elevation for shadow
+                        shadowColor:
+                            Colors.grey.withOpacity(0.5), // Set shadow color
+                      ),
+                      onPressed: level8HighScore != null && level8HighScore! >= 7.5
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute( builder: (context) => const Level9Screen()),
+                              ).then((_) => refreshHighScores()); // Call refreshHighScores after Level1Screen is popped
+                            }
+                          : null, // Disable button if Level 9 high score is not met
+                      child: const Text('9'),
+                    ),
+                    const SizedBox(width: 10),
+                    // Level Nine Button with Unlock Logic
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 18),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10), // Add rounded corners
+                        ),
+                        elevation: 5, // Add elevation for shadow
+                        shadowColor:
+                            Colors.grey.withOpacity(0.5), // Set shadow color
+                      ),
+                      onPressed: level9HighScore != null && level9HighScore! >= 8
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute( builder: (context) => const Level10Screen()),
+                              ).then((_) => refreshHighScores()); // Call refreshHighScores after Level1Screen is popped
+                            }
+                          : null, // Disable button if Level 9 high score is not met
+                      child: const Text('10'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Reset High Scores Button
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        textStyle: const TextStyle(fontSize: 18),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10), // Add rounded corners
+                        ),
+                        elevation: 5, // Add elevation for shadow
+                        shadowColor:
+                            Colors.grey.withOpacity(0.5), // Set shadow color
+                      ),
+                      onPressed: resetHighScores,
+                      child: const Row(
+                        children: [
+                          Icon(Icons.refresh, color: Colors.white),
+                          SizedBox(width: 10),
+                          Text(
+                            'Reset High Scores',
+                            style: TextStyle(color: Colors.white),
                           ),
-                          elevation: 5, // Add elevation for shadow
-                          shadowColor:
-                              Colors.grey.withOpacity(0.5), // Set shadow color
-                        ),
-                        child: const Row(
-                          children: [
-                            Icon(Icons.leaderboard, color: Colors.white),
-                            SizedBox(width: 10),
-                            Text(
-                              'View High Scores',
-                              style: TextStyle(color: Colors.white),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    // View High Scores Button
+                    FutureBuilder(
+                      future: _loadHighScores(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 74, 201, 55),
+                              textStyle: const TextStyle(fontSize: 18),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 15),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    10), // Add rounded corners
+                              ),
+                              elevation: 5, // Add elevation for shadow
+                              shadowColor:
+                                  Colors.grey.withOpacity(0.5), // Set shadow color
                             ),
-                          ],
-                        ),
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('High Scores'),
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                          'Level 1: ${level1HighScore ?? 'N/A'}'),
-                                      Text(
-                                          'Level 2: ${level2HighScore ?? 'N/A'}'),
-                                      Text(
-                                          'Level 3: ${level3HighScore ?? 'N/A'}'),
-                                      Text(
-                                          'Level 4: ${level4HighScore ?? 'N/A'}'),
-                                      Text(
-                                          'Level 5: ${level5HighScore ?? 'N/A'}'),
-                                      Text(
-                                          'Level 6: ${level6HighScore ?? 'N/A'}'),
-                                      Text(
-                                          'Level 7: ${level7HighScore ?? 'N/A'}'),
-                                      Text(
-                                          'Level 8: ${level8HighScore ?? 'N/A'}'),
-                                      Text(
-                                          'Level 9: ${level9HighScore ?? 'N/A'}'),
-                                      Text(
-                                          'Level 10: ${level10HighScore ?? 'N/A'}'),
-                                      const SizedBox(height: 10),
-                                      Text('Total: ${(
-                                        (level1HighScore ?? 0) +
-                                            (level2HighScore ?? 0) +
-                                            (level3HighScore ?? 0) +
-                                            (level4HighScore ?? 0) +
-                                            (level5HighScore ?? 0) +
-                                            (level6HighScore ?? 0) +
-                                            (level7HighScore ?? 0) +
-                                            (level8HighScore ?? 0) +
-                                            (level9HighScore ?? 0) +
-                                            (level10HighScore ?? 0),
-                                      )}'),
-                                    ],
-                                  ),
+                            child: const Row(
+                              children: [
+                                Icon(Icons.leaderboard, color: Colors.white),
+                                SizedBox(width: 10),
+                                Text(
+                                  'View High Scores',
+                                  style: TextStyle(color: Colors.white),
                                 ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Close'),
-                                  ),
-                                ],
+                              ],
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('High Scores'),
+                                    content: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              'Level 1: ${level1HighScore ?? 'N/A'}'),
+                                          Text(
+                                              'Level 2: ${level2HighScore ?? 'N/A'}'),
+                                          Text(
+                                              'Level 3: ${level3HighScore ?? 'N/A'}'),
+                                          Text(
+                                              'Level 4: ${level4HighScore ?? 'N/A'}'),
+                                          Text(
+                                              'Level 5: ${level5HighScore ?? 'N/A'}'),
+                                          Text(
+                                              'Level 6: ${level6HighScore ?? 'N/A'}'),
+                                          Text(
+                                              'Level 7: ${level7HighScore ?? 'N/A'}'),
+                                          Text(
+                                              'Level 8: ${level8HighScore ?? 'N/A'}'),
+                                          Text(
+                                              'Level 9: ${level9HighScore ?? 'N/A'}'),
+                                          Text(
+                                              'Level 10: ${level10HighScore ?? 'N/A'}'),
+                                          const SizedBox(height: 10),
+                                          Text('Total: ${(
+                                            (level1HighScore ?? 0) +
+                                                (level2HighScore ?? 0) +
+                                                (level3HighScore ?? 0) +
+                                                (level4HighScore ?? 0) +
+                                                (level5HighScore ?? 0) +
+                                                (level6HighScore ?? 0) +
+                                                (level7HighScore ?? 0) +
+                                                (level8HighScore ?? 0) +
+                                                (level9HighScore ?? 0) +
+                                                (level10HighScore ?? 0),
+                                          )}'),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('Close'),
+                                      ),
+                                    ],
+                                  );
+                                },
                               );
                             },
                           );
-                        },
-                      );
-                    } else {
-                      return const CircularProgressIndicator(); // Show a loading indicator
-                    }
-                  },
+                        } else {
+                          return const CircularProgressIndicator(); // Show a loading indicator
+                        }
+                      },
+                    ),
+                  ],
                 ),
+                const SizedBox(width: 10),
+                // Music Toggle Button
+                IconButton(
+                  onPressed: () {
+                    AudioManager.toggleMusic();
+                    setState(() {}); // Update the UI based on music state change
+                  },
+                  icon: Icon(AudioManager.isPlaying
+                      ? Icons.play_disabled
+                      : Icons.play_arrow),
+                )
               ],
             ),
-            const SizedBox(width: 10),
-            // Music Toggle Button
-            IconButton(
-              onPressed: () {
-                AudioManager.toggleMusic();
-                setState(() {}); // Update the UI based on music state change
-              },
-              icon: Icon(AudioManager._isPlaying
-                  ? Icons.play_disabled
-                  : Icons.play_arrow),
-            )
+          ),
           ],
         ),
       ),

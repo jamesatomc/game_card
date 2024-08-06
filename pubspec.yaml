@@ -65,6 +65,7 @@ flutter:
     - assets/audio/lofi.mp3
 #gamecard
     #images
+    - assets/gamecard/
     - assets/gamecard/hidden.png
     - assets/gamecard/images/im1/
     - assets/gamecard/images/im2/

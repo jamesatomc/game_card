@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
       builder: (light, dark) => MaterialApp(
-        title: 'ทดสอบ',
+        title: 'Games to enhance English skills (Grade 5)',
         theme: ThemeData(
           colorScheme: light ??
               ColorScheme.fromSeed(
@@ -61,41 +61,50 @@ class _ManuGameState extends State<ManuGame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            OutlinedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const GameCardScreen()),
-                );
-              },
-              child: const Text('Game Card'),
-            ),
-            const SizedBox(height: 16),
-            OutlinedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GameWidget(
-                      game: MyGame(),
-                      overlayBuilderMap: {
-                        'BackButton': (context, game) => BackButtonOverlay(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      },
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/gamecard/one.gif'), // Replace with your GIF path
+            fit: BoxFit.cover,
+          ),
+        ),
+
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [         
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GameWidget(
+                        game: MyGame(),
+                        overlayBuilderMap: {
+                          'BackButton': (context, game) => BackButtonOverlay(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        },
+                      ),
                     ),
-                  ),
-                );
-              },
-              child: const Text('ManuGame 2'),
-            ),
-          ],
+                  );
+                },
+                child: const Text('ManuGame 1'),
+              ),
+              const SizedBox(height: 16),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const GameCardScreen()),
+                  );
+                },
+                child: const Text('เกมส์จับคู่รูปภาพกับคำอังกฤษ'),
+              ),
+            ],
+          ),
         ),
       ),
     );
