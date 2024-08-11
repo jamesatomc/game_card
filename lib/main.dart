@@ -122,6 +122,7 @@ class _ManuGameState extends State<ManuGame> {
               ),
               const SizedBox(height: 16),
               SizedBox(
+                height: 90,
                 width: 260, // Makes the button take the full width of its parent
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -153,6 +154,7 @@ class _ManuGameState extends State<ManuGame> {
               ),
               const SizedBox(height: 16),
               SizedBox(
+                height: 90,
                 width: 260, // Makes the button take the full width of its parent
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
