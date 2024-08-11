@@ -228,22 +228,22 @@ class _Level10ScreenState extends State<Level10Screen> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('ออกจากเกมส์'),
-                            content: Text('คุณต้องการออกจากเกมส์หรือไม่?'),
+                            title: Text('Exit the game'),
+                            content: Text('Do you want to quit the game?'),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop(); // ปิด AlertDialog
                                   Navigator.pop(context); // กลับไปหน้าหลัก
                                 },
-                                child: Text('กลับหน้าหลัก'),
+                                child: Text('Yes'),
                               ),
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop(); // ปิด AlertDialog
                                   // ออกจากเกมส์โดยไม่ทำอะไร
                                 },
-                                child: Text('เล่นต่อ'),
+                                child: Text('No'),
                               ),
                             ],
                           );
