@@ -14,7 +14,7 @@ class Game {
     Colors.blue,
     Colors.blue
   ];
-  final String hiddenCardpath = "assets/gamecard/gamecard/images/hidden.png";
+  final String hiddenCardpath = "assets/gamecard/gamecard/hidden.png";
   // ignore: non_constant_identifier_names
   List<String> cards_list = [
     "assets/gamecard/england/l3/data_1.png",
