@@ -59,7 +59,7 @@ class ManuGame extends StatefulWidget {
 }
 
 class _ManuGameState extends State<ManuGame> {
-  TextEditingController _nameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   String? _playerName;
 
   @override
