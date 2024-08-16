@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
@@ -30,14 +31,14 @@ class BackButtonOverlay extends StatelessWidget {
                 actions: [
                   TextButton(
                     onPressed: () {
-                      _playSound();
+                      _playSound(); // Play sound when "No" is pressed
                       Navigator.of(context).pop(); // ปิด dialog
                     },
                     child: const Text('No'),
                   ),
                   TextButton(
                     onPressed: () {
-                      _playSound();
+                      _playSound(); // Play sound when "Yes" is pressed
                       Navigator.of(context).pop(); // ปิด dialog
                       onPressed(); // เรียกใช้ onPressed เพื่อกลับไปหน้าก่อนหน้า
                     },
@@ -61,4 +62,4 @@ class BackButtonOverlay extends StatelessWidget {
       ),
     );
   }
-}
+  }
