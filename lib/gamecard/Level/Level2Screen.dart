@@ -59,7 +59,12 @@ class _Level2ScreenState extends State<Level2Screen> {
   // ฟังก์ชันสำหรับบันทึก high score ลง SharedPreferences
   Future<void> _saveHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('level2HighScore', score.toInt()); // บันทึก high score ลง SharedPreferences
+    if (score > level2HighScore) {
+      prefs.setInt('level2HighScore', score.toInt()); // บันทึก high score ลง SharedPreferences
+      setState(() {
+        level2HighScore = score.toInt(); // บันทึก high score ลงตัวแปร level2HighScore
+      });
+    }
   }
 
   void startTimer() {
@@ -75,6 +80,9 @@ class _Level2ScreenState extends State<Level2Screen> {
         } else {
           setState(() {
             _timeLeft--;
+            if (_timeLeft <= 10) {
+              playTimeRunningOutSound(); // Play sound when time is running out
+            }
           });
         }
       },
@@ -82,6 +90,7 @@ class _Level2ScreenState extends State<Level2Screen> {
   }
 
   void showLevelCompleteDialog() {
+    playLevelCompleteSound(); // Play sound when level is completed
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -156,6 +165,9 @@ class _Level2ScreenState extends State<Level2Screen> {
     });
   }
 
+  // Add this state variable to track mismatched card indices
+  List<int> mismatchedCardIndices = [];
+
   void checkMatch() {
     if (_game.matchCheck.length == 2) {
       int firstIndex = _game.matchCheck[0].keys.first;
@@ -177,12 +189,16 @@ class _Level2ScreenState extends State<Level2Screen> {
         // จับคู่ผิด ไม่ให้คะแนน และอาจลดคะแนนถ้าต้องการ
         setState(() {
           score = score > 1.5 ? score - 1.5 : 0; // ลดคะแนน 1.5 คะแนนเมื่อจับคู่ผิด แต่ไม่ติดลบ
+          mismatchedCardIndices = [firstIndex, secondIndex]; // Track mismatched cards
         });
+        playLevelCompleteSound(); // Play sound when level is completed
         Future.delayed(Duration(milliseconds: 500), () {
           setState(() {
             _game.gameImg![firstIndex] = _game.hiddenCardpath;
             _game.gameImg![secondIndex] = _game.hiddenCardpath;
+            mismatchedCardIndices.clear(); // Clear mismatched cards after delay
           });
+          playCardMismatchSound(); // Play sound again when cards are flipped back
         });
       }
 
@@ -206,6 +222,21 @@ class _Level2ScreenState extends State<Level2Screen> {
   // Method to play sound
   void playCardSound() async {
     await _audioPlayer.play(AssetSource('sounds/card_flip.mp3')); // Adjust the path to your sound file
+  }
+
+  // Method to play level complete sound
+  void playLevelCompleteSound() async {
+    await _audioPlayer.play(AssetSource('sounds/level_complete.mp3')); // Adjust the path to your sound file
+  }
+
+  // Method to play card mismatch sound
+  void playCardMismatchSound() async {
+    await _audioPlayer.play(AssetSource('sounds/card_mismatch.mp3')); // Adjust the path to your sound file
+  }
+
+  // Method to play time running out sound
+  void playTimeRunningOutSound() async {
+    await _audioPlayer.play(AssetSource('sounds/time_running_out.mp3')); // Adjust the path to your sound file
   }
 
   @override
@@ -238,16 +269,16 @@ class _Level2ScreenState extends State<Level2Screen> {
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop(); // ปิด AlertDialog
-                                  Navigator.pop(context); // กลับไปหน้าหลัก
+                                  // ออกจากเกมส์โดยไม่ทำอะไร
                                 },
-                                child: Text('Yes'),
+                                child: Text('No'),
                               ),
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop(); // ปิด AlertDialog
-                                  // ออกจากเกมส์โดยไม่ทำอะไร
+                                  Navigator.pop(context); // กลับไปหน้าหลัก
                                 },
-                                child: Text('No'),
+                                child: Text('Yes'),
                               ),
                             ],
                           );

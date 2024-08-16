@@ -238,16 +238,16 @@ class _Level4ScreenState extends State<Level4Screen> {
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop(); // ปิด AlertDialog
-                                  Navigator.pop(context); // กลับไปหน้าหลัก
+                                  // ออกจากเกมส์โดยไม่ทำอะไร
                                 },
-                                child: Text('Yes'),
+                                child: Text('No'),
                               ),
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop(); // ปิด AlertDialog
-                                  // ออกจากเกมส์โดยไม่ทำอะไร
+                                  Navigator.pop(context); // กลับไปหน้าหลัก
                                 },
-                                child: Text('No'),
+                                child: Text('Yes'),
                               ),
                             ],
                           );
