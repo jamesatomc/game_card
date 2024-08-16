@@ -1,12 +1,14 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'game2/components/BackButtonOverlay.dart';
 import 'gamecard/GameCard.dart';
 
-import 'package:flutter_cardgame/game2/components/gogame.dart';
+import 'package:flutter_cardgame/game2/gogame.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -81,6 +83,13 @@ class _ManuGameState extends State<ManuGame> {
     await prefs.setString('playerName', name);
   }
 
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  Future<void> _playSound() async {
+    await _audioPlayer.play(AssetSource(
+        'sounds/button_click.mp3')); // Adjust the path to your sound file
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,11 +114,14 @@ class _ManuGameState extends State<ManuGame> {
                     decoration: InputDecoration(
                       hintText: 'Enter your name',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                        borderRadius:
+                            BorderRadius.circular(12.0), // Rounded corners
                       ),
                       filled: true,
-                      fillColor: Color.fromARGB(255, 97, 208, 191), // Light background color
-                      prefixIcon: Icon(Icons.person), // Icon inside the text field
+                      fillColor: Color.fromARGB(
+                          255, 97, 208, 191), // Light background color
+                      prefixIcon:
+                          Icon(Icons.person), // Icon inside the text field
                     ),
                     onChanged: (text) {
                       _savePlayerName(text); // Save name as the user types
@@ -123,16 +135,20 @@ class _ManuGameState extends State<ManuGame> {
               const SizedBox(height: 16),
               SizedBox(
                 height: 90,
-                width: 260, // Makes the button take the full width of its parent
+                width:
+                    260, // Makes the button take the full width of its parent
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 48, vertical: 16),
                     textStyle: const TextStyle(fontSize: 20),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0), // Rounded corners
+                      borderRadius:
+                          BorderRadius.circular(20.0), // Rounded corners
                     ),
                   ),
                   onPressed: () {
+                    _playSound();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -140,10 +156,10 @@ class _ManuGameState extends State<ManuGame> {
                           game: MyGame(),
                           overlayBuilderMap: {
                             'BackButton': (context, game) => BackButtonOverlay(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
                           },
                         ),
                       ),
@@ -155,16 +171,20 @@ class _ManuGameState extends State<ManuGame> {
               const SizedBox(height: 16),
               SizedBox(
                 height: 90,
-                width: 260, // Makes the button take the full width of its parent
+                width:
+                    260, // Makes the button take the full width of its parent
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 48, vertical: 16),
                     textStyle: const TextStyle(fontSize: 20),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0), // Rounded corners
+                      borderRadius:
+                          BorderRadius.circular(20.0), // Rounded corners
                     ),
-                  ),            
+                  ),
                   onPressed: () {
+                    _playSound();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -172,7 +192,10 @@ class _ManuGameState extends State<ManuGame> {
                     );
                   },
                   // ignore: prefer_const_constructors
-                  child: Text('English Puzzle Adventure', textAlign: TextAlign.center,),
+                  child: Text(
+                    'English Puzzle Adventure',
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
             ],

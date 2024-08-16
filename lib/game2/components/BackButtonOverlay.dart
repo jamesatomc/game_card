@@ -1,31 +1,17 @@
-import 'dart:async';
-
-import 'package:flame/events.dart';
-import 'package:flame/game.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-
-import 'player.dart';
-
-class MyGame extends FlameGame with HasKeyboardHandlerComponents {
-  final player = Player2();
-  final player2 = Player2();
-
-  @override
-  FutureOr<void> onLoad() {
-    super.onLoad();
-    player.position = Vector2(150, 50);
-    add(player);
-    overlays.add('BackButton');
-  }
-
-  @override
-  Color backgroundColor() => Color.fromARGB(255, 230, 18, 18);
-}
 
 class BackButtonOverlay extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const BackButtonOverlay({super.key, required this.onPressed});
+  BackButtonOverlay({super.key, required this.onPressed});
+
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  Future<void> _playSound() async {
+    await _audioPlayer.play(AssetSource(
+        'sounds/button_click.mp3')); // Adjust the path to your sound file
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +20,7 @@ class BackButtonOverlay extends StatelessWidget {
       left: 20,
       child: ElevatedButton(
         onPressed: () {
+          _playSound();
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -43,12 +30,14 @@ class BackButtonOverlay extends StatelessWidget {
                 actions: [
                   TextButton(
                     onPressed: () {
+                      _playSound();
                       Navigator.of(context).pop(); // ปิด dialog
                     },
                     child: const Text('No'),
                   ),
                   TextButton(
                     onPressed: () {
+                      _playSound();
                       Navigator.of(context).pop(); // ปิด dialog
                       onPressed(); // เรียกใช้ onPressed เพื่อกลับไปหน้าก่อนหน้า
                     },

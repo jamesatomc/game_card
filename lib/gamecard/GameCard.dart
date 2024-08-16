@@ -24,8 +24,7 @@ class GameCardScreen extends StatefulWidget {
   State<GameCardScreen> createState() => _GameCardScreenState();
 }
 
-class _GameCardScreenState extends State<GameCardScreen>{ 
-
+class _GameCardScreenState extends State<GameCardScreen> {
   int? level1HighScore;
   int? level2HighScore;
   int? level3HighScore;
@@ -36,8 +35,6 @@ class _GameCardScreenState extends State<GameCardScreen>{
   int? level8HighScore;
   int? level9HighScore;
   int? level10HighScore;
-
-  
 
   @override
   void didChangeDependencies() {
@@ -103,14 +100,13 @@ class _GameCardScreenState extends State<GameCardScreen>{
     _loadHighScores();
     AudioManager.init(); // Initialize music when the app starts
   }
-  
 
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   Future<void> _playSound() async {
-    await _audioPlayer.play(AssetSource('sounds/button_click.mp3')); // Adjust the path to your sound file
+    await _audioPlayer.play(AssetSource(
+        'sounds/button_click.mp3')); // Adjust the path to your sound file
   }
-
 
   // Function to show the exit confirmation dialog
   Future<void> _showExitConfirmationDialog() async {
@@ -123,12 +119,14 @@ class _GameCardScreenState extends State<GameCardScreen>{
           actions: [
             TextButton(
               onPressed: () {
+                _playSound(); // Play sound when button is pressed
                 Navigator.of(context).pop(); // Close the dialog
               },
               child: const Text('No'),
             ),
             TextButton(
               onPressed: () {
+                _playSound(); // Play sound when button is pressed
                 AudioManager.stopMusic(); // Stop music when exiting
                 Navigator.pop(context); // Close the dialog
                 Navigator.pop(context); // Go back to the previous screen
@@ -147,11 +145,11 @@ class _GameCardScreenState extends State<GameCardScreen>{
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/gamecard/two.gif'), // Replace with your GIF path
+            image: AssetImage(
+                'assets/gamecard/two.gif'), // Replace with your GIF path
             fit: BoxFit.cover,
           ),
         ),
-        
         child: Stack(
           children: [
             // Back button positioned at the top left corner
@@ -160,12 +158,14 @@ class _GameCardScreenState extends State<GameCardScreen>{
               left: 16.0,
               child: ElevatedButton(
                 onPressed: () {
+                  _playSound();
                   _showExitConfirmationDialog(); // Call the confirmation dialog
                 },
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),
                   padding: const EdgeInsets.all(16.0),
-                  backgroundColor: Colors.transparent, // Make the button background transparent
+                  backgroundColor: Colors
+                      .transparent, // Make the button background transparent
                 ),
                 child: const Icon(
                   Icons.arrow_back,
@@ -178,87 +178,96 @@ class _GameCardScreenState extends State<GameCardScreen>{
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    LevelButton(
-                      level: 1,
-                      isUnlocked: true,
-                      nextScreen: const Level1Screen(),
-                      refreshHighScores: refreshHighScores,
-                    ),
-                    const SizedBox(width: 10),
-                    LevelButton(
-                      level: 2,
-                      isUnlocked: level1HighScore != null && level1HighScore! >= 6,
-                      nextScreen: const Level2Screen(),
-                      refreshHighScores: refreshHighScores,
-                    ),
-                    const SizedBox(width: 10),
-                    LevelButton(
-                      level: 3,
-                      isUnlocked: level2HighScore != null && level2HighScore! >= 6,
-                      nextScreen: const Level3Screen(),
-                      refreshHighScores: refreshHighScores,
-                    ),
-                    const SizedBox(width: 10),
-                    LevelButton(
-                      level: 4,
-                      isUnlocked: level3HighScore != null && level3HighScore! >= 7,
-                      nextScreen: const Level4Screen(),
-                      refreshHighScores: refreshHighScores,
-                    ),
-                    const SizedBox(width: 10),
-                    LevelButton(
-                      level: 5,
-                      isUnlocked: level4HighScore != null && level4HighScore! >= 7,
-                      nextScreen: const Level5Screen(),
-                      refreshHighScores: refreshHighScores,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    LevelButton(
-                      level: 6,
-                      isUnlocked: level5HighScore != null && level5HighScore! >= 7,
-                      nextScreen: const Level6Screen(),
-                      refreshHighScores: refreshHighScores,
-                    ),
-                    const SizedBox(width: 10),
-                    LevelButton(
-                      level: 7,
-                      isUnlocked: level6HighScore != null && level6HighScore! >= 7.5,
-                      nextScreen: const Level7Screen(),
-                      refreshHighScores: refreshHighScores,
-                    ),
-                    const SizedBox(width: 10),
-                    LevelButton(
-                      level: 8,
-                      isUnlocked: level7HighScore != null && level7HighScore! >= 7.5,
-                      nextScreen: const Level8Screen(),
-                      refreshHighScores: refreshHighScores,
-                    ),
-                    const SizedBox(width: 10),
-                    LevelButton(
-                      level: 9,
-                      isUnlocked: level8HighScore != null && level8HighScore! >= 7.5,
-                      nextScreen: const Level9Screen(),
-                      refreshHighScores: refreshHighScores,
-                    ),
-                    const SizedBox(width: 10),
-                    LevelButton(
-                      level: 10,
-                      isUnlocked: level9HighScore != null && level9HighScore! >= 8,
-                      nextScreen: const Level10Screen(),
-                      refreshHighScores: refreshHighScores,
-                    ),
-                  ],
-                ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      LevelButton(
+                        level: 1,
+                        isUnlocked: true,
+                        nextScreen: const Level1Screen(),
+                        refreshHighScores: refreshHighScores,
+                      ),
+                      const SizedBox(width: 10),
+                      LevelButton(
+                        level: 2,
+                        isUnlocked:
+                            level1HighScore != null && level1HighScore! >= 6,
+                        nextScreen: const Level2Screen(),
+                        refreshHighScores: refreshHighScores,
+                      ),
+                      const SizedBox(width: 10),
+                      LevelButton(
+                        level: 3,
+                        isUnlocked:
+                            level2HighScore != null && level2HighScore! >= 6,
+                        nextScreen: const Level3Screen(),
+                        refreshHighScores: refreshHighScores,
+                      ),
+                      const SizedBox(width: 10),
+                      LevelButton(
+                        level: 4,
+                        isUnlocked:
+                            level3HighScore != null && level3HighScore! >= 7,
+                        nextScreen: const Level4Screen(),
+                        refreshHighScores: refreshHighScores,
+                      ),
+                      const SizedBox(width: 10),
+                      LevelButton(
+                        level: 5,
+                        isUnlocked:
+                            level4HighScore != null && level4HighScore! >= 7,
+                        nextScreen: const Level5Screen(),
+                        refreshHighScores: refreshHighScores,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      LevelButton(
+                        level: 6,
+                        isUnlocked:
+                            level5HighScore != null && level5HighScore! >= 7,
+                        nextScreen: const Level6Screen(),
+                        refreshHighScores: refreshHighScores,
+                      ),
+                      const SizedBox(width: 10),
+                      LevelButton(
+                        level: 7,
+                        isUnlocked:
+                            level6HighScore != null && level6HighScore! >= 7.5,
+                        nextScreen: const Level7Screen(),
+                        refreshHighScores: refreshHighScores,
+                      ),
+                      const SizedBox(width: 10),
+                      LevelButton(
+                        level: 8,
+                        isUnlocked:
+                            level7HighScore != null && level7HighScore! >= 7.5,
+                        nextScreen: const Level8Screen(),
+                        refreshHighScores: refreshHighScores,
+                      ),
+                      const SizedBox(width: 10),
+                      LevelButton(
+                        level: 9,
+                        isUnlocked:
+                            level8HighScore != null && level8HighScore! >= 7.5,
+                        nextScreen: const Level9Screen(),
+                        refreshHighScores: refreshHighScores,
+                      ),
+                      const SizedBox(width: 10),
+                      LevelButton(
+                        level: 10,
+                        isUnlocked:
+                            level9HighScore != null && level9HighScore! >= 8,
+                        nextScreen: const Level10Screen(),
+                        refreshHighScores: refreshHighScores,
+                      ),
+                    ],
+                  ),
 
                   const SizedBox(height: 10),
                   Row(
@@ -273,8 +282,8 @@ class _GameCardScreenState extends State<GameCardScreen>{
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 15),
                           shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(10), // Add rounded corners
+                            borderRadius: BorderRadius.circular(
+                                10), // Add rounded corners
                           ),
                           elevation: 5, // Add elevation for shadow
                           shadowColor:
@@ -300,10 +309,12 @@ class _GameCardScreenState extends State<GameCardScreen>{
                       FutureBuilder(
                         future: _loadHighScores(),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.done) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
                             return ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color.fromARGB(255, 74, 201, 55),
+                                backgroundColor:
+                                    Color.fromARGB(255, 74, 201, 55),
                                 textStyle: const TextStyle(fontSize: 18),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 15),
@@ -312,8 +323,8 @@ class _GameCardScreenState extends State<GameCardScreen>{
                                       10), // Add rounded corners
                                 ),
                                 elevation: 5, // Add elevation for shadow
-                                shadowColor:
-                                    Colors.grey.withOpacity(0.5), // Set shadow color
+                                shadowColor: Colors.grey
+                                    .withOpacity(0.5), // Set shadow color
                               ),
                               child: const Row(
                                 children: [
@@ -377,6 +388,7 @@ class _GameCardScreenState extends State<GameCardScreen>{
                                       actions: [
                                         TextButton(
                                           onPressed: () {
+                                            _playSound(); // Play sound when button is pressed
                                             Navigator.of(context).pop();
                                           },
                                           child: const Text('Close'),
