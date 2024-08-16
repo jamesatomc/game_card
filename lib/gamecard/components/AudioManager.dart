@@ -25,7 +25,7 @@ class AudioManager {
     await _audioPlayer.setReleaseMode(ReleaseMode.loop); // Set loop mode
     await _audioPlayer.play(
       AssetSource('audio/lofi.mp3'),
-      volume: 10,
+      volume: 0.3, // Set volume to 30%
     );
     _isPlaying = true;
   }

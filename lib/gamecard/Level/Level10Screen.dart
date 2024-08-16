@@ -1,13 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_cardgame/gamecard/GameCard.dart';
 import 'package:flutter_cardgame/gamecard/components/info_card.dart';
 import 'package:flutter_cardgame/gamecard/utils/game_utils10.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:audioplayers/audioplayers.dart'; // Import the audioplayers package
 
-
-  
 class Level10Screen extends StatefulWidget {
   const Level10Screen({super.key});
 
@@ -19,6 +17,7 @@ class _Level10ScreenState extends State<Level10Screen> {
   //setting text style
   bool hideTest = false;
   final Game _game = Game();
+  final AudioPlayer _audioPlayer = AudioPlayer(); // Create an instance of AudioPlayer
 
   //game stats
   int tries = 0;
@@ -120,7 +119,6 @@ class _Level10ScreenState extends State<Level10Screen> {
     );
   }
 
-
   void showTimeUpDialog() {
     showDialog(
       context: context,
@@ -202,6 +200,11 @@ class _Level10ScreenState extends State<Level10Screen> {
       _game.gameImg = List.filled(_game.cardCount, _game.hiddenCardpath); // Hide cards
       startTimer();
     });
+  }
+
+  // Method to play sound
+  void playCardSound() async {
+    await _audioPlayer.play(AssetSource('sounds/card_flip.mp3')); // Adjust the path to your sound file
   }
 
   @override
@@ -297,7 +300,9 @@ class _Level10ScreenState extends State<Level10Screen> {
                           revealedCards.add(index);
                           _game.matchCheck.add({index: _game.cards_list[index]});
                         });
-        
+                        
+                        playCardSound(); // Play sound when a card is tapped
+
                         if (revealedCards.length == 2) {
                           checkMatch();
                         }

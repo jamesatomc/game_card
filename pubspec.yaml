@@ -62,7 +62,8 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   assets:
-    - assets/audio/lofi.mp3
+    - assets/audio/
+    - assets/sounds/
 #gamecard
     #images
     - assets/gamecard/

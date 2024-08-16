@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class LevelButton extends StatefulWidget {
   final int level;
@@ -19,6 +20,12 @@ class LevelButton extends StatefulWidget {
 }
 
 class _LevelButtonState extends State<LevelButton> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  void _playSound() async {
+    await _audioPlayer.play(AssetSource('sounds/button_click.mp3')); // Adjust the path to your sound file
+  }
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -29,10 +36,11 @@ class _LevelButtonState extends State<LevelButton> {
           borderRadius: BorderRadius.circular(10), // Add rounded corners
         ),
         elevation: 5, // Add elevation for shadow
-        shadowColor: Colors.grey.withOpacity(0.5), // Set shadow color
+        shadowColor: Color.fromARGB(255, 232, 205, 152).withOpacity(0.5), // Set shadow color
       ),
       onPressed: widget.isUnlocked
           ? () {
+              _playSound(); // Play sound when button is pressed
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => widget.nextScreen),

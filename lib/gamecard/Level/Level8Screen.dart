@@ -1,11 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_cardgame/gamecard/components/info_card.dart';
 import 'package:flutter_cardgame/gamecard/utils/game_utils8.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:audioplayers/audioplayers.dart'; // Import the audioplayers package
 
-import 'Level9Screen.dart'; // เพิ่ม import สำหรับ SharedPreferences
+import 'Level9Screen.dart';
 
 class Level8Screen extends StatefulWidget {
   const Level8Screen({super.key});
@@ -18,6 +18,7 @@ class _Level8ScreenState extends State<Level8Screen> {
   //setting text style
   bool hideTest = false;
   final Game _game = Game();
+  final AudioPlayer _audioPlayer = AudioPlayer(); // Create an instance of AudioPlayer
 
   //game stats
   int tries = 0;
@@ -202,6 +203,11 @@ class _Level8ScreenState extends State<Level8Screen> {
     });
   }
 
+  // Method to play sound
+  void playCardSound() async {
+    await _audioPlayer.play(AssetSource('sounds/card_flip.mp3')); // Adjust the path to your sound file
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -295,7 +301,9 @@ class _Level8ScreenState extends State<Level8Screen> {
                           revealedCards.add(index);
                           _game.matchCheck.add({index: _game.cards_list[index]});
                         });
-        
+                        
+                        playCardSound(); // Play sound when a card is tapped
+
                         if (revealedCards.length == 2) {
                           checkMatch();
                         }
