@@ -1,12 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter_cardgame/game2/GmaeJump.dart';
-import 'package:flutter_cardgame/game2/Level/game.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'game2/components/BackButtonOverlay.dart';
 import 'gamecard/GameCard.dart';
 
 void main() {
@@ -53,9 +50,11 @@ class MyApp extends StatelessWidget {
 }
 
 class ManuGame extends StatefulWidget {
+  // ignore: use_super_parameters
   const ManuGame({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ManuGameState createState() => _ManuGameState();
 }
 
@@ -181,50 +180,10 @@ class _ManuGameState extends State<ManuGame> {
                     _playSound();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => GameWidget(
-                          game: MyGame(),
-                          overlayBuilderMap: {
-                            'BackButton': (context, game) => BackButtonOverlay(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                  child: const Text('Game 2'),
-                ),
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                height: 90,
-                width:
-                    260, // Makes the button take the full width of its parent
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 48, vertical: 16),
-                    textStyle: const TextStyle(fontSize: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(20.0), // Rounded corners
-                    ),
-                  ),
-                  onPressed: () {
-                    _playSound();
-                    Navigator.push(
-                      context,
                       MaterialPageRoute(builder: (context) => const GmaeJump()),
                     );
                   },
-                  // ignore: prefer_const_constructors
-                  child: Text(
-                    'test',
-                    textAlign: TextAlign.center,
-                  ),
+                  child: const Text('Game 2'),
                 ),
               ),
             ],

@@ -1,4 +1,8 @@
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cardgame/game2/Level/game.dart';
+
+import 'components/BackButtonOverlay.dart';
 
 class GmaeJump extends StatefulWidget {
   const GmaeJump({Key? key}) : super(key: key);
@@ -93,7 +97,22 @@ class _GmaeJumpState extends State<GmaeJump> {
                               .withOpacity(0.5), // Set shadow color
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, '/game2');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GameWidget(
+                                game: MyGame(),
+                                overlayBuilderMap: {
+                                  'BackButton': (context, game) =>
+                                      BackButtonOverlay(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                },
+                              ),
+                            ),
+                          );
                         },
                         child: const Text('1'),
                       ),

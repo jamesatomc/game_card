@@ -63,7 +63,7 @@ class _Level3ScreenState extends State<Level3Screen> {
   Future<void> _saveHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (score > level3HighScore) {
-      prefs.setInt('level1HighScore',
+      prefs.setInt('level3HighScore',
           score.toInt()); // บันทึก high score ลง SharedPreferences
       setState(() {
         level3HighScore = score.toInt(); // อัปเดต high score ใน state
