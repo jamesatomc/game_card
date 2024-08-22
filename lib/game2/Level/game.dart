@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame_audio/flame_audio.dart';
@@ -34,23 +33,23 @@ class MyGame extends FlameGame
     background = SpriteComponent()
       ..sprite = await loadSprite('bg2.gif')
       ..size = size;
-  
+
     // Add the background to the game world
     add(background);
-  
+
     final level = await TiledComponent.load(
       "map.tmx",
       Vector2.all(32),
     );
-  
+
     overlays.add('BackButton');
     FlameAudio.bgm.stop(); // Stop the background music
-  
+
     mapWidth = (level.tileMap.map.width * level.tileMap.destTileSize.x).toInt();
     mapHeight =
         (level.tileMap.map.height * level.tileMap.destTileSize.y).toInt();
     world.add(level);
-  
+
     final spawnPointsLayer = level.tileMap.getLayer<ObjectGroup>("spawn");
     for (final spawnPoint in spawnPointsLayer!.objects) {
       switch (spawnPoint.class_) {
@@ -64,7 +63,7 @@ class MyGame extends FlameGame
         "bg.mp3",
       );
     }
-  
+
     final coinPointsLayer = level.tileMap.getLayer<ObjectGroup>("coin");
     for (final coinPoint in coinPointsLayer!.objects) {
       switch (coinPoint.class_) {
@@ -74,7 +73,7 @@ class MyGame extends FlameGame
           break;
       }
     }
-  
+
     final monstersPointsLayer = level.tileMap.getLayer<ObjectGroup>("monsters");
     for (final monstersPoint in monstersPointsLayer!.objects) {
       switch (monstersPoint.class_) {
@@ -82,45 +81,54 @@ class MyGame extends FlameGame
           monsters = Monsters(position: monstersPoint.position);
           world.add(monsters);
           break;
-  
+
         case "bumpy":
           final bumpy = Bumpy(position: monstersPoint.position);
           world.add(bumpy);
           break;
       }
     }
-  
+
     final groundLayer = level.tileMap.getLayer<ObjectGroup>("ground");
     for (final groundPoint in groundLayer!.objects) {
       final grounds =
           GroundBlock(position: groundPoint.position, size: groundPoint.size);
       world.add(grounds);
     }
-  
-    camera.viewport = FixedResolutionViewport(
-      resolution: Vector2(720, 640),
+
+    // camera.viewport = FixedResolutionViewport(
+    //   resolution: Vector2(720, 640),
+    // );
+    // camera.setBounds(
+    //   Rectangle.fromLTRB(size.x / 2, size.y / 2, level.width - size.x / 2,
+    //       level.height - size.y / 2),
+    // );
+
+    // Use a camera component that adjusts to the screen size
+    camera = CameraComponent.withFixedResolution(
+      world: world,
+      width: mapWidth.toDouble(), // Set the desired game width
+      height: mapHeight.toDouble(), // Set the desired game height
     );
-    camera.setBounds(
-      Rectangle.fromLTRB(size.x / 2, size.y / 2, level.width - size.x / 2,
-          level.height - size.y / 2),
-    );
-  
+    camera.viewfinder.anchor = Anchor.topLeft;
+
     joystick = JoystickComponent(
         knob: CircleComponent(
-            radius: 25, paint: Paint()..color = Colors.white.withOpacity(0.50)),
+            radius: 75, paint: Paint()..color = Colors.white.withOpacity(0.50)),
         background: CircleComponent(
-            radius: 50, paint: Paint()..color = Colors.white.withOpacity(0.50)),
-        margin: EdgeInsets.only(left: 50, bottom: 200));
-  
+            radius: 150, paint: Paint()..color = Colors.white.withOpacity(0.50)),
+        margin: EdgeInsets.only(left: 50, bottom: 10));
+
     jump = JoystickComponent(
-        knob: CircleComponent(),
-        background: CircleComponent(
-            radius: 50, paint: Paint()..color = Colors.white.withOpacity(0.50)),
-        margin: EdgeInsets.only(right: 50, bottom: 200));
-  
+      knob: CircleComponent(),
+      background: CircleComponent(
+          radius: 100, paint: Paint()..color = Colors.white.withOpacity(0.50)),
+      margin: EdgeInsets.only(right: 50, bottom: 10),
+    );
+
     await camera.viewport.add(jump);
     await camera.viewport.add(joystick);
-  
+
     joystick.priority = 0;
     return super.onLoad();
   }
@@ -148,5 +156,14 @@ class MyGame extends FlameGame
       default:
         myPlayer.moveNone();
     }
+  }
+
+  @override
+  void onResize(Vector2 size) {
+    // Update camera or other components based on the new screen size
+    // For example:
+    camera.viewport = FixedResolutionViewport(
+      resolution: size,
+    );
   }
 }
