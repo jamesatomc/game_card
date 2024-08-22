@@ -95,7 +95,7 @@ class Jump1 extends FlameGame
           GroundBlock(position: groundPoint.position, size: groundPoint.size);
       world.add(grounds);
     }
-    
+
     // Use a camera component that adjusts to the screen size
     camera = CameraComponent.withFixedResolution(
       world: world,
@@ -135,6 +135,14 @@ class Jump1 extends FlameGame
   void update(double dt) {
     super.update(dt);
     updateJoystrick();
+
+    // Check for collisions with monsters or bumpy
+    if (myPlayer.hasCollided) {
+      // Handle player getting hit by monsters or bumpy
+      // For example:
+      myPlayer.removeFromParent(); // Remove the player from the game
+      // You can add other actions like restarting the game or showing a game over screen
+    }
   }
 
   updateJoystrick() {

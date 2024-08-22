@@ -5,19 +5,21 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cardgame/game2/components/bumpy.dart';
 import 'package:flutter_cardgame/game2/components/ground.dart';
+
+import 'monsters.dart';
 //class ตัวละครหลัก
 
-class Player extends SpriteAnimationComponent with HasGameRef, KeyboardHandler, CollisionCallbacks {
+class Player extends SpriteAnimationComponent
+    with HasGameRef, KeyboardHandler, CollisionCallbacks {
   Player({required super.position})
       : super(
-            size: Vector2(60, 60),//ปรับขนาดตัวละคร
+            size: Vector2(60, 60), //ปรับขนาดตัวละคร
             anchor: Anchor.center); //กำหนดขนาด ใส่ค่าขนาด 2 ค่า
   late SpriteAnimation stand;
   late SpriteAnimation playerAction;
   late SpriteAnimation idle;
   late SpriteAnimation run;
   late SpriteAnimation hit;
-
 
   double moveSpeed = 300; //ความเร็ว
   int horizonDirect = 0; //เก็บค่าวิ่งไปทางไหน
@@ -27,19 +29,20 @@ class Player extends SpriteAnimationComponent with HasGameRef, KeyboardHandler, 
   bool isGround = false;
   bool isJump = false;
   bool isWall = false;
- 
+  bool hasCollided = false;
 
   @override
   FutureOr<void> onLoad() async {
     // sprite =  await gameRef.loadSprite("2.png");
     await loadAnimation().then((_) => {animation = playerAction});
 
-     //startingPosition = Vector2(position.x,position.y );
-      
-    add(RectangleHitbox(collisionType: CollisionType.active,));
+    //startingPosition = Vector2(position.x,position.y );
+
+    add(RectangleHitbox(
+      collisionType: CollisionType.active,
+    ));
     //position = gameRef.size / 2;
     //debugMode = true;
-    
 
     return super.onLoad();
   }
@@ -90,21 +93,20 @@ class Player extends SpriteAnimationComponent with HasGameRef, KeyboardHandler, 
 
     Velocity.x = horizonDirect * moveSpeed;
 
-   
+    if (!isGround) {
+      Velocity.y += gravitySpeed * dt;
+    }
 
-    if (!isGround){
-       Velocity.y += gravitySpeed * dt;}
-
-       if(isWall){
-        Velocity.x = 0;
-       }
+    if (isWall) {
+      Velocity.x = 0;
+    }
 
     position += Velocity * dt;
 
     if ((horizonDirect < 0 && scale.x > 0) ||
-        (horizonDirect > 0 && scale.x < 0 )){
+        (horizonDirect > 0 && scale.x < 0)) {
       flipHorizontally();
-      }
+    }
 
     // if ((horizonDirect < 0 && scale.x < 0) ||
     //     (horizonDirect > 0 && scale.x > 0)) {
@@ -118,81 +120,79 @@ class Player extends SpriteAnimationComponent with HasGameRef, KeyboardHandler, 
     animation = (horizonDirect == 0) ? idle : run;
   }
 
-@override
+  @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    super.onCollision(intersectionPoints, other);    
+    super.onCollision(intersectionPoints, other);
+    //เจอมอนสเตอร์
+    if (other is Monsters || other is Bumpy) {
+      hasCollided = true;
+    }
     // เจอพื้นหรือกำแพง
-    if (other is GroundBlock){
+    if (other is GroundBlock) {
       //เจอพื้น
-      if(other.position.y>position.y){
+      if (other.position.y > position.y) {
         Velocity.y = 0;
-       isGround = true;
-       position.y = other.position.y - size.y/2;
+        isGround = true;
+        position.y = other.position.y - size.y / 2;
         isJump = false;
-
-      }else{
-        if(isJump){
-          if(other.x + other.size.x-10 < position.x){
+      } else {
+        if (isJump) {
+          if (other.x + other.size.x - 10 < position.x) {
             //ชนทางซ้าย
             position.x = other.x + other.size.x + 20;
-          }else{
-            if(other.x <= position.x){
+          } else {
+            if (other.x <= position.x) {
               //ชนจากข้างล่าง
               Velocity.y = -Velocity.y;
-            }else{
-            //ชนทางขวา
-            position.x = other.x - 30;
+            } else {
+              //ชนทางขวา
+              position.x = other.x - 30;
             }
           }
-        }else{
+        } else {
           Velocity.x = 0;
-          if(other.x < position.x - size.x){
+          if (other.x < position.x - size.x) {
             //ชนทางซ้าย
             position.x = other.x + other.size.x + 30;
-          }else{
+          } else {
             //ชนทางขวา
             position.x = other.x - 30;
           }
         }
-        
       }
-
     }
-    if(other is Bumpy){
+    if (other is Bumpy) {
       // other.removeFromParent();
-      
     }
-   
   }
 
   @override
   void onCollisionEnd(PositionComponent other) {
     // TODO: implement onCollisionEnd
     super.onCollisionEnd(other);
-    if(isGround){
-    isGround = false;
+    if (isGround) {
+      isGround = false;
     }
-    if(isWall){
+    if (isWall) {
       isWall = false;
     }
   }
-  
-  void moveJump(){
-    Velocity.y = (-gravitySpeed/2);
+
+  void moveJump() {
+    Velocity.y = (-gravitySpeed / 2);
     isJump = true;
     isGround = false;
   }
 
-  void moveLeft(){
+  void moveLeft() {
     horizonDirect = -1;
   }
 
- void moveRight(){
+  void moveRight() {
     horizonDirect = 1;
   }
 
-  void moveNone(){
+  void moveNone() {
     horizonDirect = 0;
   }
-
 }
