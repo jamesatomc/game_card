@@ -114,8 +114,7 @@ class Jump1 extends FlameGame
         knob: CircleComponent(
             radius: 40, paint: Paint()..color = Colors.white.withOpacity(0.50)),
         background: CircleComponent(
-            radius: 50,
-            paint: Paint()..color = Colors.white.withOpacity(0.50)),
+            radius: 50, paint: Paint()..color = Colors.white.withOpacity(0.50)),
         margin: EdgeInsets.only(left: 50, bottom: 30));
 
     jump = JoystickComponent(
@@ -137,7 +136,6 @@ class Jump1 extends FlameGame
     super.onTapUp(event);
     myPlayer.moveJump();
   }
-
 
   @override
   void update(double dt) {
@@ -176,7 +174,7 @@ class Jump1 extends FlameGame
     );
   }
 
-    // Function to respawn the player at the initial spawn point
+  // Function to respawn the player at the initial spawn point
   void respawnPlayer() {
     myPlayer = Player(position: playerSpawnPoint);
     world.add(myPlayer);
