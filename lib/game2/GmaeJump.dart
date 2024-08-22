@@ -1,6 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cardgame/game2/Level/game.dart';
+import 'package:flutter_cardgame/game2/Level/Jump1.dart';
 
 import 'components/BackButtonOverlay.dart';
 
@@ -101,7 +101,7 @@ class _GmaeJumpState extends State<GmaeJump> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => GameWidget(
-                                game: MyGame(),
+                                game: Jump1(),
                                 overlayBuilderMap: {
                                   'BackButton': (context, game) =>
                                       BackButtonOverlay(

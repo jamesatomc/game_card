@@ -14,7 +14,7 @@ import 'package:flutter_cardgame/game2/components/ground.dart';
 import 'package:flutter_cardgame/game2/components/monsters.dart';
 import 'package:flutter_cardgame/game2/components/player.dart';
 
-class MyGame extends FlameGame
+class Jump1 extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection, TapCallbacks {
   late Player myPlayer;
   late Cion myCoin;
