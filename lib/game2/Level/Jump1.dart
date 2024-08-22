@@ -29,8 +29,29 @@ class Jump1 extends FlameGame
   late SpriteComponent background;
   late Vector2 playerSpawnPoint; // Declare playerSpawnPoint here
 
+  int lives = 2; // Start with 2 lives
+  int initialLives = 2; // Store the initial number of lives
+
+  late TextComponent livesText; // Declare a TextComponent for lives
+
   @override
   FutureOr<void> onLoad() async {
+    initialLives = lives; // Initialize initialLives in onLoad
+
+    // Initialize livesText
+    livesText = TextComponent(
+      text: 'Lives: $lives',
+      position: Vector2(10, 10), // Adjust position as needed
+      anchor: Anchor.topLeft, // Align text to top-left
+      textRenderer: TextPaint(
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+        ),
+      ),
+    );
+    camera.viewport.add(livesText); // Add livesText to the camera viewport
+
     // Load the GIF background
     background = SpriteComponent()
       ..sprite = await loadSprite('bg2.gif')
@@ -154,9 +175,8 @@ class Jump1 extends FlameGame
 
     // Check for collisions with monsters or bumpy
     if (myPlayer.hasCollided) {
-      // Handle player getting hit by monsters or bumpy
-      myPlayer.removeFromParent(); // Remove the player from the game
-      showGameOver(); // Show the game over screen
+      myPlayer.removeFromParent();
+      respawnPlayer(); // Respawn the player immediately
     }
   }
 
@@ -191,11 +211,39 @@ class Jump1 extends FlameGame
     );
   }
 
+
   // Function to respawn the player at the initial spawn point
   void respawnPlayer() {
-    myPlayer = Player(position: playerSpawnPoint);
-    world.add(myPlayer);
-    camera.follow(myPlayer);
-    camera.viewfinder.position = playerSpawnPoint; // Directly set the camera's position to the player's position
+    if (lives > 0) {
+      lives--;
+      myPlayer = Player(position: playerSpawnPoint);
+      world.add(myPlayer);
+      camera.follow(myPlayer);
+      camera.viewfinder.position = playerSpawnPoint;
+
+      // Update livesText whenever lives change
+      livesText.text = 'Lives: $lives';
+
+      if (lives == 0) {
+        showGameOver(); // Show game over when lives reach 0
+      }
+    } else {
+      resetGame(); // Call resetGame when lives reach 0
+    }
+  }
+
+  // Function to reset the game to its initial state
+  void resetGame() {
+    lives = initialLives; // Reset lives to the initial value
+    livesText.text = 'Lives: $lives'; // Update livesText
+
+    // Remove existing game objects (player, monsters, coins, etc.)
+    world.removeAll(world.children);
+
+    // Reload the game world (add player, monsters, coins, etc.)
+    onLoad(); // You might need to modify onLoad to handle resetting properly
+
+    // Remove the Game Over overlay
+    overlays.remove('GameOver');
   }
 }
