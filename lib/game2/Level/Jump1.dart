@@ -26,6 +26,7 @@ class Jump1 extends FlameGame
   late JoystickComponent joystick;
   late JoystickComponent jump;
   late SpriteComponent background;
+  late Vector2 playerSpawnPoint; // Declare playerSpawnPoint here
 
   @override
   FutureOr<void> onLoad() async {
@@ -54,6 +55,7 @@ class Jump1 extends FlameGame
     for (final spawnPoint in spawnPointsLayer!.objects) {
       switch (spawnPoint.class_) {
         case "player":
+          playerSpawnPoint = spawnPoint.position; // Store the spawn point
           myPlayer = Player(position: spawnPoint.position);
           world.add(myPlayer);
           camera.follow(myPlayer);
@@ -97,25 +99,30 @@ class Jump1 extends FlameGame
     }
 
     // Use a camera component that adjusts to the screen size
-    camera = CameraComponent.withFixedResolution(
+    camera = CameraComponent(
       world: world,
-      width: mapWidth.toDouble(), // Set the desired game width
-      height: mapHeight.toDouble(), // Set the desired game height
     );
+
+    // Set the camera zoom to fit the map height to the screen height
+    final screenSize = size; // Get the screen size
+    final zoomFactor = screenSize.y / mapHeight;
+    camera.viewfinder.zoom = zoomFactor;
+
     camera.viewfinder.anchor = Anchor.topLeft;
 
     joystick = JoystickComponent(
         knob: CircleComponent(
-            radius: 75, paint: Paint()..color = Colors.white.withOpacity(0.50)),
+            radius: 40, paint: Paint()..color = Colors.white.withOpacity(0.50)),
         background: CircleComponent(
-            radius: 150, paint: Paint()..color = Colors.white.withOpacity(0.50)),
-        margin: EdgeInsets.only(left: 50, bottom: 10));
+            radius: 50,
+            paint: Paint()..color = Colors.white.withOpacity(0.50)),
+        margin: EdgeInsets.only(left: 50, bottom: 30));
 
     jump = JoystickComponent(
       knob: CircleComponent(),
       background: CircleComponent(
-          radius: 100, paint: Paint()..color = Colors.white.withOpacity(0.50)),
-      margin: EdgeInsets.only(right: 50, bottom: 10),
+          radius: 30, paint: Paint()..color = Colors.white.withOpacity(0.50)),
+      margin: EdgeInsets.only(right: 50, bottom: 30),
     );
 
     await camera.viewport.add(jump);
@@ -131,6 +138,7 @@ class Jump1 extends FlameGame
     myPlayer.moveJump();
   }
 
+
   @override
   void update(double dt) {
     super.update(dt);
@@ -141,6 +149,7 @@ class Jump1 extends FlameGame
       // Handle player getting hit by monsters or bumpy
       // For example:
       myPlayer.removeFromParent(); // Remove the player from the game
+      respawnPlayer(); // Respawn the player at the starting point
       // You can add other actions like restarting the game or showing a game over screen
     }
   }
@@ -165,5 +174,12 @@ class Jump1 extends FlameGame
     camera.viewport = FixedResolutionViewport(
       resolution: size,
     );
+  }
+
+    // Function to respawn the player at the initial spawn point
+  void respawnPlayer() {
+    myPlayer = Player(position: playerSpawnPoint);
+    world.add(myPlayer);
+    camera.follow(myPlayer);
   }
 }
