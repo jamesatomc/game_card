@@ -95,15 +95,7 @@ class Jump1 extends FlameGame
           GroundBlock(position: groundPoint.position, size: groundPoint.size);
       world.add(grounds);
     }
-
-    // camera.viewport = FixedResolutionViewport(
-    //   resolution: Vector2(720, 640),
-    // );
-    // camera.setBounds(
-    //   Rectangle.fromLTRB(size.x / 2, size.y / 2, level.width - size.x / 2,
-    //       level.height - size.y / 2),
-    // );
-
+    
     // Use a camera component that adjusts to the screen size
     camera = CameraComponent.withFixedResolution(
       world: world,
