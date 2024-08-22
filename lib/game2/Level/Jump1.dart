@@ -10,6 +10,7 @@ import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cardgame/game2/components/bumpy.dart';
 import 'package:flutter_cardgame/game2/components/cion.dart';
+import 'package:flutter_cardgame/game2/components/game_over_overlay.dart';
 import 'package:flutter_cardgame/game2/components/ground.dart';
 import 'package:flutter_cardgame/game2/components/monsters.dart';
 import 'package:flutter_cardgame/game2/components/player.dart';
@@ -115,19 +116,28 @@ class Jump1 extends FlameGame
             radius: 40, paint: Paint()..color = Colors.white.withOpacity(0.50)),
         background: CircleComponent(
             radius: 50, paint: Paint()..color = Colors.white.withOpacity(0.50)),
-        margin: EdgeInsets.only(left: 50, bottom: 30));
+        margin: const EdgeInsets.only(left: 50, bottom: 30));
 
     jump = JoystickComponent(
       knob: CircleComponent(),
       background: CircleComponent(
           radius: 30, paint: Paint()..color = Colors.white.withOpacity(0.50)),
-      margin: EdgeInsets.only(right: 50, bottom: 30),
+      margin: const EdgeInsets.only(right: 50, bottom: 30),
     );
 
     await camera.viewport.add(jump);
     await camera.viewport.add(joystick);
 
     joystick.priority = 0;
+
+    // Register the game over overlay
+    overlays.addEntry(
+      'GameOver',
+      (context, game) => GameOverOverlay(
+        onRestart: restartGame,
+      ),
+    );
+
     return super.onLoad();
   }
 
@@ -145,11 +155,18 @@ class Jump1 extends FlameGame
     // Check for collisions with monsters or bumpy
     if (myPlayer.hasCollided) {
       // Handle player getting hit by monsters or bumpy
-      // For example:
       myPlayer.removeFromParent(); // Remove the player from the game
-      respawnPlayer(); // Respawn the player at the starting point
-      // You can add other actions like restarting the game or showing a game over screen
+      showGameOver(); // Show the game over screen
     }
+  }
+
+  void showGameOver() {
+    overlays.add('GameOver');
+  }
+
+  void restartGame() {
+    overlays.remove('GameOver');
+    respawnPlayer();
   }
 
   updateJoystrick() {
@@ -179,5 +196,6 @@ class Jump1 extends FlameGame
     myPlayer = Player(position: playerSpawnPoint);
     world.add(myPlayer);
     camera.follow(myPlayer);
+    camera.viewfinder.position = playerSpawnPoint; // Directly set the camera's position to the player's position
   }
 }
