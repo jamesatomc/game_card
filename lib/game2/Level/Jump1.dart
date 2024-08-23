@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'dart:async';
 
 import 'package:flame/camera.dart';
@@ -44,7 +45,7 @@ class Jump1 extends FlameGame
       position: Vector2(10, 10), // Adjust position as needed
       anchor: Anchor.topLeft, // Align text to top-left
       textRenderer: TextPaint(
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 20,
         ),
@@ -80,7 +81,7 @@ class Jump1 extends FlameGame
           playerSpawnPoint = spawnPoint.position; // Store the spawn point
           myPlayer = Player(position: spawnPoint.position);
           world.add(myPlayer);
-          camera.follow(myPlayer);
+          camera.follow(myPlayer); // Ensure camera follows the player
           break;
       }
       FlameAudio.bgm.play(
@@ -130,7 +131,8 @@ class Jump1 extends FlameGame
     final zoomFactor = screenSize.y / mapHeight;
     camera.viewfinder.zoom = zoomFactor;
 
-    camera.viewfinder.anchor = Anchor.topLeft;
+    // Set the camera anchor to the center
+    camera.viewfinder.anchor = Anchor.center;
 
     joystick = JoystickComponent(
         knob: CircleComponent(
@@ -178,6 +180,9 @@ class Jump1 extends FlameGame
       myPlayer.removeFromParent();
       respawnPlayer(); // Respawn the player immediately
     }
+
+    // Ensure the camera follows the player
+    camera.follow(myPlayer);
   }
 
   void showGameOver() {
@@ -202,7 +207,6 @@ class Jump1 extends FlameGame
     }
   }
 
-  @override
   void onResize(Vector2 size) {
     // Update camera or other components based on the new screen size
     // For example:
@@ -211,14 +215,13 @@ class Jump1 extends FlameGame
     );
   }
 
-
   // Function to respawn the player at the initial spawn point
   void respawnPlayer() {
     if (lives > 0) {
       lives--;
       myPlayer = Player(position: playerSpawnPoint);
       world.add(myPlayer);
-      camera.follow(myPlayer);
+      camera.follow(myPlayer); // Ensure camera follows the player
       camera.viewfinder.position = playerSpawnPoint;
 
       // Update livesText whenever lives change
