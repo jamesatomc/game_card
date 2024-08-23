@@ -34,8 +34,6 @@ class Jump1 extends FlameGame
 
   late TextComponent livesText; // Declare a TextComponent for lives
 
-  bool isGameOver = false; // Track if the game is over
-
   @override
   FutureOr<void> onLoad() async {
     initialLives = lives; // Initialize initialLives in onLoad
@@ -167,33 +165,27 @@ class Jump1 extends FlameGame
   @override
   void onTapUp(TapUpEvent event) async {
     super.onTapUp(event);
-    if (!isGameOver) {
-      myPlayer.moveJump();
-    }
+    myPlayer.moveJump();
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-    if (!isGameOver) {
-      updateJoystrick();
+    updateJoystrick();
 
-      // Check for collisions with monsters or bumpy
-      if (myPlayer.hasCollided) {
-        myPlayer.removeFromParent();
-        respawnPlayer(); // Respawn the player immediately
-      }
+    // Check for collisions with monsters or bumpy
+    if (myPlayer.hasCollided) {
+      myPlayer.removeFromParent();
+      respawnPlayer(); // Respawn the player immediately
     }
   }
 
   void showGameOver() {
-    isGameOver = true; // Set the game over flag
     overlays.add('GameOver');
   }
 
   void restartGame() {
     overlays.remove('GameOver');
-    isGameOver = false; // Reset the game over flag
     respawnPlayer();
   }
 
@@ -218,6 +210,7 @@ class Jump1 extends FlameGame
       resolution: size,
     );
   }
+
 
   // Function to respawn the player at the initial spawn point
   void respawnPlayer() {
