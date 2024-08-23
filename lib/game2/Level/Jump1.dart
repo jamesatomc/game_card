@@ -35,6 +35,8 @@ class Jump1 extends FlameGame
 
   late TextComponent livesText; // Declare a TextComponent for lives
 
+  bool isPlayerDead = false; // Flag to track if the player is dead
+
   @override
   FutureOr<void> onLoad() async {
     initialLives = lives; // Initialize initialLives in onLoad
@@ -167,7 +169,9 @@ class Jump1 extends FlameGame
   @override
   void onTapUp(TapUpEvent event) async {
     super.onTapUp(event);
-    myPlayer.moveJump();
+    if (!isPlayerDead) {
+      myPlayer.moveJump();
+    }
   }
 
   @override
@@ -195,15 +199,17 @@ class Jump1 extends FlameGame
   }
 
   updateJoystrick() {
-    switch (joystick.direction) {
-      case JoystickDirection.left:
-        myPlayer.moveLeft();
-        break;
-      case JoystickDirection.right:
-        myPlayer.moveRight();
-        break;
-      default:
-        myPlayer.moveNone();
+    if (!isPlayerDead) {
+      switch (joystick.direction) {
+        case JoystickDirection.left:
+          myPlayer.moveLeft();
+          break;
+        case JoystickDirection.right:
+          myPlayer.moveRight();
+          break;
+        default:
+          myPlayer.moveNone();
+      }
     }
   }
 
@@ -228,6 +234,7 @@ class Jump1 extends FlameGame
       livesText.text = 'Lives: $lives';
 
       if (lives == 0) {
+        isPlayerDead = true; // Set player dead flag to true
         showGameOver(); // Show game over when lives reach 0
       }
     } else {
@@ -248,5 +255,8 @@ class Jump1 extends FlameGame
 
     // Remove the Game Over overlay
     overlays.remove('GameOver');
+
+    // Reset the player dead flag
+    isPlayerDead = false;
   }
 }
