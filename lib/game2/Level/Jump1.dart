@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame_audio/flame_audio.dart';
@@ -41,14 +42,14 @@ class Jump1 extends FlameGame
   FutureOr<void> onLoad() async {
     initialLives = lives; // Initialize initialLives in onLoad
 
-    // Initialize livesText
+// Initialize livesText
     livesText = TextComponent(
       text: 'Lives: $lives',
-      position: Vector2(10, 10), // Adjust position as needed
-      anchor: Anchor.topLeft, // Align text to top-left
+      position: Vector2(size.x - 10, 10), // Position on the far right
+      anchor: Anchor.topRight, // Align text to top-right
       textRenderer: TextPaint(
         style: const TextStyle(
-          color: Colors.white,
+          color: Color.fromARGB(255, 255, 0, 0),
           fontSize: 20,
         ),
       ),
@@ -123,15 +124,23 @@ class Jump1 extends FlameGame
       world.add(grounds);
     }
 
-    // Use a camera component that adjusts to the screen size
-    camera = CameraComponent(
-      world: world,
+    // camera.viewport = FixedResolutionViewport(
+    //   resolution: Vector2(720, 640),
+    // );
+    camera.setBounds(
+      Rectangle.fromLTRB(size.x / 2, size.y / 2, level.width - size.x / 2,
+          level.height - size.y / 2),
     );
 
-    // Set the camera zoom to fit the map height to the screen height
-    final screenSize = size; // Get the screen size
-    final zoomFactor = screenSize.y / mapHeight;
-    camera.viewfinder.zoom = zoomFactor;
+    // // Use a camera component that adjusts to the screen size
+    // camera = CameraComponent(
+    //   world: world,
+    // );
+
+    // // Set the camera zoom to fit the map height to the screen height
+    // final screenSize = size; // Get the screen size
+    // final zoomFactor = screenSize.y / mapHeight;
+    // camera.viewfinder.zoom = zoomFactor;
 
     // Set the camera anchor to the center
     camera.viewfinder.anchor = Anchor.center;
