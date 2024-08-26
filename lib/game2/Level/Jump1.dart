@@ -128,7 +128,7 @@ class Jump1 extends FlameGame
     //   resolution: Vector2(720, 640),
     // );
     camera.setBounds(
-      Rectangle.fromLTRB(size.x / 2, size.y / 2, level.width - size.x / 2,
+      Rectangle.fromLTRB(size.x / 2, size.y / 2.4, level.width - size.x / 2,
           level.height - size.y / 2),
     );
 
