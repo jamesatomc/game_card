@@ -13,7 +13,7 @@ class GameOverOverlay extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            const Text(
               'Game Over',
               style: TextStyle(fontSize: 48, color: Colors.red),
             ),
