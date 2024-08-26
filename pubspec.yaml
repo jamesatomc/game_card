@@ -64,29 +64,11 @@ flutter:
     - assets/audio/
     - assets/sounds/
 #gamecard
-    #images
     - assets/gamecard/
-    - assets/gamecard/images/im1/
-    - assets/gamecard/images/im2/
-    - assets/gamecard/images/im3/
-    - assets/gamecard/images/im4/
-    - assets/gamecard/images/im5/
-    - assets/gamecard/images/im6/
-    - assets/gamecard/images/im7/
-    - assets/gamecard/images/im8/
-    - assets/gamecard/images/im9/
-    - assets/gamecard/images/im10/
+    #images
+    - assets/gamecard/images/
     #england
-    - assets/gamecard/england/l1/
-    - assets/gamecard/england/l2/
-    - assets/gamecard/england/l3/
-    - assets/gamecard/england/l4/
-    - assets/gamecard/england/l5/
-    - assets/gamecard/england/l6/
-    - assets/gamecard/england/l7/
-    - assets/gamecard/england/l8/
-    - assets/gamecard/england/l9/
-    - assets/gamecard/england/l10/
+    - assets/gamecard/england/
 #game2
     - assets/images/
     - assets/tiles/
