@@ -1,20 +1,20 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_cardgame/gamecard/components/info_card.dart';
-import 'package:flutter_cardgame/gamecard/utils/game_utils2.dart';
+import 'package:flutter_cardgame/game1/components/info_card.dart';
+import 'package:flutter_cardgame/game1/utils/game_utils8.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart'; // Import the audioplayers package
 
-import 'Level3Screen.dart';
+import 'Level9Screen.dart';
 
-class Level2Screen extends StatefulWidget {
-  const Level2Screen({super.key});
+class Level8Screen extends StatefulWidget {
+  const Level8Screen({super.key});
 
   @override
-  _Level2ScreenState createState() => _Level2ScreenState();
+  _Level8ScreenState createState() => _Level8ScreenState();
 }
 
-class _Level2ScreenState extends State<Level2Screen> {
+class _Level8ScreenState extends State<Level8Screen> {
   //setting text style
   bool hideTest = false;
   final Game _game = Game();
@@ -24,7 +24,7 @@ class _Level2ScreenState extends State<Level2Screen> {
   //game stats
   int tries = 0;
   double score = 0; // เปลี่ยน score เป็น double เพื่อเก็บคะแนนทศนิยม
-  int level2HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 2
+  int level8HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 8
 
   int matchedPairs = 0;
   late Timer _timer;
@@ -54,7 +54,7 @@ class _Level2ScreenState extends State<Level2Screen> {
   Future<void> _loadHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      level2HighScore = prefs.getInt('level2HighScore') ??
+      level8HighScore = prefs.getInt('level8HighScore') ??
           0; // โหลด high score จาก SharedPreferences
     });
   }
@@ -62,12 +62,11 @@ class _Level2ScreenState extends State<Level2Screen> {
   // ฟังก์ชันสำหรับบันทึก high score ลง SharedPreferences
   Future<void> _saveHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (score > level2HighScore) {
-      prefs.setInt('level2HighScore',
+    if (score > level8HighScore) {
+      prefs.setInt('level8HighScore',
           score.toInt()); // บันทึก high score ลง SharedPreferences
       setState(() {
-        level2HighScore =
-            score.toInt(); // บันทึก high score ลงตัวแปร level2HighScore
+        level8HighScore = score.toInt(); // อัปเดต high score ใน state
       });
     }
   }
@@ -102,7 +101,7 @@ class _Level2ScreenState extends State<Level2Screen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Level Complete!'),
-          content: Text('Congratulations! You\'ve completed Level 2.'),
+          content: Text('Congratulations! You\'ve completed Level 8.'),
           actions: <Widget>[
             TextButton(
               child: Text('Play Again'),
@@ -112,22 +111,22 @@ class _Level2ScreenState extends State<Level2Screen> {
               },
             ),
             TextButton(
-              child: Text('Next Leve 3'),
+              child: Text('Next Leve 9'),
               onPressed: () {
-                if (score >= 6) {
+                if (score >= 7.5) {
                   // เพิ่มเงื่อนไขตรวจสอบคะแนน
                   Navigator.of(context).pop();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const Level3Screen()),
+                        builder: (context) => const Level9Screen()),
                   );
                 } else {
                   // แสดงข้อความแจ้งเตือนว่าคะแนนไม่ถึง
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                         content: Text(
-                            'You need at least 6 points to proceed to Level 3.')),
+                            'You need at least 7.5 points to proceed to Level 9.')),
                   );
                 }
               },
@@ -184,7 +183,7 @@ class _Level2ScreenState extends State<Level2Screen> {
 
       if (_game.checkMatch(firstIndex, secondIndex)) {
         setState(() {
-          score += 2.5; // เพิ่มคะแนน 2.5 คะแนนเมื่อจับคู่ถูก
+          score += 1.666666666666667; // เพิ่มคะแนน 1.666666666666667 คะแนนเมื่อจับคู่ถูก
           matchedPairs++;
           matchedCardIndices.addAll(
               [firstIndex, secondIndex]); // เพิ่ม index ของไพ่ที่จับคู่กันแล้ว
@@ -198,15 +197,15 @@ class _Level2ScreenState extends State<Level2Screen> {
       } else {
         // จับคู่ผิด ไม่ให้คะแนน และอาจลดคะแนนถ้าต้องการ
         setState(() {
-          score = score > 1.5
-              ? score - 1.5
-              : 0; // ลดคะแนน 1.5 คะแนนเมื่อจับคู่ผิด แต่ไม่ติดลบ
+          score = score > 1
+              ? score - 1
+              : 0; // ลดคะแนน 1.2 คะแนนเมื่อจับคู่ผิด แต่ไม่ติดลบ
           mismatchedCardIndices = [
             firstIndex,
             secondIndex
           ]; // Track mismatched cards
         });
-        playLevelCompleteSound(); // Play sound when level is completed
+        playCardMismatchSound(); // Play sound when cards do not match
         Future.delayed(Duration(milliseconds: 500), () {
           setState(() {
             _game.gameImg![firstIndex] = _game.hiddenCardpath;
@@ -308,14 +307,14 @@ class _Level2ScreenState extends State<Level2Screen> {
                       );
                     },
                   ),
-                  Text('Level 2',
+                  Text('Level 8',
                       style: TextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.bold)),
                   info_card("Tries", "$tries"),
                   info_card("Score",
                       "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
                   info_card("High Score",
-                      "$level2HighScore"), // แสดง high score ของ Level 2
+                      "$level8HighScore"), // แสดง high score ของ Level 8
                   info_card("Time",
                       "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
                   // Wrap the button in an AnimatedCrossFade to control its visibility

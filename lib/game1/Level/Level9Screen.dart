@@ -1,19 +1,20 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_cardgame/gamecard/components/info_card.dart';
-import 'package:flutter_cardgame/gamecard/utils/game_utils10.dart';
+import 'package:flutter_cardgame/game1/components/info_card.dart';
+import 'package:flutter_cardgame/game1/utils/game_utils9.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart'; // Import the audioplayers package
-import 'package:flutter_cardgame/gamecard/GameCard.dart';
 
-class Level10Screen extends StatefulWidget {
-  const Level10Screen({super.key});
+import 'Level10Screen.dart';
+
+class Level9Screen extends StatefulWidget {
+  const Level9Screen({super.key});
 
   @override
-  _Level10ScreenState createState() => _Level10ScreenState();
+  _Level9ScreenState createState() => _Level9ScreenState();
 }
 
-class _Level10ScreenState extends State<Level10Screen> {
+class _Level9ScreenState extends State<Level9Screen> {
   //setting text style
   bool hideTest = false;
   final Game _game = Game();
@@ -23,7 +24,7 @@ class _Level10ScreenState extends State<Level10Screen> {
   //game stats
   int tries = 0;
   double score = 0; // เปลี่ยน score เป็น double เพื่อเก็บคะแนนทศนิยม
-  int level10HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 10
+  int level9HighScore = 0; // เพิ่มตัวแปรสำหรับเก็บ high score ของ Level 9
 
   int matchedPairs = 0;
   late Timer _timer;
@@ -53,7 +54,7 @@ class _Level10ScreenState extends State<Level10Screen> {
   Future<void> _loadHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      level10HighScore = prefs.getInt('level10HighScore') ??
+      level9HighScore = prefs.getInt('level9HighScore') ??
           0; // โหลด high score จาก SharedPreferences
     });
   }
@@ -61,11 +62,11 @@ class _Level10ScreenState extends State<Level10Screen> {
   // ฟังก์ชันสำหรับบันทึก high score ลง SharedPreferences
   Future<void> _saveHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (score > level10HighScore) {
-      prefs.setInt('level10HighScore',
+    if (score > level9HighScore) {
+      prefs.setInt('leve91HighScore',
           score.toInt()); // บันทึก high score ลง SharedPreferences
       setState(() {
-        level10HighScore = score.toInt(); // อัปเดต high score ใน state
+        level9HighScore = score.toInt(); // อัปเดต high score ใน state
       });
     }
   }
@@ -100,7 +101,7 @@ class _Level10ScreenState extends State<Level10Screen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Level Complete!'),
-          content: Text('Congratulations! You\'ve completed Level 10.'),
+          content: Text('Congratulations! You\'ve completed Level 9.'),
           actions: <Widget>[
             TextButton(
               child: Text('Play Again'),
@@ -110,22 +111,22 @@ class _Level10ScreenState extends State<Level10Screen> {
               },
             ),
             TextButton(
-              child: Text('Passed every checkpoint'),
+              child: Text('Next Leve 10'),
               onPressed: () {
-                if (score >= 8) {
+                if (score >= 7.5) {
                   // เพิ่มเงื่อนไขตรวจสอบคะแนน
                   Navigator.of(context).pop();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const GameCardScreen()),
+                        builder: (context) => const Level10Screen()),
                   );
                 } else {
                   // แสดงข้อความแจ้งเตือนว่าคะแนนไม่ถึง
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                         content: Text(
-                            'You need at least 8 points to proceed to Level 10.')),
+                            'You need at least 7.5 points to proceed to Level 10.')),
                   );
                 }
               },
@@ -182,8 +183,7 @@ class _Level10ScreenState extends State<Level10Screen> {
 
       if (_game.checkMatch(firstIndex, secondIndex)) {
         setState(() {
-          score +=
-              1.428571428571429; // เพิ่มคะแนน 1.428571428571429 คะแนนเมื่อจับคู่ถูก
+          score += 1.666666666666667; // เพิ่มคะแนน 1.666666666666667 คะแนนเมื่อจับคู่ถูก
           matchedPairs++;
           matchedCardIndices.addAll(
               [firstIndex, secondIndex]); // เพิ่ม index ของไพ่ที่จับคู่กันแล้ว
@@ -197,9 +197,9 @@ class _Level10ScreenState extends State<Level10Screen> {
       } else {
         // จับคู่ผิด ไม่ให้คะแนน และอาจลดคะแนนถ้าต้องการ
         setState(() {
-          score = score > 0.5
-              ? score - 0.5
-              : 0; // ลดคะแนน 0.5 คะแนนเมื่อจับคู่ผิด แต่ไม่ติดลบ
+          score = score > 1
+              ? score - 1
+              : 0; // ลดคะแนน 1 คะแนนเมื่อจับคู่ผิด แต่ไม่ติดลบ
           mismatchedCardIndices = [
             firstIndex,
             secondIndex
@@ -307,14 +307,14 @@ class _Level10ScreenState extends State<Level10Screen> {
                       );
                     },
                   ),
-                  Text('Level 10',
+                  Text('Level 9',
                       style: TextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.bold)),
                   info_card("Tries", "$tries"),
                   info_card("Score",
                       "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
                   info_card("High Score",
-                      "$level10HighScore"), // แสดง high score ของ Level 10
+                      "$level9HighScore"), // แสดง high score ของ Level 9
                   info_card("Time",
                       "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
                   // Wrap the button in an AnimatedCrossFade to control its visibility

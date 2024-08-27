@@ -29,24 +29,33 @@ class Jump1 extends FlameGame
   late JoystickComponent joystick;
   late JoystickComponent jump;
   late SpriteComponent background;
-  late Vector2 playerSpawnPoint; // Declare playerSpawnPoint here
+  late Vector2 playerSpawnPoint;
 
-  int lives = 2; // Start with 2 lives
-  int initialLives = 2; // Store the initial number of lives
+  int lives = 2;
+  int initialLives = 2;
 
-  late TextComponent livesText; // Declare a TextComponent for lives
+  late TextComponent livesText;
 
-  bool isPlayerDead = false; // Flag to track if the player is dead
+  bool isPlayerDead = false;
 
   @override
   FutureOr<void> onLoad() async {
-    initialLives = lives; // Initialize initialLives in onLoad
+    initialLives = lives;
 
-// Initialize livesText
+    _initializeLivesText();
+    await _loadBackground();
+    await _loadLevel();
+    _initializeJoystick();
+    _registerGameOverOverlay();
+
+    return super.onLoad();
+  }
+
+  void _initializeLivesText() {
     livesText = TextComponent(
       text: 'Lives: $lives',
-      position: Vector2(size.x - 10, 10), // Position on the far right
-      anchor: Anchor.topRight, // Align text to top-right
+      position: Vector2(size.x - 10, 10),
+      anchor: Anchor.topRight,
       textRenderer: TextPaint(
         style: const TextStyle(
           color: Color.fromARGB(255, 255, 0, 0),
@@ -54,125 +63,105 @@ class Jump1 extends FlameGame
         ),
       ),
     );
-    camera.viewport.add(livesText); // Add livesText to the camera viewport
+    camera.viewport.add(livesText);
+  }
 
-    // Load the GIF background
+  Future<void> _loadBackground() async {
     background = SpriteComponent()
       ..sprite = await loadSprite('bg2.gif')
       ..size = size;
-
-    // Add the background to the game world
     add(background);
+  }
 
-    final level = await TiledComponent.load(
-      "map.tmx",
-      Vector2.all(32),
-    );
-
+  Future<void> _loadLevel() async {
+    final level = await TiledComponent.load("map.tmx", Vector2.all(32));
     overlays.add('BackButton');
-    FlameAudio.bgm.stop(); // Stop the background music
+    FlameAudio.bgm.stop();
 
     mapWidth = (level.tileMap.map.width * level.tileMap.destTileSize.x).toInt();
-    mapHeight =
-        (level.tileMap.map.height * level.tileMap.destTileSize.y).toInt();
+    mapHeight = (level.tileMap.map.height * level.tileMap.destTileSize.y).toInt();
     world.add(level);
 
+    _loadSpawnPoints(level);
+    _loadCoins(level);
+    _loadMonsters(level);
+    _loadGround(level);
+
+    camera.setBounds(
+      Rectangle.fromLTRB(size.x / 2, size.y / 2.4, level.width - size.x / 2, level.height - size.y / 2),
+    );
+    camera.viewfinder.anchor = Anchor.center;
+  }
+
+  void _loadSpawnPoints(TiledComponent level) {
     final spawnPointsLayer = level.tileMap.getLayer<ObjectGroup>("spawn");
     for (final spawnPoint in spawnPointsLayer!.objects) {
-      switch (spawnPoint.class_) {
-        case "player":
-          playerSpawnPoint = spawnPoint.position; // Store the spawn point
-          myPlayer = Player(position: spawnPoint.position);
-          world.add(myPlayer);
-          camera.follow(myPlayer); // Ensure camera follows the player
-          break;
+      if (spawnPoint.class_ == "player") {
+        playerSpawnPoint = spawnPoint.position;
+        myPlayer = Player(position: spawnPoint.position);
+        world.add(myPlayer);
+        camera.follow(myPlayer);
+        FlameAudio.bgm.play("bg.mp3");
       }
-      FlameAudio.bgm.play(
-        "bg.mp3",
-      );
     }
+  }
 
+  void _loadCoins(TiledComponent level) {
     final coinPointsLayer = level.tileMap.getLayer<ObjectGroup>("coin");
     for (final coinPoint in coinPointsLayer!.objects) {
-      switch (coinPoint.class_) {
-        case "coin":
-          myCoin = Cion(position: coinPoint.position);
-          world.add(myCoin);
-          break;
+      if (coinPoint.class_ == "coin") {
+        myCoin = Cion(position: coinPoint.position);
+        world.add(myCoin);
       }
     }
+  }
 
+  void _loadMonsters(TiledComponent level) {
     final monstersPointsLayer = level.tileMap.getLayer<ObjectGroup>("monsters");
     for (final monstersPoint in monstersPointsLayer!.objects) {
-      switch (monstersPoint.class_) {
-        case "monsters":
-          monsters = Monsters(position: monstersPoint.position);
-          world.add(monsters);
-          break;
-
-        case "bumpy":
-          final bumpy = Bumpy(position: monstersPoint.position);
-          world.add(bumpy);
-          break;
+      if (monstersPoint.class_ == "monsters") {
+        monsters = Monsters(position: monstersPoint.position);
+        world.add(monsters);
+      } else if (monstersPoint.class_ == "bumpy") {
+        final bumpy = Bumpy(position: monstersPoint.position);
+        world.add(bumpy);
       }
     }
+  }
 
+  void _loadGround(TiledComponent level) {
     final groundLayer = level.tileMap.getLayer<ObjectGroup>("ground");
     for (final groundPoint in groundLayer!.objects) {
-      final grounds =
-          GroundBlock(position: groundPoint.position, size: groundPoint.size);
-      world.add(grounds);
+      final ground = GroundBlock(position: groundPoint.position, size: groundPoint.size);
+      world.add(ground);
     }
+  }
 
-    // camera.viewport = FixedResolutionViewport(
-    //   resolution: Vector2(720, 640),
-    // );
-    camera.setBounds(
-      Rectangle.fromLTRB(size.x / 2, size.y / 2.4, level.width - size.x / 2,
-          level.height - size.y / 2),
-    );
-
-    // // Use a camera component that adjusts to the screen size
-    // camera = CameraComponent(
-    //   world: world,
-    // );
-
-    // // Set the camera zoom to fit the map height to the screen height
-    // final screenSize = size; // Get the screen size
-    // final zoomFactor = screenSize.y / mapHeight;
-    // camera.viewfinder.zoom = zoomFactor;
-
-    // Set the camera anchor to the center
-    camera.viewfinder.anchor = Anchor.center;
-
+  void _initializeJoystick() {
     joystick = JoystickComponent(
-        knob: CircleComponent(
-            radius: 40, paint: Paint()..color = Colors.redAccent.withOpacity(0.50)),
-        background: CircleComponent(
-            radius: 50, paint: Paint()..color = Colors.white.withOpacity(0.50)),
-        margin: const EdgeInsets.only(left: 50, bottom: 30));
+      knob: CircleComponent(radius: 40, paint: Paint()..color = Colors.redAccent.withOpacity(0.50)),
+      background: CircleComponent(radius: 50, paint: Paint()..color = Colors.white.withOpacity(0.50)),
+      margin: const EdgeInsets.only(left: 50, bottom: 30),
+    );
 
     jump = JoystickComponent(
       knob: CircleComponent(),
-      background: CircleComponent(
-          radius: 30, paint: Paint()..color = Colors.white.withOpacity(0.50)),
+      background: CircleComponent(radius: 30, paint: Paint()..color = Colors.white.withOpacity(0.50)),
       margin: const EdgeInsets.only(right: 50, bottom: 30),
     );
 
-    await camera.viewport.add(jump);
-    await camera.viewport.add(joystick);
-
+    camera.viewport.add(jump);
+    camera.viewport.add(joystick);
     joystick.priority = 0;
+  }
 
-    // Register the game over overlay
+  void _registerGameOverOverlay() {
     overlays.addEntry(
       'GameOver',
       (context, game) => GameOverOverlay(
         onRestart: restartGame,
       ),
     );
-
-    return super.onLoad();
   }
 
   @override
@@ -186,28 +175,17 @@ class Jump1 extends FlameGame
   @override
   void update(double dt) {
     super.update(dt);
-    updateJoystrick();
+    _updateJoystick();
 
-    // Check for collisions with monsters or bumpy
     if (myPlayer.hasCollided) {
       myPlayer.removeFromParent();
-      respawnPlayer(); // Respawn the player immediately
+      _respawnPlayer();
     }
 
-    // Ensure the camera follows the player
     camera.follow(myPlayer);
   }
 
-  void showGameOver() {
-    overlays.add('GameOver');
-  }
-
-  void restartGame() {
-    overlays.remove('GameOver');
-    respawnPlayer();
-  }
-
-  updateJoystrick() {
+  void _updateJoystick() {
     if (!isPlayerDead) {
       switch (joystick.direction) {
         case JoystickDirection.left:
@@ -222,50 +200,44 @@ class Jump1 extends FlameGame
     }
   }
 
+  @override
   void onResize(Vector2 size) {
-    // Update camera or other components based on the new screen size
-    // For example:
-    camera.viewport = FixedResolutionViewport(
-      resolution: size,
-    );
+    camera.viewport = FixedResolutionViewport(resolution: size);
   }
 
-  // Function to respawn the player at the initial spawn point
-  void respawnPlayer() {
+  void _respawnPlayer() {
     if (lives > 0) {
       lives--;
       myPlayer = Player(position: playerSpawnPoint);
       world.add(myPlayer);
-      camera.follow(myPlayer); // Ensure camera follows the player
+      camera.follow(myPlayer);
       camera.viewfinder.position = playerSpawnPoint;
-
-      // Update livesText whenever lives change
       livesText.text = 'Lives: $lives';
 
       if (lives == 0) {
-        isPlayerDead = true; // Set player dead flag to true
-        showGameOver(); // Show game over when lives reach 0
+        isPlayerDead = true;
+        showGameOver();
       }
     } else {
-      resetGame(); // Call resetGame when lives reach 0
+      _resetGame();
     }
   }
 
-  // Function to reset the game to its initial state
-  void resetGame() {
-    lives = initialLives; // Reset lives to the initial value
-    livesText.text = 'Lives: $lives'; // Update livesText
+  void showGameOver() {
+    overlays.add('GameOver');
+  }
 
-    // Remove existing game objects (player, monsters, coins, etc.)
-    world.removeAll(world.children);
-
-    // Reload the game world (add player, monsters, coins, etc.)
-    onLoad(); // You might need to modify onLoad to handle resetting properly
-
-    // Remove the Game Over overlay
+  void restartGame() {
     overlays.remove('GameOver');
+    _respawnPlayer();
+  }
 
-    // Reset the player dead flag
+  void _resetGame() {
+    lives = initialLives;
+    livesText.text = 'Lives: $lives';
+    world.removeAll(world.children);
+    onLoad();
+    overlays.remove('GameOver');
     isPlayerDead = false;
   }
 }

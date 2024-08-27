@@ -1,7 +1,7 @@
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cardgame/gamecard/components/AudioManager.dart';
+import 'package:flutter_cardgame/game1/components/AudioManager.dart';
 
 class MusicToggleButton extends StatefulWidget {
   @override

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter_cardgame/game2/GmaeJump.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'gamecard/GameCard.dart';
+import 'game1/GameCard.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
