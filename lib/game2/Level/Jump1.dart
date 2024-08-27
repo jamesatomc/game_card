@@ -147,7 +147,7 @@ class Jump1 extends FlameGame
 
     joystick = JoystickComponent(
         knob: CircleComponent(
-            radius: 40, paint: Paint()..color = Colors.white.withOpacity(0.50)),
+            radius: 40, paint: Paint()..color = Colors.redAccent.withOpacity(0.50)),
         background: CircleComponent(
             radius: 50, paint: Paint()..color = Colors.white.withOpacity(0.50)),
         margin: const EdgeInsets.only(left: 50, bottom: 30));
