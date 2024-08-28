@@ -59,7 +59,7 @@ class Jump1 extends FlameGame
     // Load the GIF background
     background = SpriteComponent()
       ..sprite = await loadSprite('bg2.gif')
-      ..size = size;
+      ..size = Vector2(size.x, size.y);
 
     // Add the background to the game world
     add(background);
@@ -124,23 +124,11 @@ class Jump1 extends FlameGame
       world.add(grounds);
     }
 
-    // camera.viewport = FixedResolutionViewport(
-    //   resolution: Vector2(720, 640),
-    // );
+
     camera.setBounds(
       Rectangle.fromLTRB(size.x / 2, size.y / 2.4, level.width - size.x / 2,
           level.height - size.y / 2),
     );
-
-    // // Use a camera component that adjusts to the screen size
-    // camera = CameraComponent(
-    //   world: world,
-    // );
-
-    // // Set the camera zoom to fit the map height to the screen height
-    // final screenSize = size; // Get the screen size
-    // final zoomFactor = screenSize.y / mapHeight;
-    // camera.viewfinder.zoom = zoomFactor;
 
     // Set the camera anchor to the center
     camera.viewfinder.anchor = Anchor.center;
@@ -223,8 +211,10 @@ class Jump1 extends FlameGame
   }
 
   void onResize(Vector2 size) {
-    // Update camera or other components based on the new screen size
-    // For example:
+    super.onGameResize(size);
+    // Update background size to match the new screen size
+    background.size = size;
+
     camera.viewport = FixedResolutionViewport(
       resolution: size,
     );

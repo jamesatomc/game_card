@@ -59,27 +59,27 @@ class ManuGame extends StatefulWidget {
 }
 
 class _ManuGameState extends State<ManuGame> {
-  final TextEditingController _nameController = TextEditingController();
-  String? _playerName;
+  // final TextEditingController _nameController = TextEditingController();
+  // String? _playerName;
 
   @override
   void initState() {
     super.initState();
-    _loadPlayerName();
+    // _loadPlayerName();
   }
 
-  Future<void> _loadPlayerName() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _playerName = prefs.getString('playerName');
-      _nameController.text = _playerName ?? '';
-    });
-  }
+  // Future<void> _loadPlayerName() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _playerName = prefs.getString('playerName');
+  //     _nameController.text = _playerName ?? '';
+  //   });
+  // }
 
-  Future<void> _savePlayerName(String name) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('playerName', name);
-  }
+  // Future<void> _savePlayerName(String name) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setString('playerName', name);
+  // }
 
   final AudioPlayer _audioPlayer = AudioPlayer();
 
@@ -88,8 +88,12 @@ class _ManuGameState extends State<ManuGame> {
         'sounds/button_click.mp3')); // Adjust the path to your sound file
   }
 
+  static const double _shadowHeight = 4;
+  double _position = 4;
+
   @override
   Widget build(BuildContext context) {
+    const double _height = 64 - _shadowHeight;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -104,88 +108,133 @@ class _ManuGameState extends State<ManuGame> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Display Player Name (Editable)
-              SizedBox(
-                width: 300, // Increased width for better appearance
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TextField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      hintText: 'Enter your name',
-                      border: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.circular(12.0), // Rounded corners
-                      ),
-                      filled: true,
-                      fillColor: Color.fromARGB(
-                          255, 97, 208, 191), // Light background color
-                      prefixIcon:
-                          Icon(Icons.person), // Icon inside the text field
-                    ),
-                    onChanged: (text) {
-                      _savePlayerName(text); // Save name as the user types
-                      setState(() {
-                        _playerName = text;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                height: 90,
-                width:
-                    260, // Makes the button take the full width of its parent
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 48, vertical: 16),
-                    textStyle: const TextStyle(fontSize: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(20.0), // Rounded corners
-                    ),
-                  ),
-                  onPressed: () {
-                    _playSound();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const GameCardScreen()),
-                    );
-                  },
-                  // ignore: prefer_const_constructors
-                  child: Text(
-                    'Game 1',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
+              // SizedBox(
+              //   width: 300, // Increased width for better appearance
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(16.0),
+              //     child: TextField(
+              //       controller: _nameController,
+              //       decoration: InputDecoration(
+              //         hintText: 'Enter your name',
+              //         border: OutlineInputBorder(
+              //           borderRadius:
+              //               BorderRadius.circular(12.0), // Rounded corners
+              //         ),
+              //         filled: true,
+              //         fillColor: Color.fromARGB(
+              //             255, 97, 208, 191), // Light background color
+              //         prefixIcon:
+              //             Icon(Icons.person), // Icon inside the text field
+              //       ),
+              //       onChanged: (text) {
+              //         _savePlayerName(text); // Save name as the user types
+              //         setState(() {
+              //           _playerName = text;
+              //         });
+              //       },
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(height: 16),
               SizedBox(
                 height: 90,
                 width:
                     260, // Makes the button take the full width of its parent
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 48, vertical: 16),
-                    textStyle: const TextStyle(fontSize: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(20.0), // Rounded corners
-                    ),
-                  ),
-                  onPressed: () {
+                child: GestureDetector(  
+                  onTap: () {
                     _playSound();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const GmaeJump()),
+                      MaterialPageRoute(builder: (context) => const GameCardScreen()),
                     );
                   },
-                  child: const Text('Game 2'),
+                  onTapUp: (_) {
+                    setState(() {
+                      _position = 4;
+                    });
+                  },
+                  onTapDown: (_) {
+                    setState(() {
+                      _position = 0;
+                    });
+                  },
+                  onTapCancel: () {
+                    setState(() {
+                      _position = 4;
+                    });
+                  },
+                  child: Container(
+                    height: _height + _shadowHeight,
+                    width: 200,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          bottom: 0,
+                          child: Container(
+                            height: _height,
+                            width: 200,
+                            decoration: const BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(16),
+                              ),
+                            ),
+                          ),
+                        ),
+                        AnimatedPositioned(
+                          curve: Curves.easeIn,
+                          bottom: _position,
+                          duration: Duration(milliseconds: 70),
+                          child: Container(
+                            height: _height,
+                            width: 200,
+                            decoration: const BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(16),
+                              ),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'Game 1',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
+              // const SizedBox(height: 16),
+              // SizedBox(
+              //   height: 90,
+              //   width:
+              //       260, // Makes the button take the full width of its parent
+              //   child: ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       padding: const EdgeInsets.symmetric(
+              //           horizontal: 48, vertical: 16),
+              //       textStyle: const TextStyle(fontSize: 20),
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius:
+              //             BorderRadius.circular(20.0), // Rounded corners
+              //       ),
+              //     ),
+              //     onPressed: () {
+              //       _playSound();
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(builder: (context) => const GmaeJump()),
+              //       );
+              //     },
+              //     child: const Text('Game 2'),
+              //   ),
+              // ),
             ],
           ),
         ),
