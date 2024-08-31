@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
+import '__name_input_screen.dart';
 import 'manu_game.dart';
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -83,14 +85,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => _NameInputScreen(onSave: _saveUsername),
+                builder: (context) => NameInputScreen(onSave: _saveUsername),
               ),
             );
           } else {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const ManuGame(),
+                builder: (context) => ManuGame(username: username),
               ),
             );
           }
@@ -113,70 +115,52 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.8,
-          child: LinearProgressIndicator(
-            value: _progress,
-            backgroundColor: Colors.grey[300],
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/pixel_background.png"),
+            fit: BoxFit.cover,
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _NameInputScreen extends StatefulWidget {
-  final Function(String) onSave;
-
-  const _NameInputScreen({required this.onSave});
-
-  @override
-  State<_NameInputScreen> createState() => _NameInputScreenState();
-}
-
-class _NameInputScreenState extends State<_NameInputScreen> {
-  final TextEditingController _nameController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Enter your name:',
-              style: TextStyle(fontSize: 20),
-            ),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50),
-              child: TextField(
-                controller: _nameController,
-                textAlign: TextAlign.center,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/pixel_logo.png",
+                width: 200,
+                height: 200,
+              ),
+              const SizedBox(height: 20),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.7,
+                height: 30,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white, width: 2),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Stack(
+                  children: [
+                    Container(
+                      width: (MediaQuery.of(context).size.width * 0.7) * _progress,
+                      color: Colors.green,
+                    ),
+                    Center(
+                      child: Text(
+                        'LOADING ${(_progress * 100).toInt()}%',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'PixelFont',
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                if (_nameController.text.isNotEmpty) {
-                  widget.onSave(_nameController.text);
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ManuGame(),
-                    ),
-                  );
-                }
-              },
-              child: const Text('OK'),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

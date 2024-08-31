@@ -7,7 +7,7 @@ import 'game_button.dart';
 
 class ManuGame extends StatefulWidget {
   // ignore: use_super_parameters
-  const ManuGame({Key? key}) : super(key: key);
+  const ManuGame({Key? key, required String username}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
