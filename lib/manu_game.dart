@@ -15,12 +15,10 @@ class ManuGame extends StatefulWidget {
 }
 
 class _ManuGameState extends State<ManuGame> {
-
   @override
   void initState() {
     super.initState();
   }
-
 
   final AudioPlayer _audioPlayer = AudioPlayer();
 
@@ -38,7 +36,7 @@ class _ManuGameState extends State<ManuGame> {
   @override
   Widget build(BuildContext context) {
     const double _height = 64 - _shadowHeight1;
-    
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -80,6 +78,8 @@ class _ManuGameState extends State<ManuGame> {
                     _position1 = 4;
                   });
                 },
+                backgroundColor: Colors.black,
+                animatedColor: Colors.blue,
               ),
               GameButton(
                 height: _height,
@@ -108,10 +108,10 @@ class _ManuGameState extends State<ManuGame> {
                     _position2 = 4;
                   });
                 },
+                backgroundColor: Colors.black,
+                animatedColor: const Color.fromARGB(255, 41, 45, 49),
               ),
-
-
-            ]
+            ],
           ),
         ),
       ),

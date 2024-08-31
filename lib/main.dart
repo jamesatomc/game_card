@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 import 'manu_game.dart';
 
 void main() {
@@ -23,29 +24,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String? _username;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUsername();
-  }
-
-  Future<void> _loadUsername() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _username = prefs.getString('username');
-    });
-  }
-
-  Future<void> _saveUsername(String username) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('username', username);
-    setState(() {
-      _username = username;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
@@ -68,8 +46,82 @@ class _MyAppState extends State<MyApp> {
           useMaterial3: true,
         ),
         themeMode: ThemeMode.system,
-        home: _username == null ? _NameInputScreen(onSave: _saveUsername) : const ManuGame(),
+        home: const LoadingScreen(),
         debugShowCheckedModeBanner: false,
+      ),
+    );
+  }
+}
+
+class LoadingScreen extends StatefulWidget {
+  const LoadingScreen({super.key});
+
+  @override
+  State<LoadingScreen> createState() => _LoadingScreenState();
+}
+
+class _LoadingScreenState extends State<LoadingScreen> {
+  double _progress = 0.0;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startLoading();
+  }
+
+  Future<void> _startLoading() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString('username');
+
+    _timer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+      setState(() {
+        _progress += 0.01;
+        if (_progress >= 1.0) {
+          _timer.cancel();
+          if (username == null) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => _NameInputScreen(onSave: _saveUsername),
+              ),
+            );
+          } else {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ManuGame(),
+              ),
+            );
+          }
+        }
+      });
+    });
+  }
+
+  Future<void> _saveUsername(String username) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', username);
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.8,
+          child: LinearProgressIndicator(
+            value: _progress,
+            backgroundColor: Colors.grey[300],
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+          ),
+        ),
       ),
     );
   }
@@ -114,6 +166,12 @@ class _NameInputScreenState extends State<_NameInputScreen> {
               onPressed: () {
                 if (_nameController.text.isNotEmpty) {
                   widget.onSave(_nameController.text);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ManuGame(),
+                    ),
+                  );
                 }
               },
               child: const Text('OK'),

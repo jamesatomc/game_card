@@ -9,6 +9,8 @@ class GameButton extends StatefulWidget {
   final Function onTapUp;
   final Function onTapDown;
   final Function onTapCancel;
+  final Color backgroundColor;
+  final Color animatedColor;
 
   const GameButton({
     Key? key,
@@ -20,6 +22,8 @@ class GameButton extends StatefulWidget {
     required this.onTapUp,
     required this.onTapDown,
     required this.onTapCancel,
+    this.backgroundColor = Colors.black,
+    this.animatedColor = Colors.blue,
   }) : super(key: key);
 
   @override
@@ -47,9 +51,9 @@ class _GameButtonState extends State<GameButton> {
                 child: Container(
                   height: widget.height,
                   width: 200,
-                  decoration: const BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.all(
+                  decoration: BoxDecoration(
+                    color: widget.backgroundColor,
+                    borderRadius: const BorderRadius.all(
                       Radius.circular(16),
                     ),
                   ),
@@ -58,13 +62,13 @@ class _GameButtonState extends State<GameButton> {
               AnimatedPositioned(
                 curve: Curves.easeIn,
                 bottom: widget.position,
-                duration: Duration(milliseconds: 70),
+                duration: const Duration(milliseconds: 70),
                 child: Container(
                   height: widget.height,
                   width: 200,
-                  decoration: const BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.all(
+                  decoration: BoxDecoration(
+                    color: widget.animatedColor,
+                    borderRadius: const BorderRadius.all(
                       Radius.circular(16),
                     ),
                   ),
