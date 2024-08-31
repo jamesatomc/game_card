@@ -1,90 +1,105 @@
 import 'package:flutter/material.dart';
 
-class GameButton extends StatefulWidget {
+class PixelGameButton extends StatefulWidget {
   final double height;
-  final double shadowHeight;
-  final double position;
+  final double width;
   final String text;
-  final Function onTap;
-  final Function onTapUp;
-  final Function onTapDown;
-  final Function onTapCancel;
+  final VoidCallback onTap;
+  final VoidCallback onTapUp;
+  final VoidCallback onTapDown;
+  final VoidCallback onTapCancel;
   final Color backgroundColor;
-  final Color animatedColor;
+  final Color textColor;
 
-  const GameButton({
+  const PixelGameButton({
     Key? key,
     required this.height,
-    required this.shadowHeight,
-    required this.position,
+    required this.width,
     required this.text,
     required this.onTap,
     required this.onTapUp,
     required this.onTapDown,
     required this.onTapCancel,
-    this.backgroundColor = Colors.black,
-    this.animatedColor = Colors.blue,
+    this.backgroundColor = Colors.blue,
+    this.textColor = Colors.white,
   }) : super(key: key);
 
   @override
-  State<GameButton> createState() => _GameButtonState();
+  _PixelGameButtonState createState() => _PixelGameButtonState();
 }
 
-class _GameButtonState extends State<GameButton> {
+class _PixelGameButtonState extends State<PixelGameButton> {
+  bool _isPressed = false;
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 90,
-      width: 260, // Makes the button take the full width of its parent
-      child: GestureDetector(
-        onTap: () => widget.onTap(),
-        onTapUp: (_) => widget.onTapUp(),
-        onTapDown: (_) => widget.onTapDown(),
-        onTapCancel: () => widget.onTapCancel(),
-        child: Container(
-          height: widget.height + widget.shadowHeight,
-          width: 200,
-          child: Stack(
-            children: [
+    return GestureDetector(
+      onTapDown: (_) {
+        setState(() => _isPressed = true);
+        widget.onTapDown();
+      },
+      onTapUp: (_) {
+        setState(() => _isPressed = false);
+        widget.onTapUp();
+      },
+      onTapCancel: () {
+        setState(() => _isPressed = false);
+        widget.onTapCancel();
+      },
+      onTap: widget.onTap,
+      child: Container(
+        height: widget.height,
+        width: widget.width,
+        decoration: BoxDecoration(
+          color: widget.backgroundColor,
+          border: Border.all(color: Colors.black, width: 4),
+          boxShadow: [
+            if (!_isPressed)
+              BoxShadow(
+                color: Colors.black,
+                offset: Offset(4, 4),
+              ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            // เอฟเฟกต์พิกเซลที่มุม
+            if (!_isPressed) ...[
               Positioned(
-                bottom: 0,
+                top: 0,
+                left: 0,
                 child: Container(
-                  height: widget.height,
-                  width: 200,
-                  decoration: BoxDecoration(
-                    color: widget.backgroundColor,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(16),
-                    ),
-                  ),
+                  width: 8,
+                  height: 8,
+                  color: Colors.white.withOpacity(0.5),
                 ),
               ),
-              AnimatedPositioned(
-                curve: Curves.easeIn,
-                bottom: widget.position,
-                duration: const Duration(milliseconds: 70),
+              Positioned(
+                bottom: 0,
+                right: 0,
                 child: Container(
-                  height: widget.height,
-                  width: 200,
-                  decoration: BoxDecoration(
-                    color: widget.animatedColor,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(16),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      widget.text,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                      ),
-                    ),
-                  ),
+                  width: 8,
+                  height: 8,
+                  color: Colors.black.withOpacity(0.5),
                 ),
               ),
             ],
-          ),
+            // ข้อความปุ่ม
+            Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: _isPressed ? 4 : 0, left: _isPressed ? 4 : 0),
+                child: Text(
+                  widget.text,
+                  style: TextStyle(
+                    color: widget.textColor,
+                    fontSize: 20,
+                    fontFamily: 'PixelFont',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

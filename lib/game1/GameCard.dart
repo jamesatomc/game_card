@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cardgame/game1/components/LevelButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -14,7 +15,6 @@ import 'Level/Level8Screen.dart';
 import 'Level/Level9Screen.dart';
 import 'Level/Level10Screen.dart';
 import 'components/AudioManager.dart';
-import 'components/LevelButton.dart';
 import 'components/MusicToggleButton.dart';
 
 class GameCardScreen extends StatefulWidget {
@@ -182,14 +182,14 @@ class _GameCardScreenState extends State<GameCardScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      LevelButton(
+                      PixelLevelButton(
                         level: 1,
                         isUnlocked: true,
                         nextScreen: const Level1Screen(),
                         refreshHighScores: refreshHighScores,
                       ),
                       const SizedBox(width: 10),
-                      LevelButton(
+                      PixelLevelButton(
                         level: 2,
                         isUnlocked:
                             level1HighScore != null && level1HighScore! >= 6,
@@ -197,7 +197,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         refreshHighScores: refreshHighScores,
                       ),
                       const SizedBox(width: 10),
-                      LevelButton(
+                      PixelLevelButton(
                         level: 3,
                         isUnlocked:
                             level2HighScore != null && level2HighScore! >= 6,
@@ -205,7 +205,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         refreshHighScores: refreshHighScores,
                       ),
                       const SizedBox(width: 10),
-                      LevelButton(
+                      PixelLevelButton(
                         level: 4,
                         isUnlocked:
                             level3HighScore != null && level3HighScore! >= 7,
@@ -213,7 +213,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         refreshHighScores: refreshHighScores,
                       ),
                       const SizedBox(width: 10),
-                      LevelButton(
+                      PixelLevelButton(
                         level: 5,
                         isUnlocked:
                             level4HighScore != null && level4HighScore! >= 7,
@@ -227,7 +227,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      LevelButton(
+                      PixelLevelButton(
                         level: 6,
                         isUnlocked:
                             level5HighScore != null && level5HighScore! >= 7,
@@ -235,7 +235,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         refreshHighScores: refreshHighScores,
                       ),
                       const SizedBox(width: 10),
-                      LevelButton(
+                      PixelLevelButton(
                         level: 7,
                         isUnlocked:
                             level6HighScore != null && level6HighScore! >= 7.5,
@@ -243,7 +243,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         refreshHighScores: refreshHighScores,
                       ),
                       const SizedBox(width: 10),
-                      LevelButton(
+                      PixelLevelButton(
                         level: 8,
                         isUnlocked:
                             level7HighScore != null && level7HighScore! >= 7.5,
@@ -251,7 +251,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         refreshHighScores: refreshHighScores,
                       ),
                       const SizedBox(width: 10),
-                      LevelButton(
+                      PixelLevelButton(
                         level: 9,
                         isUnlocked:
                             level8HighScore != null && level8HighScore! >= 7.5,
@@ -259,7 +259,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         refreshHighScores: refreshHighScores,
                       ),
                       const SizedBox(width: 10),
-                      LevelButton(
+                      PixelLevelButton(
                         level: 10,
                         isUnlocked:
                             level9HighScore != null && level9HighScore! >= 8,
