@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:dynamic_color/dynamic_color.dart';
+// import 'package:dynamic_color/dynamic_color.dart';
 import 'dart:async';
 import 'loading_screen.dart';
 
