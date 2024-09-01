@@ -18,7 +18,7 @@ Widget info_card(String title, String info) {
               style: TextStyle(
                 fontFamily: 'PixelFont', // Use a pixel font
                 color: Colors.black,
-                fontSize: 18.0, // Adjust font size for pixel art style
+                fontSize: 14.0, // Adjust font size for pixel art style
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -29,7 +29,7 @@ Widget info_card(String title, String info) {
               info,
               style: TextStyle(
                 fontFamily: 'PixelFont', // Use a pixel font
-                fontSize: 16.0, 
+                fontSize: 12.0, 
                 fontWeight: FontWeight.bold, 
                 color: Colors.black,
               ),
