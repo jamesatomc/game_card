@@ -158,70 +158,70 @@ class _GameCardScreenState extends State<GameCardScreen> {
               children: [
                 Text(
                   'Level 1: ${level1HighScore ?? 'N/A'}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'PixelFont', // Use a pixel art font
                     fontSize: 16,
                   ),
                 ),
                 Text(
                   'Level 2: ${level2HighScore ?? 'N/A'}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'PixelFont', // Use a pixel art font
                     fontSize: 16,
                   ),
                 ),
                 Text(
                   'Level 3: ${level3HighScore ?? 'N/A'}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'PixelFont', // Use a pixel art font
                     fontSize: 16,
                   ),
                 ),
                 Text(
                   'Level 4: ${level4HighScore ?? 'N/A'}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'PixelFont', // Use a pixel art font
                     fontSize: 16,
                   ),
                 ),
                 Text(
                   'Level 5: ${level5HighScore ?? 'N/A'}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'PixelFont', // Use a pixel art font
                     fontSize: 16,
                   ),
                 ),
                 Text(
                   'Level 6: ${level6HighScore ?? 'N/A'}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'PixelFont', // Use a pixel art font
                     fontSize: 16,
                   ),
                 ),
                 Text(
                   'Level 7: ${level7HighScore ?? 'N/A'}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'PixelFont', // Use a pixel art font
                     fontSize: 16,
                   ),
                 ),
                 Text(
                   'Level 8: ${level8HighScore ?? 'N/A'}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'PixelFont', // Use a pixel art font
                     fontSize: 16,
                   ),
                 ),
                 Text(
                   'Level 9: ${level9HighScore ?? 'N/A'}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'PixelFont', // Use a pixel art font
                     fontSize: 16,
                   ),
                 ),
                 Text(
                   'Level 10: ${level10HighScore ?? 'N/A'}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'PixelFont', // Use a pixel art font
                     fontSize: 16,
                   ),
@@ -229,7 +229,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                 const SizedBox(height: 10),
                 Text(
                   'Total: ${((level1HighScore ?? 0) + (level2HighScore ?? 0) + (level3HighScore ?? 0) + (level4HighScore ?? 0) + (level5HighScore ?? 0) + (level6HighScore ?? 0) + (level7HighScore ?? 0) + (level8HighScore ?? 0) + (level9HighScore ?? 0) + (level10HighScore ?? 0))}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'PixelFont', // Use a pixel art font
                     fontSize: 16,
                   ),
@@ -238,18 +238,20 @@ class _GameCardScreenState extends State<GameCardScreen> {
             ),
           ),
           actions: [
-            TextButton(
-              onPressed: () {
+            PixelGameButton(
+              height: 60,
+              width: 200,
+              text: 'Close',
+              onTap: () {
                 _playSound(); // Play sound when button is pressed
-                Navigator.of(context).pop();
+                Navigator.pop(context); // Close the dialog
               },
-              child: const Text(
-                'Close',
-                style: TextStyle(
-                  fontFamily: 'PixelFont', // Use a pixel art font
-                ),
-              ),
-            ),
+              onTapUp: () {},
+              onTapDown: () {},
+              onTapCancel: () {},
+              backgroundColor: Colors.blue,
+              textColor: Colors.white,
+            )
           ],
         );
       },
