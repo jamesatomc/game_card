@@ -103,13 +103,13 @@ class _SplashScreenState extends State<SplashScreen> {
                   SizedBox(
                     width: 150,
                     height: 150,
-                    child: Image.asset('assets/logo1.png'), // Replace with your logo asset
+                    child: Image.asset('assets/gamecard/logo1.png'), // Replace with your logo asset
                   ),
                   SizedBox(width: 20),
                   SizedBox(
                     width: 150,
                     height: 150,
-                    child: Image.asset('assets/logo2.png'),
+                    child: Image.asset('assets/gamecard/logo2.png'),
                   ),
                 ],
               ),
