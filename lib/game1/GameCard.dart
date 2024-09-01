@@ -265,7 +265,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-                'assets/gamecard/bg_pixel3'), // Replace with your GIF path
+                'assets/gamecard/bg_pixel3.png'), // Replace with your GIF path
             fit: BoxFit.cover,
           ),
         ),
