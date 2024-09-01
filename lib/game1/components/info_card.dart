@@ -5,29 +5,34 @@ import 'package:flutter/painting.dart';
 Widget info_card(String title, String info) {
   return Expanded(
     child: Padding(
-      padding: const EdgeInsets.only(left: 16.0, right: 16.0), // ปรับ padding ให้เล็กลง
+      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
       child: Card(
-        shadowColor: Colors.brown,
+        shadowColor: Colors.black,
         color: Colors.white,
-        elevation: 10.0, // ปรับ margin ให้เล็กลง
+        elevation: 10.0,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // จัดตำแหน่งข้อความให้ตรงกลาง
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               title,
               style: TextStyle(
-                color: Colors.brown,
-                fontSize: 16.0, // ปรับขนาดฟอนต์ให้เล็กลง
+                fontFamily: 'PixelFont', // Use a pixel font
+                color: Colors.black,
+                fontSize: 20.0, // Adjust font size for pixel art style
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(
-              height: 3.0, // ปรับระยะห่างระหว่างข้อความให้เล็กลง
+              height: 8.0, // Adjust spacing for pixel art style
             ),
             Text(
-            
               info,
-              style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: Colors.brown), // ปรับขนาดฟอนต์ให้เล็กลง
+              style: TextStyle(
+                fontFamily: 'PixelFont', // Use a pixel font
+                fontSize: 18.0, 
+                fontWeight: FontWeight.bold, 
+                color: Colors.black,
+              ),
             ),
           ],
         ),
