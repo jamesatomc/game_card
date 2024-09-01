@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_cardgame/game1/components/info_card.dart';
 import 'package:flutter_cardgame/game1/utils/game_utils1.dart';
+import 'package:flutter_cardgame/game_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart'; // Import the audioplayers package
 
@@ -319,9 +320,16 @@ class _Level1ScreenState extends State<Level1Screen> {
                       "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
                   // Wrap the button in an AnimatedCrossFade to control its visibility
                   AnimatedCrossFade(
-                    firstChild: ElevatedButton(
-                      onPressed: _gameStarted ? null : startGame,
-                      child: Text('Start Game'),
+                    firstChild: PixelGameButton(
+                      height: 50,
+                      width: 150,
+                      text: 'Start Game',
+                      onTap: _gameStarted ? () {} : startGame,
+                      onTapUp: () {},
+                      onTapDown: () {},
+                      onTapCancel: () {},
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white,
                     ),
                     secondChild: SizedBox
                         .shrink(), // Empty space when the button is hidden
@@ -329,7 +337,7 @@ class _Level1ScreenState extends State<Level1Screen> {
                         ? CrossFadeState.showSecond
                         : CrossFadeState.showFirst,
                     duration: Duration(milliseconds: 300), // Animation duration
-                  ),
+                  )
                 ],
               ),
             ),
