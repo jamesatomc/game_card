@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
-import '__name_input_screen.dart';
 import 'loading_screen.dart';
-import 'manu_game.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
