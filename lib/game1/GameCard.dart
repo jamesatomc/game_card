@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 // Import all level screens
+import '../game_button.dart';
 import 'Level/Level1Screen.dart';
 import 'Level/Level2Screen.dart';
 import 'Level/Level3Screen.dart';
@@ -275,36 +276,23 @@ class _GameCardScreenState extends State<GameCardScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // Reset High Scores Button
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          textStyle: const TextStyle(fontSize: 18),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // Add rounded corners
-                          ),
-                          elevation: 5, // Add elevation for shadow
-                          shadowColor:
-                              Colors.grey.withOpacity(0.5), // Set shadow color
-                        ),
-                        onPressed: () async {
-                          await _playSound(); // Play sound when button is pressed
+
+                      PixelGameButton(
+                        height: 60,
+                        width: 200,
+                        text: 'Reset High Scores',
+                        onTap: () {
+                          _playSound(); // Play sound when button is pressed
                           resetHighScores();
                         },
-                        child: const Row(
-                          children: [
-                            Icon(Icons.refresh, color: Colors.white),
-                            SizedBox(width: 10),
-                            Text(
-                              'Reset High Scores',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
+                        backgroundColor: Colors.blue,
+                        textColor: Colors.white,
                       ),
                       const SizedBox(width: 10),
+
                       // View High Scores Button
                       FutureBuilder(
                         future: _loadHighScores(),

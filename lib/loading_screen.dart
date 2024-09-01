@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_cardgame/__name_input_screen.dart';
+import 'package:flutter_cardgame/name_input_screen.dart';
 import 'package:flutter_cardgame/manu_game.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
