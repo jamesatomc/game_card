@@ -4,6 +4,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import '__name_input_screen.dart';
+import 'loading_screen.dart';
 import 'manu_game.dart';
 
 void main() {
@@ -47,8 +48,42 @@ class _MyAppState extends State<MyApp> {
           useMaterial3: true,
         ),
         themeMode: ThemeMode.system,
-        home: const DeveloperInfoScreen(),
+        home: SplashScreen(),
         debugShowCheckedModeBanner: false,
+      ),
+    );
+  }
+}
+
+
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(Duration(seconds: 5), () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => DeveloperInfoScreen()),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/logo1.png'), // Replace with your logo asset
+            SizedBox(height: 20),
+            Image.asset('assets/logo2.png'), // Replace with your logo asset
+          ],
+        ),
       ),
     );
   }
@@ -81,123 +116,11 @@ class DeveloperInfoScreen extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              'Name: John Doe\nEmail: john.doe@example.com\nWebsite: www.johndoe.com',
+              'Name: test\nEmail: test@example.com\nWebsite: www.test.com',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class LoadingScreen extends StatefulWidget {
-  const LoadingScreen({super.key});
-
-  @override
-  State<LoadingScreen> createState() => _LoadingScreenState();
-}
-
-class _LoadingScreenState extends State<LoadingScreen> {
-  double _progress = 0.0;
-  late Timer _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _startLoading();
-  }
-
-  Future<void> _startLoading() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? username = prefs.getString('username');
-
-    _timer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
-      setState(() {
-        _progress += 0.01;
-        if (_progress >= 1.0) {
-          _timer.cancel();
-          if (username == null) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => NameInputScreen(onSave: _saveUsername),
-              ),
-            );
-          } else {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ManuGame(username: username),
-              ),
-            );
-          }
-        }
-      });
-    });
-  }
-
-  Future<void> _saveUsername(String username) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('username', username);
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/pixel_background.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/pixel_logo.png",
-                width: 200,
-                height: 200,
-              ),
-              const SizedBox(height: 20),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.7,
-                height: 30,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white, width: 2),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Stack(
-                  children: [
-                    Container(
-                      width: (MediaQuery.of(context).size.width * 0.7) * _progress,
-                      color: Colors.green,
-                    ),
-                    Center(
-                      child: Text(
-                        'LOADING ${(_progress * 100).toInt()}%',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'PixelFont',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );

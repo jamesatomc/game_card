@@ -26,7 +26,7 @@ class _ManuGameState extends State<ManuGame> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/pixel_background.png'), // ใช้พื้นหลังแบบพิกเซล
+            image: AssetImage('assets/gamecard/bg_pixel2.png'), // ใช้พื้นหลังแบบพิกเซล
             fit: BoxFit.cover,
           ),
         ),
