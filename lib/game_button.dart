@@ -4,24 +4,28 @@ class PixelGameButton extends StatefulWidget {
   final double height;
   final double width;
   final String text;
+  final IconData? icon; // Optional icon parameter
   final VoidCallback onTap;
   final VoidCallback onTapUp;
   final VoidCallback onTapDown;
   final VoidCallback onTapCancel;
   final Color backgroundColor;
   final Color textColor;
+  final Color iconColor; // Optional icon color parameter
 
   const PixelGameButton({
     Key? key,
     required this.height,
     required this.width,
     required this.text,
+    this.icon, // Initialize icon parameter
     required this.onTap,
     required this.onTapUp,
     required this.onTapDown,
     required this.onTapCancel,
     this.backgroundColor = Colors.blue,
     this.textColor = Colors.white,
+    this.iconColor = Colors.white, // Initialize icon color parameter
   }) : super(key: key);
 
   @override
@@ -63,7 +67,7 @@ class _PixelGameButtonState extends State<PixelGameButton> {
         ),
         child: Stack(
           children: [
-            // เอฟเฟกต์พิกเซลที่มุม
+            // Pixel effect at the corners
             if (!_isPressed) ...[
               Positioned(
                 top: 0,
@@ -84,18 +88,27 @@ class _PixelGameButtonState extends State<PixelGameButton> {
                 ),
               ),
             ],
-            // ข้อความปุ่ม
+            // Button content
             Center(
               child: Padding(
                 padding: EdgeInsets.only(top: _isPressed ? 4 : 0, left: _isPressed ? 4 : 0),
-                child: Text(
-                  widget.text,
-                  style: TextStyle(
-                    color: widget.textColor,
-                    fontSize: 20,
-                    fontFamily: 'PixelFont',
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (widget.icon != null) ...[
+                      Icon(widget.icon, color: widget.iconColor),
+                      const SizedBox(width: 8),
+                    ],
+                    Text(
+                      widget.text,
+                      style: TextStyle(
+                        color: widget.textColor,
+                        fontSize: 20,
+                        fontFamily: 'PixelFont',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cardgame/manu_game.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_cardgame/manu_game.dart';
 
 import 'game_button.dart';
 

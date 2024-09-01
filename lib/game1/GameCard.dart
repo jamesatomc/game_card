@@ -140,6 +140,123 @@ class _GameCardScreenState extends State<GameCardScreen> {
     );
   }
 
+
+    void showHighScoresDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'High Scores',
+            style: TextStyle(
+              fontFamily: 'PixelFont', // Use a pixel art font
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Level 1: ${level1HighScore ?? 'N/A'}',
+                  style: TextStyle(
+                    fontFamily: 'PixelFont', // Use a pixel art font
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  'Level 2: ${level2HighScore ?? 'N/A'}',
+                  style: TextStyle(
+                    fontFamily: 'PixelFont', // Use a pixel art font
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  'Level 3: ${level3HighScore ?? 'N/A'}',
+                  style: TextStyle(
+                    fontFamily: 'PixelFont', // Use a pixel art font
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  'Level 4: ${level4HighScore ?? 'N/A'}',
+                  style: TextStyle(
+                    fontFamily: 'PixelFont', // Use a pixel art font
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  'Level 5: ${level5HighScore ?? 'N/A'}',
+                  style: TextStyle(
+                    fontFamily: 'PixelFont', // Use a pixel art font
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  'Level 6: ${level6HighScore ?? 'N/A'}',
+                  style: TextStyle(
+                    fontFamily: 'PixelFont', // Use a pixel art font
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  'Level 7: ${level7HighScore ?? 'N/A'}',
+                  style: TextStyle(
+                    fontFamily: 'PixelFont', // Use a pixel art font
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  'Level 8: ${level8HighScore ?? 'N/A'}',
+                  style: TextStyle(
+                    fontFamily: 'PixelFont', // Use a pixel art font
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  'Level 9: ${level9HighScore ?? 'N/A'}',
+                  style: TextStyle(
+                    fontFamily: 'PixelFont', // Use a pixel art font
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  'Level 10: ${level10HighScore ?? 'N/A'}',
+                  style: TextStyle(
+                    fontFamily: 'PixelFont', // Use a pixel art font
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Total: ${((level1HighScore ?? 0) + (level2HighScore ?? 0) + (level3HighScore ?? 0) + (level4HighScore ?? 0) + (level5HighScore ?? 0) + (level6HighScore ?? 0) + (level7HighScore ?? 0) + (level8HighScore ?? 0) + (level9HighScore ?? 0) + (level10HighScore ?? 0))}',
+                  style: TextStyle(
+                    fontFamily: 'PixelFont', // Use a pixel art font
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                _playSound(); // Play sound when button is pressed
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Close',
+                style: TextStyle(
+                  fontFamily: 'PixelFont', // Use a pixel art font
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -288,7 +405,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Colors.red,
                         textColor: Colors.white,
                       ),
                       const SizedBox(width: 10),
@@ -299,165 +416,19 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.done) {
-                            return ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 74, 201, 55),
-                                textStyle: const TextStyle(
-                                  fontSize: 18,
-                                  fontFamily:
-                                      'PixelFont', // Use a pixel art font
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 15),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      10), // Add rounded corners
-                                ),
-                                elevation: 5, // Add elevation for shadow
-                                shadowColor: Colors.grey
-                                    .withOpacity(0.5), // Set shadow color
-                              ),
-                              child: const Row(
-                                children: [
-                                  Icon(Icons.view_agenda, color: Colors.white),
-                                  SizedBox(width: 10),
-                                  Text(
-                                    'View High Scores',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ],
-                              ),
-                              onPressed: () async {
-                                await _playSound(); // Play sound when button is pressed
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text(
-                                        'High Scores',
-                                        style: TextStyle(
-                                          fontFamily:
-                                              'PixelFont', // Use a pixel art font
-                                        ),
-                                      ),
-                                      content: SingleChildScrollView(
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Level 1: ${level1HighScore ?? 'N/A'}',
-                                              style: TextStyle(
-                                                fontFamily:
-                                                    'PixelFont', // Use a pixel art font
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Level 2: ${level2HighScore ?? 'N/A'}',
-                                              style: TextStyle(
-                                                fontFamily:
-                                                    'PixelFont', // Use a pixel art font
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Level 3: ${level3HighScore ?? 'N/A'}',
-                                              style: TextStyle(
-                                                fontFamily:
-                                                    'PixelFont', // Use a pixel art font
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Level 4: ${level4HighScore ?? 'N/A'}',
-                                              style: TextStyle(
-                                                fontFamily:
-                                                    'PixelFont', // Use a pixel art font
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Level 5: ${level5HighScore ?? 'N/A'}',
-                                              style: TextStyle(
-                                                fontFamily:
-                                                    'PixelFont', // Use a pixel art font
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Level 6: ${level6HighScore ?? 'N/A'}',
-                                              style: TextStyle(
-                                                fontFamily:
-                                                    'PixelFont', // Use a pixel art font
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Level 7: ${level7HighScore ?? 'N/A'}',
-                                              style: TextStyle(
-                                                fontFamily:
-                                                    'PixelFont', // Use a pixel art font
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Level 8: ${level8HighScore ?? 'N/A'}',
-                                              style: TextStyle(
-                                                fontFamily:
-                                                    'PixelFont', // Use a pixel art font
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Level 9: ${level9HighScore ?? 'N/A'}',
-                                              style: TextStyle(
-                                                fontFamily:
-                                                    'PixelFont', // Use a pixel art font
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Level 10: ${level10HighScore ?? 'N/A'}',
-                                              style: TextStyle(
-                                                fontFamily:
-                                                    'PixelFont', // Use a pixel art font
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              'Total: ${((level1HighScore ?? 0) + (level2HighScore ?? 0) + (level3HighScore ?? 0) + (level4HighScore ?? 0) + (level5HighScore ?? 0) + (level6HighScore ?? 0) + (level7HighScore ?? 0) + (level8HighScore ?? 0) + (level9HighScore ?? 0) + (level10HighScore ?? 0))}',
-                                              style: TextStyle(
-                                                fontFamily:
-                                                    'PixelFont', // Use a pixel art font
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            _playSound(); // Play sound when button is pressed
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text(
-                                            'Close',
-                                            style: TextStyle(
-                                              fontFamily:
-                                                  'PixelFont', // Use a pixel art font
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                            return PixelGameButton(
+                              height: 60,
+                              width: 200,
+                              text: 'View High Scores',
+                              onTap: () {
+                                _playSound(); // Play sound when button is pressed
+                                showHighScoresDialog(context);
                               },
+                              onTapUp: () {},
+                              onTapDown: () {},
+                              onTapCancel: () {},
+                              backgroundColor: Colors.blue,
+                              textColor: Colors.white,
                             );
                           } else {
                             return const CircularProgressIndicator(); // Show a loading indicator
@@ -466,7 +437,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(height: 10),
                   // Music Toggle Button
                   MusicToggleButton(),
                 ],
