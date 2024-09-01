@@ -3,8 +3,8 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_cardgame/game2/components/bumpy.dart';
-import 'package:flutter_cardgame/game2/components/ground.dart';
+import 'package:flutter_cardgame/game2/components/game-ui/bumpy.dart';
+import 'package:flutter_cardgame/game2/components/game-ui/ground.dart';
 
 import 'monsters.dart';
 //class ตัวละครหลัก

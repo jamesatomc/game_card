@@ -10,12 +10,12 @@ import 'package:flame/input.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cardgame/game2/components/bumpy.dart';
-import 'package:flutter_cardgame/game2/components/cion.dart';
-import 'package:flutter_cardgame/game2/components/game_over_overlay.dart';
-import 'package:flutter_cardgame/game2/components/ground.dart';
-import 'package:flutter_cardgame/game2/components/monsters.dart';
-import 'package:flutter_cardgame/game2/components/player.dart';
+import 'package:flutter_cardgame/game2/components/game-ui/bumpy.dart';
+import 'package:flutter_cardgame/game2/components/game-ui/cion.dart';
+import 'package:flutter_cardgame/game2/components/game-ui/game_over_overlay.dart';
+import 'package:flutter_cardgame/game2/components/game-ui/ground.dart';
+import 'package:flutter_cardgame/game2/components/game-ui/monsters.dart';
+import 'package:flutter_cardgame/game2/components/game-ui/player.dart';
 
 class Jump1 extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection, TapCallbacks {
