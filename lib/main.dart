@@ -6,7 +6,6 @@ import 'dart:async';
 import '__name_input_screen.dart';
 import 'manu_game.dart';
 
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
@@ -32,7 +31,7 @@ class _MyAppState extends State<MyApp> {
       builder: (light, dark) => MaterialApp(
         title: 'Games to enhance English skills (Grade 5)',
         theme: ThemeData(
-          colorScheme: light ??
+          colorScheme: light ?? 
               ColorScheme.fromSeed(
                 seedColor: Colors.blueAccent,
                 brightness: Brightness.light,
@@ -40,7 +39,7 @@ class _MyAppState extends State<MyApp> {
           useMaterial3: true,
         ),
         darkTheme: ThemeData(
-          colorScheme: dark ??
+          colorScheme: dark ?? 
               ColorScheme.fromSeed(
                 seedColor: Colors.blueAccent,
                 brightness: Brightness.dark,
@@ -48,8 +47,46 @@ class _MyAppState extends State<MyApp> {
           useMaterial3: true,
         ),
         themeMode: ThemeMode.system,
-        home: const LoadingScreen(),
+        home: const DeveloperInfoScreen(),
         debugShowCheckedModeBanner: false,
+      ),
+    );
+  }
+}
+
+class DeveloperInfoScreen extends StatelessWidget {
+  const DeveloperInfoScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Automatically navigate to LoadingScreen after 3 seconds
+    Future.delayed(const Duration(seconds: 7), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoadingScreen()),
+      );
+    });
+
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text(
+              'Developer Information',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Name: John Doe\nEmail: john.doe@example.com\nWebsite: www.johndoe.com',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18),
+            ),
+          ],
+        ),
       ),
     );
   }
