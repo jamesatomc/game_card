@@ -140,8 +140,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
     );
   }
 
-
-    void showHighScoresDialog(BuildContext context) {
+  void showHighScoresDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -305,6 +304,9 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked: true,
                         nextScreen: const Level1Screen(),
                         refreshHighScores: refreshHighScores,
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
                       ),
                       const SizedBox(width: 10),
                       PixelLevelButton(
@@ -313,6 +315,9 @@ class _GameCardScreenState extends State<GameCardScreen> {
                             level1HighScore != null && level1HighScore! >= 6,
                         nextScreen: const Level2Screen(),
                         refreshHighScores: refreshHighScores,
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
                       ),
                       const SizedBox(width: 10),
                       PixelLevelButton(
@@ -321,6 +326,9 @@ class _GameCardScreenState extends State<GameCardScreen> {
                             level2HighScore != null && level2HighScore! >= 6,
                         nextScreen: const Level3Screen(),
                         refreshHighScores: refreshHighScores,
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
                       ),
                       const SizedBox(width: 10),
                       PixelLevelButton(
@@ -329,6 +337,9 @@ class _GameCardScreenState extends State<GameCardScreen> {
                             level3HighScore != null && level3HighScore! >= 7,
                         nextScreen: const Level4Screen(),
                         refreshHighScores: refreshHighScores,
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
                       ),
                       const SizedBox(width: 10),
                       PixelLevelButton(
@@ -337,6 +348,9 @@ class _GameCardScreenState extends State<GameCardScreen> {
                             level4HighScore != null && level4HighScore! >= 7,
                         nextScreen: const Level5Screen(),
                         refreshHighScores: refreshHighScores,
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
                       ),
                     ],
                   ),
@@ -351,6 +365,9 @@ class _GameCardScreenState extends State<GameCardScreen> {
                             level5HighScore != null && level5HighScore! >= 7,
                         nextScreen: const Level6Screen(),
                         refreshHighScores: refreshHighScores,
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
                       ),
                       const SizedBox(width: 10),
                       PixelLevelButton(
@@ -359,6 +376,9 @@ class _GameCardScreenState extends State<GameCardScreen> {
                             level6HighScore != null && level6HighScore! >= 7.5,
                         nextScreen: const Level7Screen(),
                         refreshHighScores: refreshHighScores,
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
                       ),
                       const SizedBox(width: 10),
                       PixelLevelButton(
@@ -367,6 +387,9 @@ class _GameCardScreenState extends State<GameCardScreen> {
                             level7HighScore != null && level7HighScore! >= 7.5,
                         nextScreen: const Level8Screen(),
                         refreshHighScores: refreshHighScores,
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
                       ),
                       const SizedBox(width: 10),
                       PixelLevelButton(
@@ -375,6 +398,9 @@ class _GameCardScreenState extends State<GameCardScreen> {
                             level8HighScore != null && level8HighScore! >= 7.5,
                         nextScreen: const Level9Screen(),
                         refreshHighScores: refreshHighScores,
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
                       ),
                       const SizedBox(width: 10),
                       PixelLevelButton(
@@ -383,6 +409,9 @@ class _GameCardScreenState extends State<GameCardScreen> {
                             level9HighScore != null && level9HighScore! >= 8,
                         nextScreen: const Level10Screen(),
                         refreshHighScores: refreshHighScores,
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
                       ),
                     ],
                   ),

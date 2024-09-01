@@ -1,44 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-class PixelLevelButton extends StatelessWidget {
+class PixelLevelButton extends StatefulWidget {
   final int level;
   final bool isUnlocked;
   final Widget nextScreen;
   final Function refreshHighScores;
+  final VoidCallback onTapUp;
+  final VoidCallback onTapDown;
+  final VoidCallback onTapCancel;
 
   const PixelLevelButton({
     required this.level,
     required this.isUnlocked,
     required this.nextScreen,
     required this.refreshHighScores,
+    required this.onTapUp,
+    required this.onTapDown,
+    required this.onTapCancel,
     Key? key,
   }) : super(key: key);
 
-  void _playSound() async {
-    final player = AudioPlayer();
-    await player.play(AssetSource('sounds/button_click.mp3'));
+  @override
+  _PixelLevelButtonState createState() => _PixelLevelButtonState();
+}
+
+class _PixelLevelButtonState extends State<PixelLevelButton> {
+  bool _isPressed = false;
+
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  Future<void> _playSound() async {
+    await _audioPlayer.play(AssetSource('sounds/button_click.mp3'));
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: isUnlocked
+      onTapDown: (_) {
+        setState(() => _isPressed = true);
+        widget.onTapDown();
+      },
+      onTapUp: (_) {
+        setState(() => _isPressed = false);
+        widget.onTapUp();
+      },
+      onTapCancel: () {
+        setState(() => _isPressed = false);
+        widget.onTapCancel();
+      },
+      onTap: widget.isUnlocked
           ? () {
               _playSound();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => nextScreen),
-              ).then((_) => refreshHighScores());
+                MaterialPageRoute(builder: (context) => widget.nextScreen),
+              ).then((_) => widget.refreshHighScores());
             }
           : null,
       child: Container(
         width: 80,
         height: 80,
         decoration: BoxDecoration(
-          color: isUnlocked ? Colors.blue : Colors.grey,
+          color: widget.isUnlocked ? Colors.blue : Colors.grey,
           border: Border.all(color: Colors.black, width: 4),
-          boxShadow: isUnlocked
+          boxShadow: widget.isUnlocked && !_isPressed
               ? [
                   BoxShadow(
                     color: Colors.black,
@@ -50,12 +76,12 @@ class PixelLevelButton extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            '$level',
+            '${widget.level}',
             style: TextStyle(
               fontFamily: 'PixelFont',
               fontSize: 32,
-              color: isUnlocked ? Colors.white : Colors.black54,
-              shadows: isUnlocked
+              color: widget.isUnlocked ? Colors.white : Colors.black54,
+              shadows: widget.isUnlocked
                   ? [
                       Shadow(
                         color: Colors.black,
