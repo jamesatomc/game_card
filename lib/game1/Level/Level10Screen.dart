@@ -322,7 +322,7 @@ class _Level10ScreenState extends State<Level10Screen> {
                   AnimatedCrossFade(
                     firstChild: PixelGameButton(
                       height: 50,
-                      width: 150,
+                      width: 120,
                       text: 'Start Game',
                       onTap: _gameStarted ? () {} : startGame,
                       onTapUp: () {},
