@@ -22,32 +22,52 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
+// ืNote: Uncomment the following code to enable dynamic color switching
+// class _MyAppState extends State<MyApp> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return DynamicColorBuilder(
+//       builder: (light, dark) => MaterialApp(
+//         title: 'Games to enhance English skills (Grade 5)',
+//         theme: ThemeData(
+//           colorScheme: light ?? 
+//               ColorScheme.fromSeed(
+//                 seedColor: Colors.blueAccent,
+//                 brightness: Brightness.light,
+//               ),
+//           useMaterial3: true,
+//         ),
+//         darkTheme: ThemeData(
+//           colorScheme: dark ?? 
+//               ColorScheme.fromSeed(
+//                 seedColor: Colors.blueAccent,
+//                 brightness: Brightness.dark,
+//               ),
+//           useMaterial3: true,
+//         ),
+//         themeMode: ThemeMode.system,
+//         home: SplashScreen(),
+//         debugShowCheckedModeBanner: false,
+//       ),
+//     );
+//   }
+// }
+
+
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return DynamicColorBuilder(
-      builder: (light, dark) => MaterialApp(
-        title: 'Games to enhance English skills (Grade 5)',
-        theme: ThemeData(
-          colorScheme: light ?? 
-              ColorScheme.fromSeed(
-                seedColor: Colors.blueAccent,
-                brightness: Brightness.light,
-              ),
-          useMaterial3: true,
+    return MaterialApp(
+      title: 'Games to enhance English skills (Grade 5)',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blueAccent,
+          brightness: Brightness.dark,
         ),
-        darkTheme: ThemeData(
-          colorScheme: dark ?? 
-              ColorScheme.fromSeed(
-                seedColor: Colors.blueAccent,
-                brightness: Brightness.dark,
-              ),
-          useMaterial3: true,
-        ),
-        themeMode: ThemeMode.system,
-        home: SplashScreen(),
-        debugShowCheckedModeBanner: false,
+        useMaterial3: true,
       ),
+      home: SplashScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
