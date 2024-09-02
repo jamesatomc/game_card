@@ -114,7 +114,7 @@ class _Level5ScreenState extends State<Level5Screen> {
             TextButton(
               child: Text('Next Leve 6'),
               onPressed: () {
-                if (score >= 7) {
+                if (score >= 6) {
                   // เพิ่มเงื่อนไขตรวจสอบคะแนน
                   Navigator.of(context).pop();
                   Navigator.pushReplacement(

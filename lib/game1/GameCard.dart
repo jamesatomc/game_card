@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cardgame/LevelButton.dart';
+import 'package:flutter_cardgame/game1/components/LevelButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
 

@@ -350,7 +350,7 @@ class _Level1ScreenState extends State<Level1Screen> {
               child: GridView.builder(
                 itemCount: _game.gameImg!.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 7, // ปรับจำนวนคอลัมน์ให้เป็น 4 คอลัมน์
+                  crossAxisCount: 6, // ปรับจำนวนคอลัมน์ให้เป็น 4 คอลัมน์
                   crossAxisSpacing: 8.0,
                   mainAxisSpacing: 8.0,
                 ),
