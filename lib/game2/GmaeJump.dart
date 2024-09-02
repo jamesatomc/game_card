@@ -47,7 +47,7 @@ class _GmaeJumpState extends State<GmaeJump> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-                'assets/images/bg2.gif'), // Replace with your GIF path
+                'assets/images/bg2.png'), // Replace with your GIF path
             fit: BoxFit.cover,
           ),
         ),

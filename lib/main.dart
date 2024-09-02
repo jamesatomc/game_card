@@ -148,7 +148,7 @@ class DeveloperInfoScreen extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              'Name: test\nEmail: test@example.com\nWebsite: www.test.com',
+              'Jiraphon Wansai\n Onusa Bunsorn\n Monticha Saengthong',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18),
             ),
