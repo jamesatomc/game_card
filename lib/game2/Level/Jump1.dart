@@ -10,12 +10,15 @@ import 'package:flame/input.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cardgame/game2/components/game-ui/bumpy.dart';
-import 'package:flutter_cardgame/game2/components/game-ui/cion.dart';
-import 'package:flutter_cardgame/game2/components/game-ui/game_over_overlay.dart';
-import 'package:flutter_cardgame/game2/components/game-ui/ground.dart';
-import 'package:flutter_cardgame/game2/components/game-ui/monsters.dart';
-import 'package:flutter_cardgame/game2/components/game-ui/player.dart';
+
+import '../components/game-ui/bumpy.dart';
+import '../components/game-ui/cion.dart';
+import '../components/game-ui/game_over_overlay.dart';
+import '../components/game-ui/ground.dart';
+import '../components/game-ui/jumpButton.dart';
+import '../components/game-ui/monsters.dart';
+import '../components/game-ui/player.dart';
+
 
 class Jump1 extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection, TapCallbacks {
@@ -58,18 +61,24 @@ class Jump1 extends FlameGame
 
     // Load the GIF background
     background = SpriteComponent()
-      ..sprite = await loadSprite('bg2.gif')
-      ..size = Vector2(size.x, size.y);
-
+      ..sprite = await loadSprite('bg2.png')
+      // 
+      ..size = Vector2(1900,700)
+      ;
+        FlameAudio.bgm.play(
+        "bg.mp3",
+        );
+      
     // Add the background to the game world
     add(background);
-
+     
+     
     final level = await TiledComponent.load(
       "map.tmx",
       Vector2.all(32),
     );
 
-    overlays.add('BackButton');
+    // overlays.add('BackButton');
     FlameAudio.bgm.stop(); // Stop the background music
 
     mapWidth = (level.tileMap.map.width * level.tileMap.destTileSize.x).toInt();
@@ -87,9 +96,7 @@ class Jump1 extends FlameGame
           camera.follow(myPlayer); // Ensure camera follows the player
           break;
       }
-      FlameAudio.bgm.play(
-        "bg.mp3",
-      );
+     
     }
 
     final coinPointsLayer = level.tileMap.getLayer<ObjectGroup>("coin");
@@ -124,6 +131,9 @@ class Jump1 extends FlameGame
       world.add(grounds);
     }
 
+    camera.viewport = FixedResolutionViewport(
+      resolution: Vector2(720, 640),
+    );
 
     camera.setBounds(
       Rectangle.fromLTRB(size.x / 2, size.y / 2.4, level.width - size.x / 2,
@@ -135,22 +145,17 @@ class Jump1 extends FlameGame
 
     joystick = JoystickComponent(
         knob: CircleComponent(
-            radius: 40, paint: Paint()..color = Colors.redAccent.withOpacity(0.50)),
+            radius: 30, paint: Paint()..color = const Color.fromARGB(255, 244, 240, 240).withOpacity(0.50)),
         background: CircleComponent(
             radius: 50, paint: Paint()..color = Colors.white.withOpacity(0.50)),
         margin: const EdgeInsets.only(left: 50, bottom: 30));
-
-    jump = JoystickComponent(
-      knob: CircleComponent(),
-      background: CircleComponent(
-          radius: 30, paint: Paint()..color = Colors.white.withOpacity(0.50)),
-      margin: const EdgeInsets.only(right: 50, bottom: 30),
-    );
-
-    await camera.viewport.add(jump);
     await camera.viewport.add(joystick);
 
     joystick.priority = 0;
+
+     final jumpButton = JumpButton(onJumpButtonPressed: myPlayer.moveJump);
+    world.add(jumpButton);
+    await camera.viewport.add(jumpButton);
 
     // Register the game over overlay
     overlays.addEntry(
@@ -210,15 +215,17 @@ class Jump1 extends FlameGame
     }
   }
 
-  void onResize(Vector2 size) {
-    super.onGameResize(size);
-    // Update background size to match the new screen size
-    background.size = size;
 
-    camera.viewport = FixedResolutionViewport(
-      resolution: size,
-    );
-  }
+  // void onResize(Vector2 size) {
+  //   super.onGameResize(size);
+  //   // Update background size to match the new screen size
+  //   background.size = size;
+
+  //   camera.viewport = FixedResolutionViewport(
+  //     resolution: size,
+  //     // resolution: size,
+  //   );
+  // }
 
   // Function to respawn the player at the initial spawn point
   void respawnPlayer() {
@@ -230,7 +237,7 @@ class Jump1 extends FlameGame
       camera.viewfinder.position = playerSpawnPoint;
 
       // Update livesText whenever lives change
-      livesText.text = 'Lives: $lives';
+      livesText.text = 'score: $lives';
 
       if (lives == 0) {
         isPlayerDead = true; // Set player dead flag to true
