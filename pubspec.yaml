@@ -43,6 +43,7 @@ dependencies:
   flame: ^1.18.0
   flame_tiled: ^1.11.0
   flame_audio: ^2.10.2
+  animated_text_kit: ^4.2.2
 
 dev_dependencies:
   flutter_test:

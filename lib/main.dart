@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 // import 'package:dynamic_color/dynamic_color.dart';
 import 'dart:async';
 import 'loading_screen.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,12 +67,63 @@ class _MyAppState extends State<MyApp> {
         ),
         useMaterial3: true,
       ),
-      home: SplashScreen(),
+      home: InitialScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
+
+class InitialScreen extends StatefulWidget {
+  @override
+  _InitialScreenState createState() => _InitialScreenState();
+}
+
+class _InitialScreenState extends State<InitialScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(Duration(seconds: 6), () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => SplashScreen()),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(''), // Replace with your background image asset
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: SizedBox(
+            width: 1000,
+            child: Center(
+              child: DefaultTextStyle(
+                style: const TextStyle(
+                  fontSize: 40.0,
+                  fontFamily: 'PixelFont',
+                  color: Colors.white,
+                ),
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    WavyAnimatedText('เกมเสริมทักษะอังกฤษ'),
+                  ],
+                  isRepeatingAnimation: true,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -127,7 +179,7 @@ class DeveloperInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Automatically navigate to LoadingScreen after 3 seconds
-    Future.delayed(const Duration(seconds: 7), () {
+    Future.delayed(const Duration(seconds: 4), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const LoadingScreen()),

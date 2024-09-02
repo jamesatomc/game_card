@@ -61,7 +61,7 @@ class Jump1 extends FlameGame
 
     // Load the GIF background
     background = SpriteComponent()
-      ..sprite = await loadSprite('bg2.png')
+      ..sprite = await loadSprite('bg2.gif')
       // 
       ..size = Vector2(1900,700)
       ;
@@ -168,13 +168,13 @@ class Jump1 extends FlameGame
     return super.onLoad();
   }
 
-  @override
-  void onTapUp(TapUpEvent event) async {
-    super.onTapUp(event);
-    if (!isPlayerDead) {
-      myPlayer.moveJump();
-    }
-  }
+  // @override
+  // void onTapUp(TapUpEvent event) async {
+  //   super.onTapUp(event);
+  //   if (!isPlayerDead) {
+  //     myPlayer.moveJump();
+  //   }
+  // }
 
   @override
   void update(double dt) {
