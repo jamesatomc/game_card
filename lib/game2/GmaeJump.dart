@@ -1,6 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cardgame/game2/Level/Jump1.dart';
+import 'package:flutter_cardgame/game2/components/LevelButton2.dart';
 
 import 'components/BackButtonOverlay.dart';
 
@@ -12,6 +13,17 @@ class GmaeJump extends StatefulWidget {
 }
 
 class _GmaeJumpState extends State<GmaeJump> {
+  int? level1CoinScore;
+  int? level2CoinScore;
+  int? level3CoinScore;
+  int? level4CoinScore;
+  int? level5CoinScore;
+  int? level6CoinScore;
+  int? level7CoinScore;
+  int? level8CoinScore;
+  int? level9CoinScore;
+  int? level10CoinScore;
+
   // Function to show the exit confirmation dialog
   Future<void> _showExitConfirmationDialog() async {
     return showDialog(
@@ -83,6 +95,25 @@ class _GmaeJumpState extends State<GmaeJump> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      PixelLevelButton2(
+                        level: 1,
+                        isUnlocked: true,
+                        nextScreen: GmaeJump(),
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
+                      ),
+                      const SizedBox(width: 10),
+                      PixelLevelButton2(
+                        level: 2,
+                        isUnlocked:
+                            level1CoinScore != null && level1CoinScore! >= 6,
+                        nextScreen: GmaeJump(),
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
+                      ),
+                      const SizedBox(width: 10),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           textStyle: const TextStyle(fontSize: 18),
@@ -96,62 +127,27 @@ class _GmaeJumpState extends State<GmaeJump> {
                           shadowColor: Color.fromARGB(255, 232, 205, 152)
                               .withOpacity(0.5), // Set shadow color
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GameWidget(
-                                game: Jump1(),
-                                overlayBuilderMap: {
-                                  'BackButton': (context, game) =>
-                                      BackButtonOverlay(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
+                        onPressed:
+                            level3CoinScore != null && level3CoinScore! >= 6
+                                ? () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => GameWidget(
+                                          game: Jump1(),
+                                          overlayBuilderMap: {
+                                            'BackButton': (context, game) =>
+                                                BackButtonOverlay(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                          },
+                                        ),
                                       ),
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                        child: const Text('1'),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 18),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // Add rounded corners
-                          ),
-                          elevation: 5, // Add elevation for shadow
-                          shadowColor: Color.fromARGB(255, 232, 205, 152)
-                              .withOpacity(0.5), // Set shadow color
-                        ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/game2');
-                        },
-                        child: const Text('2'),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 18),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // Add rounded corners
-                          ),
-                          elevation: 5, // Add elevation for shadow
-                          shadowColor: Color.fromARGB(255, 232, 205, 152)
-                              .withOpacity(0.5), // Set shadow color
-                        ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/game2');
-                        },
+                                    );
+                                  }
+                                : null,
                         child: const Text('3'),
                       ),
                       const SizedBox(width: 10),
@@ -168,9 +164,25 @@ class _GmaeJumpState extends State<GmaeJump> {
                           shadowColor: Color.fromARGB(255, 232, 205, 152)
                               .withOpacity(0.5), // Set shadow color
                         ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/game2');
-                        },
+                        onPressed:
+                             () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => GameWidget(
+                                          game: Jump1(),
+                                          overlayBuilderMap: {
+                                            'BackButton': (context, game) =>
+                                                BackButtonOverlay(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
                         child: const Text('4'),
                       ),
                       const SizedBox(width: 10),
@@ -187,111 +199,28 @@ class _GmaeJumpState extends State<GmaeJump> {
                           shadowColor: Color.fromARGB(255, 232, 205, 152)
                               .withOpacity(0.5), // Set shadow color
                         ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/game2');
-                        },
+                        onPressed:
+                            level5CoinScore != null && level5CoinScore! >= 6
+                                ? () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => GameWidget(
+                                          game: Jump1(),
+                                          overlayBuilderMap: {
+                                            'BackButton': (context, game) =>
+                                                BackButtonOverlay(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                : null,
                         child: const Text('5'),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 18),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // Add rounded corners
-                          ),
-                          elevation: 5, // Add elevation for shadow
-                          shadowColor: Color.fromARGB(255, 232, 205, 152)
-                              .withOpacity(0.5), // Set shadow color
-                        ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/game2');
-                        },
-                        child: const Text('6'),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 18),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // Add rounded corners
-                          ),
-                          elevation: 5, // Add elevation for shadow
-                          shadowColor: Color.fromARGB(255, 232, 205, 152)
-                              .withOpacity(0.5), // Set shadow color
-                        ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/game2');
-                        },
-                        child: const Text('7'),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 18),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // Add rounded corners
-                          ),
-                          elevation: 5, // Add elevation for shadow
-                          shadowColor: Color.fromARGB(255, 232, 205, 152)
-                              .withOpacity(0.5), // Set shadow color
-                        ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/game2');
-                        },
-                        child: const Text('8'),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 18),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // Add rounded corners
-                          ),
-                          elevation: 5, // Add elevation for shadow
-                          shadowColor: Color.fromARGB(255, 232, 205, 152)
-                              .withOpacity(0.5), // Set shadow color
-                        ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/game2');
-                        },
-                        child: const Text('9'),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 18),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // Add rounded corners
-                          ),
-                          elevation: 5, // Add elevation for shadow
-                          shadowColor: Color.fromARGB(255, 232, 205, 152)
-                              .withOpacity(0.5), // Set shadow color
-                        ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/game2');
-                        },
-                        child: const Text('10'),
                       ),
                     ],
                   ),

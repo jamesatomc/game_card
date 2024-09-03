@@ -73,7 +73,6 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-
 class InitialScreen extends StatefulWidget {
   @override
   _InitialScreenState createState() => _InitialScreenState();
@@ -83,7 +82,7 @@ class _InitialScreenState extends State<InitialScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 6), () {
+    Future.delayed(const Duration(seconds: 6), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => SplashScreen()),
       );
@@ -94,36 +93,40 @@ class _InitialScreenState extends State<InitialScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(''), // Replace with your background image asset
-            fit: BoxFit.cover,
-          ),
-        ),
         child: Center(
-          child: SizedBox(
-            width: 1000,
-            child: Center(
-              child: DefaultTextStyle(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 400,
+                height: 200,
+                child: Image.asset('assets/your_image.png'), // Replace with your image asset
+              ),
+              const SizedBox(height: 20),
+              DefaultTextStyle(
                 style: const TextStyle(
                   fontSize: 40.0,
                   fontFamily: 'PixelFont',
                   color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
                 child: AnimatedTextKit(
                   animatedTexts: [
                     WavyAnimatedText('เกมเสริมทักษะอังกฤษ'),
                   ],
                   isRepeatingAnimation: true,
+                  repeatForever: true,
+                  pause: const Duration(seconds: 1),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),
     );
   }
 }
+
 
 class SplashScreen extends StatefulWidget {
   @override

@@ -1,15 +1,13 @@
-// ignore: file_names
-import 'dart:async';
-
 import 'package:flame/camera.dart';
-import 'package:flame/components.dart';
-import 'package:flame/events.dart';
-import 'package:flame/experimental.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flame/game.dart';
+import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:flutter/material.dart';
+import 'package:flame/events.dart';
+import 'package:flame/experimental.dart';
 
 import '../components/game-ui/bumpy.dart';
 import '../components/game-ui/cion.dart';
@@ -18,7 +16,6 @@ import '../components/game-ui/ground.dart';
 import '../components/game-ui/jumpButton.dart';
 import '../components/game-ui/monsters.dart';
 import '../components/game-ui/player.dart';
-
 
 class Jump1 extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection, TapCallbacks {
@@ -36,16 +33,21 @@ class Jump1 extends FlameGame
 
   int lives = 2; // Start with 2 lives
   int initialLives = 2; // Store the initial number of lives
+  int level1CoinScore = 0; // Track the number of coins collected
 
   late TextComponent livesText; // Declare a TextComponent for lives
+  late TextComponent coinsText; // Declare a TextComponent for coins
 
   bool isPlayerDead = false; // Flag to track if the player is dead
 
   @override
-  FutureOr<void> onLoad() async {
+  Future<void> onLoad() async {
     initialLives = lives; // Initialize initialLives in onLoad
 
-// Initialize livesText
+    // Load the saved coin score
+    level1CoinScore = await getLevel1CoinScore() ?? 0;
+
+    // Initialize livesText
     livesText = TextComponent(
       text: 'Lives: $lives',
       position: Vector2(size.x - 10, 10), // Position on the far right
@@ -59,20 +61,31 @@ class Jump1 extends FlameGame
     );
     camera.viewport.add(livesText); // Add livesText to the camera viewport
 
+    // Initialize coinsText
+    coinsText = TextComponent(
+      text: 'Coins: $level1CoinScore',
+      position: Vector2(10, 10), // Position on the far left
+      anchor: Anchor.topLeft, // Align text to top-left
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          color: Color.fromARGB(255, 255, 215, 0),
+          fontSize: 20,
+        ),
+      ),
+    );
+    camera.viewport.add(coinsText); // Add coinsText to the camera viewport
+
     // Load the GIF background
     background = SpriteComponent()
       ..sprite = await loadSprite('bg2.gif')
-      // 
-      ..size = Vector2(1900,700)
-      ;
-        FlameAudio.bgm.play(
-        "bg.mp3",
-        );
-      
+      ..size = Vector2(1900, 700);
+    FlameAudio.bgm.play("bg.mp3");
+
     // Add the background to the game world
     add(background);
-     
-     
+
+    overlays.add('BackButton');
+
     final level = await TiledComponent.load(
       "map.tmx",
       Vector2.all(32),
@@ -96,7 +109,6 @@ class Jump1 extends FlameGame
           camera.follow(myPlayer); // Ensure camera follows the player
           break;
       }
-     
     }
 
     final coinPointsLayer = level.tileMap.getLayer<ObjectGroup>("coin");
@@ -145,7 +157,10 @@ class Jump1 extends FlameGame
 
     joystick = JoystickComponent(
         knob: CircleComponent(
-            radius: 30, paint: Paint()..color = const Color.fromARGB(255, 244, 240, 240).withOpacity(0.50)),
+            radius: 30,
+            paint: Paint()
+              ..color =
+                  const Color.fromARGB(255, 244, 240, 240).withOpacity(0.50)),
         background: CircleComponent(
             radius: 50, paint: Paint()..color = Colors.white.withOpacity(0.50)),
         margin: const EdgeInsets.only(left: 50, bottom: 30));
@@ -153,7 +168,7 @@ class Jump1 extends FlameGame
 
     joystick.priority = 0;
 
-     final jumpButton = JumpButton(onJumpButtonPressed: myPlayer.moveJump);
+    final jumpButton = JumpButton(onJumpButtonPressed: myPlayer.moveJump);
     world.add(jumpButton);
     await camera.viewport.add(jumpButton);
 
@@ -167,14 +182,6 @@ class Jump1 extends FlameGame
 
     return super.onLoad();
   }
-
-  // @override
-  // void onTapUp(TapUpEvent event) async {
-  //   super.onTapUp(event);
-  //   if (!isPlayerDead) {
-  //     myPlayer.moveJump();
-  //   }
-  // }
 
   @override
   void update(double dt) {
@@ -195,8 +202,13 @@ class Jump1 extends FlameGame
     overlays.add('GameOver');
   }
 
+  void showWin() {
+    overlays.add('Win');
+  }
+
   void restartGame() {
     overlays.remove('GameOver');
+    overlays.remove('Win');
     respawnPlayer();
   }
 
@@ -215,18 +227,6 @@ class Jump1 extends FlameGame
     }
   }
 
-
-  // void onResize(Vector2 size) {
-  //   super.onGameResize(size);
-  //   // Update background size to match the new screen size
-  //   background.size = size;
-
-  //   camera.viewport = FixedResolutionViewport(
-  //     resolution: size,
-  //     // resolution: size,
-  //   );
-  // }
-
   // Function to respawn the player at the initial spawn point
   void respawnPlayer() {
     if (lives > 0) {
@@ -237,7 +237,7 @@ class Jump1 extends FlameGame
       camera.viewfinder.position = playerSpawnPoint;
 
       // Update livesText whenever lives change
-      livesText.text = 'score: $lives';
+      livesText.text = 'Lives: $lives';
 
       if (lives == 0) {
         isPlayerDead = true; // Set player dead flag to true
@@ -252,6 +252,8 @@ class Jump1 extends FlameGame
   void resetGame() {
     lives = initialLives; // Reset lives to the initial value
     livesText.text = 'Lives: $lives'; // Update livesText
+    level1CoinScore = 0; // Reset coin score
+    coinsText.text = 'Coins: $level1CoinScore'; // Update coinsText
 
     // Remove existing game objects (player, monsters, coins, etc.)
     world.removeAll(world.children);
@@ -264,5 +266,26 @@ class Jump1 extends FlameGame
 
     // Reset the player dead flag
     isPlayerDead = false;
+  }
+
+  // Function to handle coin collection
+  void collectCoin() {
+    level1CoinScore++;
+    coinsText.text = 'Coins: $level1CoinScore';
+    saveLevel1CoinScore(level1CoinScore); // Save the coin score
+
+    if (level1CoinScore >= 6) {
+      showWin(); // Show win overlay when 6 coins are collected
+    }
+  }
+
+  Future<void> saveLevel1CoinScore(int score) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('level1CoinScore', score);
+  }
+
+  Future<int?> getLevel1CoinScore() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('level1CoinScore');
   }
 }
