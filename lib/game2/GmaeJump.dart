@@ -107,12 +107,32 @@ class _GmaeJumpState extends State<GmaeJump> {
                       PixelLevelButton2(
                         level: 2,
                         isUnlocked:
-                            level1CoinScore != null && level1CoinScore! >= 6,
+                            level1CoinScore != null && level1CoinScore! >= 10,
                         nextScreen: GmaeJump(),
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
                       ),
+                      const SizedBox(width: 10),
+                      PixelLevelButton2(
+                        level: 3,
+                        isUnlocked:
+                            level2CoinScore != null && level2CoinScore! >= 10,
+                        nextScreen: GmaeJump(),
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
+                      ),  
+                      const SizedBox(width: 10),
+                      PixelLevelButton2(
+                        level: 4,
+                        isUnlocked:
+                            level2CoinScore != null && level2CoinScore! >= 10,
+                        nextScreen: GmaeJump(),
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
+                      ),  
                       const SizedBox(width: 10),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -148,80 +168,9 @@ class _GmaeJumpState extends State<GmaeJump> {
                                     );
                                   }
                                 : null,
-                        child: const Text('3'),
+                        child: const Text('test'),
                       ),
                       const SizedBox(width: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 18),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // Add rounded corners
-                          ),
-                          elevation: 5, // Add elevation for shadow
-                          shadowColor: Color.fromARGB(255, 232, 205, 152)
-                              .withOpacity(0.5), // Set shadow color
-                        ),
-                        onPressed:
-                             () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => GameWidget(
-                                          game: Jump1(),
-                                          overlayBuilderMap: {
-                                            'BackButton': (context, game) =>
-                                                BackButtonOverlay(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                          },
-                                        ),
-                                      ),
-                                    );
-                                  },
-                        child: const Text('4'),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 18),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // Add rounded corners
-                          ),
-                          elevation: 5, // Add elevation for shadow
-                          shadowColor: Color.fromARGB(255, 232, 205, 152)
-                              .withOpacity(0.5), // Set shadow color
-                        ),
-                        onPressed:
-                            level5CoinScore != null && level5CoinScore! >= 6
-                                ? () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => GameWidget(
-                                          game: Jump1(),
-                                          overlayBuilderMap: {
-                                            'BackButton': (context, game) =>
-                                                BackButtonOverlay(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                          },
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                : null,
-                        child: const Text('5'),
-                      ),
                     ],
                   ),
                 ],
