@@ -1,9 +1,7 @@
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cardgame/game2/Level/Jump1.dart';
 import 'package:flutter_cardgame/game2/components/LevelButton2.dart';
+import 'Quiz/quiz1.dart';
 
-import 'components/BackButtonOverlay.dart';
 
 class GmaeJump extends StatefulWidget {
   const GmaeJump({Key? key}) : super(key: key);
@@ -98,7 +96,7 @@ class _GmaeJumpState extends State<GmaeJump> {
                       PixelLevelButton2(
                         level: 1,
                         isUnlocked: true,
-                        nextScreen: GmaeJump(),
+                        nextScreen: Quiz1(),
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -133,43 +131,6 @@ class _GmaeJumpState extends State<GmaeJump> {
                         onTapDown: () {},
                         onTapCancel: () {},
                       ),  
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 18),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // Add rounded corners
-                          ),
-                          elevation: 5, // Add elevation for shadow
-                          shadowColor: Color.fromARGB(255, 232, 205, 152)
-                              .withOpacity(0.5), // Set shadow color
-                        ),
-                        onPressed:
-                            level3CoinScore != null && level3CoinScore! >= 6
-                                ? () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => GameWidget(
-                                          game: Jump1(),
-                                          overlayBuilderMap: {
-                                            'BackButton': (context, game) =>
-                                                BackButtonOverlay(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                          },
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                : null,
-                        child: const Text('test'),
-                      ),
                       const SizedBox(width: 10),
                     ],
                   ),
