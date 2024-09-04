@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:dynamic_color/dynamic_color.dart';
 import 'dart:async';
-import 'game2/GmaeJump.dart';
+import 'game2/GameJump.dart';
 import 'loading_screen.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
@@ -183,7 +183,7 @@ class DeveloperInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Automatically navigate to LoadingScreen after 3 seconds
-    Future.delayed(const Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const LoadingScreen()),

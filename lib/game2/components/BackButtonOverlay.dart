@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flame_audio/flame_audio.dart';
 
-import '../GmaeJump.dart'; // Import FlameAudio
+import '../GameJump.dart'; // Import FlameAudio
 
 class BackButtonOverlay extends StatelessWidget {
   final VoidCallback onPressed;
@@ -45,7 +45,7 @@ class BackButtonOverlay extends StatelessWidget {
                       Navigator.of(context).pop(); // Close dialog
                       Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(builder: (context) => GmaeJump()),
+                        MaterialPageRoute(builder: (context) => GameJump()),
                         (route) => false,
                       ); // Navigate to GmaeJump and remove all previous routes
                     },

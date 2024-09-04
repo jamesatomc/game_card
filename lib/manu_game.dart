@@ -1,7 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cardgame/game1/GameCard.dart';
-import 'package:flutter_cardgame/game2/GmaeJump.dart';
+import 'package:flutter_cardgame/game2/GameJump.dart';
 import 'game_button.dart';
 
 class ManuGame extends StatefulWidget {
@@ -76,7 +76,7 @@ class _ManuGameState extends State<ManuGame> {
                   _playSound();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const GmaeJump()),
+                    MaterialPageRoute(builder: (context) => const GameJump()),
                   );
                 },
                 onTapUp: () {},

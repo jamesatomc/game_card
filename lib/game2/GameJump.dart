@@ -3,14 +3,14 @@ import 'package:flutter_cardgame/game2/components/LevelButton2.dart';
 import 'Quiz/quiz1.dart';
 
 
-class GmaeJump extends StatefulWidget {
-  const GmaeJump({Key? key}) : super(key: key);
+class GameJump extends StatefulWidget {
+  const GameJump({Key? key}) : super(key: key);
 
   @override
-  _GmaeJumpState createState() => _GmaeJumpState();
+  _GameJumpState createState() => _GameJumpState();
 }
 
-class _GmaeJumpState extends State<GmaeJump> {
+class _GameJumpState extends State<GameJump> {
   int? level1CoinScore;
   int? level2CoinScore;
   int? level3CoinScore;
@@ -106,7 +106,7 @@ class _GmaeJumpState extends State<GmaeJump> {
                         level: 2,
                         isUnlocked:
                             level1CoinScore != null && level1CoinScore! >= 10,
-                        nextScreen: GmaeJump(),
+                        nextScreen: GameJump(),
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -116,7 +116,7 @@ class _GmaeJumpState extends State<GmaeJump> {
                         level: 3,
                         isUnlocked:
                             level2CoinScore != null && level2CoinScore! >= 10,
-                        nextScreen: GmaeJump(),
+                        nextScreen: GameJump(),
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -126,7 +126,7 @@ class _GmaeJumpState extends State<GmaeJump> {
                         level: 4,
                         isUnlocked:
                             level2CoinScore != null && level2CoinScore! >= 10,
-                        nextScreen: GmaeJump(),
+                        nextScreen: GameJump(),
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
