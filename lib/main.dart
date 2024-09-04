@@ -68,7 +68,7 @@ class _MyAppState extends State<MyApp> {
         ),
         useMaterial3: true,
       ),
-      home: GmaeJump(),
+      home: InitialScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -99,15 +99,15 @@ class _InitialScreenState extends State<InitialScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                width: 400,
+                width: 200,
                 height: 200,
-                child: Image.asset('assets/your_image.png'), // Replace with your image asset
+                child: Image.asset('assets/gamecard/bg_0.png'), // Replace with your image asset
               ),
               const SizedBox(height: 20),
               DefaultTextStyle(
                 style: const TextStyle(
                   fontSize: 40.0,
-                  fontFamily: 'PixelFont',
+                  fontFamily: 'Itim-Regular',
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),

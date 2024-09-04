@@ -104,7 +104,7 @@ class _PixelGameButtonState extends State<PixelGameButton> {
                       style: TextStyle(
                         color: widget.textColor,
                         fontSize: 20,
-                        fontFamily: 'PixelFont',
+                        fontFamily: 'Itim-Regular',
                         fontWeight: FontWeight.bold,
                       ),
                     ),

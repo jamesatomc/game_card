@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
 
+import '../GmaeJump.dart';
 import '../Level/Jump1.dart';
 import '../components/BackButtonOverlay.dart';
+
 
 class Quiz1 extends StatefulWidget {
   @override
@@ -42,6 +44,7 @@ class _Quiz1State extends State<Quiz1> {
     // More questions...
   ];
 
+  late List<Question> remainingQuestions;
   late Question currentQuestion;
   int? selectedAnswerIndex;
   bool showAnswer = false;
@@ -54,18 +57,24 @@ class _Quiz1State extends State<Quiz1> {
   @override
   void initState() {
     super.initState();
+    remainingQuestions = List.from(questions);
     _loadRandomQuestion();
   }
 
   void _loadRandomQuestion() {
     setState(() {
-      currentQuestion = questions[random.nextInt(questions.length)];
+      if (remainingQuestions.isEmpty) {
+        remainingQuestions = List.from(questions);
+      }
+      currentQuestion = remainingQuestions.removeAt(random.nextInt(remainingQuestions.length));
       selectedAnswerIndex = null;
       showAnswer = false;
     });
   }
 
   void _checkAnswer(int selectedIndex) {
+    if (selectedAnswerIndex != null) return; // Prevent multiple presses
+
     setState(() {
       selectedAnswerIndex = selectedIndex;
       showAnswer = true;
@@ -91,6 +100,7 @@ class _Quiz1State extends State<Quiz1> {
     setState(() {
       incorrectAnswers = 0;
       answeredQuestions = 0;
+      remainingQuestions = List.from(questions);
       _loadRandomQuestion();
     });
   }
@@ -116,13 +126,24 @@ class _Quiz1State extends State<Quiz1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Quiz'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => GmaeJump()), // Navigate back to MenuJump
+            );
+          },
+        ),
+      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                    "assets/images/background.png"), // Replace with your image path
+                image: AssetImage("assets/images/background.png"), // Replace with your image path
                 fit: BoxFit.cover,
               ),
             ),
@@ -139,15 +160,13 @@ class _Quiz1State extends State<Quiz1> {
                         Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(
-                                0.8), // Semi-transparent white background
+                            color: Colors.white.withOpacity(0.8), // Semi-transparent white background
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: Text(
                             currentQuestion.text,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 18, color: Colors.black),
+                            style: const TextStyle(fontSize: 18, color: Colors.black),
                           ),
                         ),
                         const SizedBox(height: 30),
@@ -159,16 +178,16 @@ class _Quiz1State extends State<Quiz1> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   _buildAnswerButton(0),
-                                  SizedBox(width: 20), // Space between buttons
+                                  const SizedBox(width: 20), // Space between buttons
                                   _buildAnswerButton(1),
                                 ],
                               ),
-                              SizedBox(height: 20), // Space between rows
+                              const SizedBox(height: 20), // Space between rows
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   _buildAnswerButton(2),
-                                  SizedBox(width: 20), // Space between buttons
+                                  const SizedBox(width: 20), // Space between buttons
                                   _buildAnswerButton(3),
                                 ],
                               ),
@@ -176,6 +195,13 @@ class _Quiz1State extends State<Quiz1> {
                           ),
                         ),
                         const SizedBox(height: 30),
+                        if (showAnswer) ...[
+                          const SizedBox(height: 20),
+                          Text(
+                            'Correct Answer: ${currentQuestion.answers[currentQuestion.correctAnswerIndex]}',
+                            style: const TextStyle(color: Colors.green, fontSize: 16),
+                          ),
+                        ],
                         if (incorrectAnswers >= maxIncorrectAnswers) ...[
                           const SizedBox(height: 20),
                           const Text(
@@ -196,17 +222,24 @@ class _Quiz1State extends State<Quiz1> {
   }
 
   Widget _buildAnswerButton(int index) {
+    Color buttonColor;
+    if (showAnswer) {
+      if (index == currentQuestion.correctAnswerIndex) {
+        buttonColor = Colors.green;
+      } else if (index == selectedAnswerIndex) {
+        buttonColor = Colors.red;
+      } else {
+        buttonColor = Colors.blueGrey;
+      }
+    } else {
+      buttonColor = Colors.blueGrey;
+    }
+
     return Expanded(
       child: ElevatedButton(
-        onPressed: () => _checkAnswer(index),
+        onPressed: selectedAnswerIndex == null ? () => _checkAnswer(index) : null, // Disable button if an answer is selected
         style: ElevatedButton.styleFrom(
-          backgroundColor: showAnswer
-              ? index == currentQuestion.correctAnswerIndex
-                  ? Colors.green
-                  : index == selectedAnswerIndex
-                      ? Colors.red
-                      : Colors.blueGrey // Default button color
-              : Colors.blueGrey,
+          backgroundColor: buttonColor,
           padding: const EdgeInsets.all(16.0),
           textStyle: const TextStyle(fontSize: 18),
           shape: RoundedRectangleBorder(

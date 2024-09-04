@@ -71,7 +71,7 @@ class _ManuGameState extends State<ManuGame> {
               PixelGameButton(
                 height: 60,
                 width: 200,
-                text: 'ลิงน้องผจญภัย',
+                text: 'ลิงน้อยผจญภัย',
                 onTap: () {
                   _playSound();
                   Navigator.push(
