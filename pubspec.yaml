@@ -44,6 +44,7 @@ dependencies:
   flame_tiled: ^1.11.0
   flame_audio: ^2.10.2
   animated_text_kit: ^4.2.2
+  flutter_native_splash: ^2.4.1
 
 dev_dependencies:
   flutter_test:
@@ -124,3 +125,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_native_splash:
+  background_color: "#9ed9a6"
+  color: "#9ed9a6"
+  android: true
+  ios: true
