@@ -1,8 +1,6 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:flame_audio/flame_audio.dart';
-
-import '../GameJump.dart'; // Import FlameAudio
+import 'package:flame_audio/flame_audio.dart'; // Import FlameAudio
 
 class BackButtonOverlay extends StatelessWidget {
   final VoidCallback onPressed;
@@ -34,7 +32,7 @@ class BackButtonOverlay extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       _playSound(); // Play sound when "No" is pressed
-                      Navigator.of(context).pop(); // Close dialog
+                      Navigator.of(context).pop(); // ปิด dialog
                     },
                     child: const Text('No'),
                   ),
@@ -42,12 +40,8 @@ class BackButtonOverlay extends StatelessWidget {
                     onPressed: () {
                       _playSound(); // Play sound when "Yes" is pressed
                       FlameAudio.bgm.stop(); // Stop the background music
-                      Navigator.of(context).pop(); // Close dialog
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => GameJump()),
-                        (route) => false,
-                      ); // Navigate to GmaeJump and remove all previous routes
+                      Navigator.of(context).pop(); // ปิด dialog
+                      onPressed(); // เรียกใช้ onPressed เพื่อกลับไปหน้าก่อนหน้า
                     },
                     child: const Text('Yes'),
                   ),
@@ -57,14 +51,14 @@ class BackButtonOverlay extends StatelessWidget {
           );
         },
         style: ElevatedButton.styleFrom(
-          shape: const CircleBorder(), // Make the button circular
-          padding: const EdgeInsets.all(16.0), // Add padding around the button
-          backgroundColor: Colors.transparent, // Make the button background transparent
+          shape: const CircleBorder(), // ทำให้ปุ่มเป็นวงกลม
+          padding: const EdgeInsets.all(16.0), // เพิ่ม padding รอบๆ ปุ่ม
+          backgroundColor: Colors.transparent, // ทำให้พื้นหลังปุ่มโปร่งใส
         ),
         child: const Icon(
-          Icons.arrow_back, // Change the text to a back arrow icon
-          color: Colors.white, // Set the icon color
-          size: 32.0, // Set the icon size
+          Icons.arrow_back, // เปลี่ยนข้อความเป็น Icon ลูกศรย้อนกลับ
+          color: Colors.white, // ตั้งค่าสีของ Icon
+          size: 32.0, // ตั้งค่าขนาดของ Icon
         ),
       ),
     );

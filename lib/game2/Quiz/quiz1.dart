@@ -1,10 +1,8 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_cardgame/game_button.dart';
 import 'dart:math';
 
-import '../GameJump.dart';
 import '../Level/Jump1.dart';
 import '../components/BackButtonOverlay.dart';
 
