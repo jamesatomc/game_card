@@ -31,16 +31,6 @@ class _Quiz1State extends State<Quiz1> {
       ['Berlin', 'Paris', 'Madrid', 'Rome'],
       2,
     ),
-    Question(
-      'What is the capital of Italy?',
-      ['Berlin', 'Paris', 'Madrid', 'Rome'],
-      3,
-    ),
-    Question(
-      'What is the capital of Portugal?',
-      ['Lisbon', 'Paris', 'Madrid', 'Rome'],
-      0,
-    ),
     // More questions...
   ];
 
@@ -50,8 +40,8 @@ class _Quiz1State extends State<Quiz1> {
   bool showAnswer = false;
   int incorrectAnswers = 0;
   int answeredQuestions = 0;
-  final int maxIncorrectAnswers = 3;
-  final int totalQuestions = 5;
+  final int maxIncorrectAnswers = 2;
+  final int totalQuestions = 3;
   final Random random = Random();
 
   @override
@@ -89,7 +79,8 @@ class _Quiz1State extends State<Quiz1> {
       if (answeredQuestions >= totalQuestions) {
         _showCompletionScreen();
       } else if (incorrectAnswers >= maxIncorrectAnswers) {
-        _resetQuiz();
+        // _resetQuiz();  //  <-- Remove this line
+        _showFailScreen(); // <-- Add this line
       } else {
         _loadRandomQuestion();
       }
@@ -120,6 +111,35 @@ class _Quiz1State extends State<Quiz1> {
           },
         ),
       ),
+    );
+  }
+
+  void _showFailScreen() {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent closing by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('เสียใจด้วย'),
+          content: const Text('คุณต้องการลองอีกครั้งหรือไม่?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _resetQuiz();
+              },
+              child: const Text('ลองอีกครั้ง'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+                Navigator.pop(context); // Go back to the previous screen
+              },
+              child: const Text('ออกจากเกม'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -198,14 +218,14 @@ class _Quiz1State extends State<Quiz1> {
                         if (showAnswer) ...[
                           const SizedBox(height: 20),
                           Text(
-                            'Correct Answer: ${currentQuestion.answers[currentQuestion.correctAnswerIndex]}',
+                            'คำตอบที่ถูกต้อง: ${currentQuestion.answers[currentQuestion.correctAnswerIndex]}',
                             style: const TextStyle(color: Colors.green, fontSize: 16),
                           ),
                         ],
                         if (incorrectAnswers >= maxIncorrectAnswers) ...[
                           const SizedBox(height: 20),
                           const Text(
-                            'You have exceeded the maximum number of incorrect answers.',
+                            'ตอบผิดเกิน 2 ครั้ง',
                             style: TextStyle(color: Colors.red, fontSize: 16),
                           ),
                         ],
