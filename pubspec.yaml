@@ -125,9 +125,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-
-flutter_native_splash:
-  background_color: "#9ed9a6"
-  color: "#9ed9a6"
-  android: true
-  ios: true
