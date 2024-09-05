@@ -60,7 +60,7 @@ class _PixelLevelButton2State extends State<PixelLevelButton2> {
         width: 80,
         height: 80,
         decoration: BoxDecoration(
-          color: widget.isUnlocked ? Colors.blue : Colors.grey,
+          color: widget.isUnlocked ? const Color.fromARGB(255, 3, 39, 244) : Colors.grey,
           border: Border.all(color: Colors.black, width: 4),
           boxShadow: widget.isUnlocked && !_isPressed
               ? [

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cardgame/game2/components/LevelButton2.dart';
+import '../game_button.dart';
 import 'Quiz/quiz1.dart';
-
 
 class GameJump extends StatefulWidget {
   const GameJump({Key? key}) : super(key: key);
@@ -120,7 +120,7 @@ class _GameJumpState extends State<GameJump> {
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
-                      ),  
+                      ),
                       const SizedBox(width: 10),
                       PixelLevelButton2(
                         level: 4,
@@ -130,9 +130,21 @@ class _GameJumpState extends State<GameJump> {
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
-                      ),  
+                      ),
                       const SizedBox(width: 10),
                     ],
+                  ),
+                  const SizedBox(height: 10),
+                  PixelGameButton(
+                    height: 60,
+                    width: 200,
+                    text: 'วิธีเล่น',
+                    onTap: () {},
+                    onTapUp: () {},
+                    onTapDown: () {},
+                    onTapCancel: () {},
+                    backgroundColor: Colors.greenAccent,
+                    textColor: Colors.black,
                   ),
                 ],
               ),

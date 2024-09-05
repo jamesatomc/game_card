@@ -469,6 +469,21 @@ class _GameCardScreenState extends State<GameCardScreen> {
                     ],
                   ),
                   const SizedBox(height: 10),
+                  PixelGameButton(
+                    height: 60,
+                    width: 200,
+                    text: 'วิธีเล่น',
+                    onTap: () {
+                      _playSound(); // Play sound when button is pressed
+
+                    },
+                    onTapUp: () {},
+                    onTapDown: () {},
+                    onTapCancel: () {},
+                    backgroundColor: Colors.greenAccent,
+                    textColor: Colors.black,
+                  ),
+                  const SizedBox(height: 10),
                   // Music Toggle Button
                   MusicToggleButton(),
                 ],
