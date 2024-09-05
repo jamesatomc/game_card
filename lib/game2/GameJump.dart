@@ -73,6 +73,8 @@ class _GameJumpState extends State<GameJump> {
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
                 Navigator.pop(context); // Go back to the previous screen
+
+                _stopBackgroundMusic(); // Stop the background music
               },
               child: const Text('Yes'),
             ),
@@ -128,7 +130,9 @@ class _GameJumpState extends State<GameJump> {
                       PixelLevelButton2(
                         level: 1,
                         isUnlocked: true,
-                        nextScreen: Quiz1(),
+                        nextScreen: Quiz1(
+                            onResumeMusic:
+                                _playBackgroundMusic), // Pass the function
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},

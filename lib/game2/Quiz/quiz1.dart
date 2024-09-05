@@ -7,7 +7,12 @@ import '../Level/Jump1.dart';
 import '../components/BackButtonOverlay.dart';
 
 class Quiz1 extends StatefulWidget {
+  final VoidCallback? onResumeMusic; // Add this property
+
+  const Quiz1({Key? key, this.onResumeMusic}) : super(key: key);
+
   @override
+  // ignore: library_private_types_in_public_api
   _Quiz1State createState() => _Quiz1State();
 }
 
@@ -96,7 +101,6 @@ class _Quiz1State extends State<Quiz1> {
   }
 
   void _showCompletionScreen() {
-  
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -127,6 +131,8 @@ class _Quiz1State extends State<Quiz1> {
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
                 Navigator.pop(context); // Go back to the previous screen
+                widget.onResumeMusic
+                    ?.call(); // Call the function to resume music
               },
               child: const Text('ออกจากเกม'),
             ),
@@ -169,6 +175,8 @@ class _Quiz1State extends State<Quiz1> {
                       onPressed: () {
                         Navigator.of(context).pop(); // ปิด AlertDialog
                         Navigator.pop(context); // กลับไปหน้าหลัก
+                        widget.onResumeMusic
+                            ?.call(); // Call the function to resume music
                       },
                       child: Text('Yes'),
                     ),
