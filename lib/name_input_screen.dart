@@ -41,7 +41,7 @@ class NameInputScreenState extends State<NameInputScreen> {
                     border: Border.all(color: Colors.white, width: 2),
                   ),
                   child: const Text(
-                    'Enter your name:',
+                    "What's your name?:",
                     style: TextStyle(
                       fontFamily: 'PixelFont',
                       fontSize: 24,
@@ -82,7 +82,7 @@ class NameInputScreenState extends State<NameInputScreen> {
                 PixelGameButton(
                   height: 60,
                   width: 200,
-                  text: 'SAVE',
+                  text: 'OK',
                   onTap: () {
                     if (_nameController.text.isNotEmpty) {
                       widget.onSave(_nameController.text);
