@@ -8,6 +8,7 @@ class PixelLevelButton2 extends StatefulWidget {
   final VoidCallback onTapUp;
   final VoidCallback onTapDown;
   final VoidCallback onTapCancel;
+  final VoidCallback onTap;
 
   const PixelLevelButton2({
     required this.level,
@@ -16,6 +17,7 @@ class PixelLevelButton2 extends StatefulWidget {
     required this.onTapUp,
     required this.onTapDown,
     required this.onTapCancel,
+    required this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -50,6 +52,7 @@ class _PixelLevelButton2State extends State<PixelLevelButton2> {
       onTap: widget.isUnlocked
           ? () {
               _playSound();
+              widget.onTap();
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => widget.nextScreen),

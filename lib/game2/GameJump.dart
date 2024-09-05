@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_cardgame/game2/components/LevelButton2.dart';
 import '../game_button.dart';
 import 'Quiz/quiz1.dart';
+import 'components/HowToPlay.dart';
 
 class GameJump extends StatefulWidget {
   const GameJump({Key? key}) : super(key: key);
@@ -21,6 +23,34 @@ class _GameJumpState extends State<GameJump> {
   int? level8CoinScore;
   int? level9CoinScore;
   int? level10CoinScore;
+
+  late AudioPlayer _audioPlayer;
+
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayer = AudioPlayer();
+    _playBackgroundMusic();
+  }
+
+  Future<void> _playBackgroundMusic() async {
+    try {
+      await _audioPlayer.play(AssetSource('audio/lofi.mp3'), volume: 0.5);
+      print('Background music started');
+    } catch (e) {
+      print('Error playing background music: $e');
+    }
+  }
+
+  void _stopBackgroundMusic() {
+    _audioPlayer.stop();
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.stop();
+    super.dispose();
+  }
 
   // Function to show the exit confirmation dialog
   Future<void> _showExitConfirmationDialog() async {
@@ -100,6 +130,7 @@ class _GameJumpState extends State<GameJump> {
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
+                        onTap: _stopBackgroundMusic,
                       ),
                       const SizedBox(width: 10),
                       PixelLevelButton2(
@@ -110,6 +141,7 @@ class _GameJumpState extends State<GameJump> {
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
+                        onTap: _stopBackgroundMusic,
                       ),
                       const SizedBox(width: 10),
                       PixelLevelButton2(
@@ -120,6 +152,7 @@ class _GameJumpState extends State<GameJump> {
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
+                        onTap: _stopBackgroundMusic,
                       ),
                       const SizedBox(width: 10),
                       PixelLevelButton2(
@@ -130,6 +163,7 @@ class _GameJumpState extends State<GameJump> {
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
+                        onTap: _stopBackgroundMusic,
                       ),
                       const SizedBox(width: 10),
                     ],
@@ -138,8 +172,17 @@ class _GameJumpState extends State<GameJump> {
                   PixelGameButton(
                     height: 60,
                     width: 200,
-                    text: 'วิธีเล่น',
-                    onTap: () {},
+                    text: 'How to Play',
+                    onTap: () {
+                      _stopBackgroundMusic();
+                      // Navigate to the How to Play screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Howtoplay2(),
+                        ),
+                      );
+                    },
                     onTapUp: () {},
                     onTapDown: () {},
                     onTapCancel: () {},

@@ -472,7 +472,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                   PixelGameButton(
                     height: 60,
                     width: 200,
-                    text: 'วิธีเล่น',
+                    text: 'How to Play',
                     onTap: () {
                       _playSound(); // Play sound when button is pressed
 
