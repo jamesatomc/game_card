@@ -97,9 +97,7 @@ class _Quiz1State extends State<Quiz1> {
   }
 
   void _showCompletionScreen() {
-    final player = AudioPlayer();
-    player.play(AssetSource('audio/lofi.mp3'), volume: 0.5); // Replace with your audio file path
-
+  
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -108,7 +106,6 @@ class _Quiz1State extends State<Quiz1> {
           overlayBuilderMap: {
             'BackButton': (context, game) => BackButtonOverlay(
                   onPressed: () {
-                    player.stop(); // Stop the song when navigating back
                     Navigator.pop(context);
                   },
                 ),

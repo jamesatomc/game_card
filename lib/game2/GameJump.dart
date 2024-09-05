@@ -25,6 +25,7 @@ class _GameJumpState extends State<GameJump> {
   int? level10CoinScore;
 
   late AudioPlayer _audioPlayer;
+  bool _isMusicPlaying = false; // Flag to track music playback
 
   @override
   void initState() {
@@ -34,22 +35,23 @@ class _GameJumpState extends State<GameJump> {
   }
 
   Future<void> _playBackgroundMusic() async {
-    try {
-      await _audioPlayer.play(AssetSource('audio/lofi.mp3'), volume: 0.5);
-      print('Background music started');
-    } catch (e) {
-      print('Error playing background music: $e');
+    if (!_isMusicPlaying) {
+      // Only play if not already playing
+      try {
+        await _audioPlayer.play(AssetSource('audio/lofi.mp3'), volume: 0.5);
+        _isMusicPlaying = true;
+        print('Background music started');
+      } catch (e) {
+        print('Error playing background music: $e');
+      }
     }
   }
 
   void _stopBackgroundMusic() {
-    _audioPlayer.stop();
-  }
-
-  @override
-  void dispose() {
-    _audioPlayer.stop();
-    super.dispose();
+    if (_isMusicPlaying) {
+      _audioPlayer.stop();
+      _isMusicPlaying = false;
+    }
   }
 
   // Function to show the exit confirmation dialog
