@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_cardgame/game2/components/LevelButton2.dart';
-import '../game_button.dart';
+import '../components/game_button.dart';
 import 'Quiz/quiz1.dart';
 import 'components/HowToPlay.dart';
 

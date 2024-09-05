@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 // Import all level screens
-import '../game_button.dart';
+import '../components/game_button.dart';
 import 'Level/Level1Screen.dart';
 import 'Level/Level2Screen.dart';
 import 'Level/Level3Screen.dart';

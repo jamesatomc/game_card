@@ -2,7 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cardgame/game1/GameCard.dart';
 import 'package:flutter_cardgame/game2/GameJump.dart';
-import 'game_button.dart';
+import 'components/game_button.dart';
 
 class ManuGame extends StatefulWidget {
   final String username;

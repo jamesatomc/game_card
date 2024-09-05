@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_cardgame/game1/components/info_card.dart';
 import 'package:flutter_cardgame/game1/utils/game_utils4.dart';
-import 'package:flutter_cardgame/game_button.dart';
+import 'package:flutter_cardgame/components/game_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart'; // Import the audioplayers package
 
