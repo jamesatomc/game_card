@@ -40,6 +40,8 @@ class Jump1 extends FlameGame
 
   bool isPlayerDead = false; // Flag to track if the player is dead
 
+  late JumpButton jumpButton;
+
   @override
   Future<void> onLoad() async {
     initialLives = lives; // Initialize initialLives in onLoad
@@ -168,7 +170,11 @@ class Jump1 extends FlameGame
 
     joystick.priority = 0;
 
-    final jumpButton = JumpButton(onJumpButtonPressed: myPlayer.moveJump);
+    jumpButton = JumpButton(onJumpButtonPressed: (bool jumped) {
+      if (!isPlayerDead && jumped) {
+        myPlayer.moveJump();
+      }
+    });
     world.add(jumpButton);
     await camera.viewport.add(jumpButton);
 
@@ -233,18 +239,23 @@ class Jump1 extends FlameGame
       lives--;
       myPlayer = Player(position: playerSpawnPoint);
       world.add(myPlayer);
-      camera.follow(myPlayer); // Ensure camera follows the player
+      camera.follow(myPlayer);
       camera.viewfinder.position = playerSpawnPoint;
 
-      // Update livesText whenever lives change
       livesText.text = 'Lives: $lives';
 
+      // Re-enable the jump button
+      jumpButton.setEnabled(true);
+
+      isPlayerDead = false; // Reset player dead flag
+
       if (lives == 0) {
-        isPlayerDead = true; // Set player dead flag to true
-        showGameOver(); // Show game over when lives reach 0
+        isPlayerDead = true;
+        jumpButton.setEnabled(false); // Disable jump button when player is dead
+        showGameOver();
       }
     } else {
-      resetGame(); // Call resetGame when lives reach 0
+      resetGame();
     }
   }
 
@@ -266,6 +277,9 @@ class Jump1 extends FlameGame
 
     // Reset the player dead flag
     isPlayerDead = false;
+
+        // Reset and re-enable the jump button
+    jumpButton.setEnabled(true);
   }
 
   // Function to handle coin collection
