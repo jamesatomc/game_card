@@ -52,8 +52,8 @@ class Jump1 extends FlameGame
     // Initialize livesText
     livesText = TextComponent(
       text: 'Lives: $lives',
-      position: Vector2(10, 10), // Position on the far left
-      anchor: Anchor.topLeft, // Align text to top-left
+      position: Vector2(200, 30), // Position on the far left
+      anchor: Anchor.topRight, // Align text to top-left
       textRenderer: TextPaint(
         style: const TextStyle(
           color: Color.fromARGB(255, 255, 0, 0),
@@ -61,14 +61,13 @@ class Jump1 extends FlameGame
         ),
       ),
     );
-    camera.viewport.add(livesText); // Add livesText to the camera viewport
 
     // Initialize coinsText
     coinsText = TextComponent(
       text: 'Coins: $level1CoinScore',
-      position: Vector2(livesText.position.x + livesText.size.x + 10,
-          10), // Position to the right of livesText
-      anchor: Anchor.topLeft, // Align text to top-left
+      position: Vector2(livesText.position.x + livesText.size.x + 50,
+          30), // Position to the right of livesText
+      anchor: Anchor.topRight, // Align text to top-left
       textRenderer: TextPaint(
         style: const TextStyle(
           color: Color.fromARGB(255, 255, 215, 0),
@@ -76,7 +75,6 @@ class Jump1 extends FlameGame
         ),
       ),
     );
-    camera.viewport.add(coinsText); // Add coinsText to the camera viewport
 
     // Load the GIF background
     background = SpriteComponent()
@@ -86,7 +84,8 @@ class Jump1 extends FlameGame
 
     // Add the background to the game world
     add(background);
-
+    add(livesText);
+    add(coinsText);
     overlays.add('BackButton');
 
     await loadLevel();
@@ -277,8 +276,8 @@ class Jump1 extends FlameGame
     await loadLevel();
 
     // Reinitialize UI components
-    camera.viewport.add(livesText);
-    camera.viewport.add(coinsText);
+    add(livesText);
+    add(coinsText);
     await camera.viewport.add(joystick);
     await camera.viewport.add(jumpButton);
 
