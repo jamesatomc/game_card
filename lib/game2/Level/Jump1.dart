@@ -19,7 +19,6 @@ import '../components/game-ui/player.dart';
 
 class Jump1 extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection, TapCallbacks {
- 
   late Player myPlayer;
   late Cion myCoin;
   late Monsters monsters;
@@ -53,8 +52,8 @@ class Jump1 extends FlameGame
     // Initialize livesText
     livesText = TextComponent(
       text: 'Lives: $lives',
-      position: Vector2(size.x - 10, 10), // Position on the far right
-      anchor: Anchor.topRight, // Align text to top-right
+      position: Vector2(10, 10), // Position on the far left
+      anchor: Anchor.topLeft, // Align text to top-left
       textRenderer: TextPaint(
         style: const TextStyle(
           color: Color.fromARGB(255, 255, 0, 0),
@@ -67,7 +66,8 @@ class Jump1 extends FlameGame
     // Initialize coinsText
     coinsText = TextComponent(
       text: 'Coins: $level1CoinScore',
-      position: Vector2(10, 10), // Position on the far left
+      position: Vector2(livesText.position.x + livesText.size.x + 10,
+          10), // Position to the right of livesText
       anchor: Anchor.topLeft, // Align text to top-left
       textRenderer: TextPaint(
         style: const TextStyle(
@@ -301,6 +301,17 @@ class Jump1 extends FlameGame
     if (level1CoinScore >= 6) {
       showWin(); // Show win overlay when 6 coins are collected
     }
+  }
+
+  // Method to update the coin count
+  void updateCoinCount(int newCoinCount) {
+    level1CoinScore = newCoinCount;
+    coinsText.text = 'Coins: $level1CoinScore';
+  }
+
+// Example of updating the coin count
+  void onCoinCollected() {
+    updateCoinCount(level1CoinScore + 1);
   }
 
   Future<void> saveLevel1CoinScore(int score) async {
