@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_cardgame/game2/components/LevelButton2.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../components/game_button.dart';
 import 'Quiz/quiz1.dart';
 import 'components/HowToPlay.dart';
@@ -32,6 +33,7 @@ class _GameJumpState extends State<GameJump> {
     super.initState();
     _audioPlayer = AudioPlayer();
     _playBackgroundMusic();
+    _loadCoinScores(); // Load coin scores from SharedPreferences
   }
 
   Future<void> _playBackgroundMusic() async {
@@ -52,6 +54,22 @@ class _GameJumpState extends State<GameJump> {
       _audioPlayer.stop();
       _isMusicPlaying = false;
     }
+  }
+
+  Future<void> _loadCoinScores() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      level1CoinScore = prefs.getInt('level1CoinScore') ?? 0;
+      level2CoinScore = prefs.getInt('level2CoinScore') ?? 0;
+      level3CoinScore = prefs.getInt('level3CoinScore') ?? 0;
+      level4CoinScore = prefs.getInt('level4CoinScore') ?? 0;
+      level5CoinScore = prefs.getInt('level5CoinScore') ?? 0;
+      level6CoinScore = prefs.getInt('level6CoinScore') ?? 0;
+      level7CoinScore = prefs.getInt('level7CoinScore') ?? 0;
+      level8CoinScore = prefs.getInt('level8CoinScore') ?? 0;
+      level9CoinScore = prefs.getInt('level9CoinScore') ?? 0;
+      level10CoinScore = prefs.getInt('level10CoinScore') ?? 0;
+    });
   }
 
   // Function to show the exit confirmation dialog
@@ -164,7 +182,7 @@ class _GameJumpState extends State<GameJump> {
                       PixelLevelButton2(
                         level: 4,
                         isUnlocked:
-                            level2CoinScore != null && level2CoinScore! >= 10,
+                            level3CoinScore != null && level3CoinScore! >= 10,
                         nextScreen: GameJump(),
                         onTapUp: () {},
                         onTapDown: () {},
