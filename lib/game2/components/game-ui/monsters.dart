@@ -44,7 +44,7 @@ class Monsters extends SpriteAnimationComponent with HasGameRef, KeyboardHandler
     super.onCollision(intersectionPoints, other);
      if(other is Player){
       FlameAudio.play("hit.wav");//เสียงชน
-      removeFromParent();//ลบmonsterเมื่อโดนชน
+      other.removeFromParent();//ลบmonsterเมื่อโดนชน
     }
   }
 }
