@@ -88,12 +88,46 @@ class Jump1 extends FlameGame
 
     overlays.add('BackButton');
 
+    await loadLevel();
+
+    joystick = JoystickComponent(
+        knob: CircleComponent(
+            radius: 30,
+            paint: Paint()
+              ..color =
+                  const Color.fromARGB(255, 244, 240, 240).withOpacity(0.50)),
+        background: CircleComponent(
+            radius: 50, paint: Paint()..color = Colors.white.withOpacity(0.50)),
+        margin: const EdgeInsets.only(left: 50, bottom: 30));
+    await camera.viewport.add(joystick);
+
+    joystick.priority = 0;
+
+    jumpButton = JumpButton(onJumpButtonPressed: (bool jumped) {
+      if (!isPlayerDead && jumped) {
+        myPlayer.moveJump();
+      }
+    });
+    world.add(jumpButton);
+    await camera.viewport.add(jumpButton);
+
+    // Register the game over overlay
+    overlays.addEntry(
+      'GameOver',
+      (context, game) => GameOverOverlay(
+        onRestart: restartGame,
+      ),
+    );
+
+    return super.onLoad();
+  }
+
+  Future<void> loadLevel() async {
     final level = await TiledComponent.load(
       "map.tmx",
       Vector2.all(32),
     );
 
-    // overlays.add('BackButton');
     FlameAudio.bgm.stop(); // Stop the background music
 
     mapWidth = (level.tileMap.map.width * level.tileMap.destTileSize.x).toInt();
@@ -156,37 +190,6 @@ class Jump1 extends FlameGame
 
     // Set the camera anchor to the center
     camera.viewfinder.anchor = Anchor.center;
-
-    joystick = JoystickComponent(
-        knob: CircleComponent(
-            radius: 30,
-            paint: Paint()
-              ..color =
-                  const Color.fromARGB(255, 244, 240, 240).withOpacity(0.50)),
-        background: CircleComponent(
-            radius: 50, paint: Paint()..color = Colors.white.withOpacity(0.50)),
-        margin: const EdgeInsets.only(left: 50, bottom: 30));
-    await camera.viewport.add(joystick);
-
-    joystick.priority = 0;
-
-    jumpButton = JumpButton(onJumpButtonPressed: (bool jumped) {
-      if (!isPlayerDead && jumped) {
-        myPlayer.moveJump();
-      }
-    });
-    world.add(jumpButton);
-    await camera.viewport.add(jumpButton);
-
-    // Register the game over overlay
-    overlays.addEntry(
-      'GameOver',
-      (context, game) => GameOverOverlay(
-        onRestart: restartGame,
-      ),
-    );
-
-    return super.onLoad();
   }
 
   @override
@@ -215,7 +218,7 @@ class Jump1 extends FlameGame
   void restartGame() {
     overlays.remove('GameOver');
     overlays.remove('Win');
-    respawnPlayer();
+    resetGame();
   }
 
   updateJoystrick() {
@@ -260,7 +263,7 @@ class Jump1 extends FlameGame
   }
 
   // Function to reset the game to its initial state
-  void resetGame() {
+  void resetGame() async {
     lives = initialLives; // Reset lives to the initial value
     livesText.text = 'Lives: $lives'; // Update livesText
     level1CoinScore = 0; // Reset coin score
@@ -269,17 +272,23 @@ class Jump1 extends FlameGame
     // Remove existing game objects (player, monsters, coins, etc.)
     world.removeAll(world.children);
 
-    // Reload the game world (add player, monsters, coins, etc.)
-    onLoad(); // You might need to modify onLoad to handle resetting properly
+    // Reload the level
+    await loadLevel();
 
-    // Remove the Game Over overlay
-    overlays.remove('GameOver');
+    // Reinitialize UI components
+    camera.viewport.add(livesText);
+    camera.viewport.add(coinsText);
+    await camera.viewport.add(joystick);
+    await camera.viewport.add(jumpButton);
 
     // Reset the player dead flag
     isPlayerDead = false;
 
-        // Reset and re-enable the jump button
+    // Reset and re-enable the jump button
     jumpButton.setEnabled(true);
+
+    // Restart the background music
+    FlameAudio.bgm.play("bg.mp3");
   }
 
   // Function to handle coin collection
