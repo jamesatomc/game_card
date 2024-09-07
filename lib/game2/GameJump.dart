@@ -185,7 +185,9 @@ class _GameJumpState extends State<GameJump> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Howtoplay2(),
+                          builder: (context) => Howtoplay2(
+                              onResumeMusic:
+                                  _playBackgroundMusic), // Pass the function
                         ),
                       );
                     },

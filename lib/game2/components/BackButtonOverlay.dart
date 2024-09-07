@@ -1,11 +1,11 @@
-// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:flame_audio/flame_audio.dart'; // Import FlameAudio
 
 class BackButtonOverlay extends StatelessWidget {
   final VoidCallback onPressed;
+  final VoidCallback onResumeMusic; // Add onResumeMusic parameter
 
-  BackButtonOverlay({super.key, required this.onPressed});
+  BackButtonOverlay({super.key, required this.onPressed, required this.onResumeMusic});
 
   final AudioPlayer _audioPlayer = AudioPlayer();
 
@@ -40,7 +40,9 @@ class BackButtonOverlay extends StatelessWidget {
                     onPressed: () {
                       _playSound(); // Play sound when "Yes" is pressed
                       FlameAudio.bgm.stop(); // Stop the background music
-                      Navigator.of(context).pop(); // ปิด dialog
+                      Navigator.pop(context); // Close the dialog
+                      Navigator.pop(context); // Go back to the previous screen
+                      onResumeMusic(); // Resume background music
                       onPressed(); // เรียกใช้ onPressed เพื่อกลับไปหน้าก่อนหน้า
                     },
                     child: const Text('Yes'),

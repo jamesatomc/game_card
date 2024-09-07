@@ -19,6 +19,7 @@ import '../components/game-ui/player.dart';
 
 class Jump1 extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection, TapCallbacks {
+ 
   late Player myPlayer;
   late Cion myCoin;
   late Monsters monsters;

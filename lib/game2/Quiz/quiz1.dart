@@ -110,7 +110,7 @@ class _Quiz1State extends State<Quiz1> {
             'BackButton': (context, game) => BackButtonOverlay(
                   onPressed: () {
                     Navigator.pop(context);
-                  },
+                  }, onResumeMusic: () { widget.onResumeMusic?.call(); },
                 ),
           },
         ),
