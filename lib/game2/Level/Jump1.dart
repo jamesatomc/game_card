@@ -34,6 +34,7 @@ class Jump1 extends FlameGame
   int lives = 2; // Start with 2 lives
   int initialLives = 2; // Store the initial number of lives
   int level1CoinScore = 0; // Track the number of coins collected
+  int level1CoinScoreReset = 0; // New variable for resetting purposes
 
   late TextComponent livesText; // Declare a TextComponent for lives
   late TextComponent coinsText; // Declare a TextComponent for coins
@@ -64,7 +65,7 @@ class Jump1 extends FlameGame
 
     // Initialize coinsText
     coinsText = TextComponent(
-      text: 'Coins: $level1CoinScore',
+      text: 'Coins: 0', // Initialize with 0 coins
       position: Vector2(livesText.position.x + livesText.size.x + 50,
           30), // Position to the right of livesText
       anchor: Anchor.topRight, // Align text to top-left
@@ -196,13 +197,21 @@ class Jump1 extends FlameGame
   void update(double dt) {
     super.update(dt);
     updateJoystrick();
-
+  
     // Check for collisions with monsters or bumpy
     if (myPlayer.hasCollided) {
       myPlayer.removeFromParent();
       respawnPlayer(); // Respawn the player immediately
     }
-
+  
+    // Check for collisions with coins
+    for (final coin in world.children.whereType<Cion>()) {
+      if (myPlayer.toRect().overlaps(coin.toRect())) {
+        coin.removeFromParent();
+        collectCoin(); // Call collectCoin when a coin is collected
+      }
+    }
+  
     // Ensure the camera follows the player
     camera.follow(myPlayer);
   }
@@ -266,8 +275,8 @@ class Jump1 extends FlameGame
   void resetGame() async {
     lives = initialLives; // Reset lives to the initial value
     livesText.text = 'Lives: $lives'; // Update livesText
-    level1CoinScore = 0; // Reset coin score
-    coinsText.text = 'Coins: $level1CoinScore'; // Update coinsText
+    level1CoinScoreReset = 0; // Reset coin score using the new variable
+    coinsText.text = 'Coins: 0'; // Reset coinsText to 0
 
     // Remove existing game objects (player, monsters, coins, etc.)
     world.removeAll(world.children);
@@ -293,12 +302,18 @@ class Jump1 extends FlameGame
 
   // Function to handle coin collection
   void collectCoin() {
-    level1CoinScore++;
-    coinsText.text = 'Coins: $level1CoinScore';
+    if (level1CoinScore < 10) {
+      level1CoinScore++;
+    }
+    if (level1CoinScoreReset < 10) {
+      level1CoinScoreReset++; // Increment the reset variable as well
+    }
+    coinsText.text = 'Coins: $level1CoinScoreReset';
     saveLevel1CoinScore(level1CoinScore); // Save the coin score
 
-    if (level1CoinScore >= 6) {
-      showWin(); // Show win overlay when 6 coins are collected
+    if (level1CoinScoreReset >= 10) {
+      unlockNextLevel(); // Unlock the next level
+      showWin(); // Show win overlay when 10 coins are collected
     }
   }
 
@@ -308,7 +323,7 @@ class Jump1 extends FlameGame
     coinsText.text = 'Coins: $level1CoinScore';
   }
 
-// Example of updating the coin count
+  // Example of updating the coin count
   void onCoinCollected() {
     updateCoinCount(level1CoinScore + 1);
   }
@@ -321,5 +336,15 @@ class Jump1 extends FlameGame
   Future<int?> getLevel1CoinScore() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getInt('level1CoinScore');
+  }
+
+  Future<void> unlockNextLevel() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('level2Unlocked', true); // Example for unlocking level 2
+  }
+
+  Future<bool> isLevelUnlocked(int level) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('level${level}Unlocked') ?? false;
   }
 }
