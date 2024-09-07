@@ -9,6 +9,7 @@ import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 
+import '../Quiz/quiz2.dart';
 import '../components/game-ui/bumpy.dart';
 import '../components/game-ui/cion.dart';
 import '../components/game-ui/game_over_overlay.dart';
@@ -16,6 +17,7 @@ import '../components/game-ui/ground.dart';
 import '../components/game-ui/jumpButton.dart';
 import '../components/game-ui/monsters.dart';
 import '../components/game-ui/player.dart';
+import '../components/game-ui/win_overlay.dart';
 
 class Jump1 extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection, TapCallbacks {
@@ -120,6 +122,24 @@ class Jump1 extends FlameGame
       ),
     );
 
+    // Register the win overlay
+    overlays.addEntry(
+      'Win',
+      (context, game) => WinOverlay(
+        onNextQuiz: () {
+          FlameAudio.bgm.stop(); // Stop the background music
+
+          // Navigate to Quiz2
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Quiz2(),
+            ),
+          );
+        },
+      ),
+    );
+
     return super.onLoad();
   }
 
@@ -197,13 +217,13 @@ class Jump1 extends FlameGame
   void update(double dt) {
     super.update(dt);
     updateJoystrick();
-  
+
     // Check for collisions with monsters or bumpy
     if (myPlayer.hasCollided) {
       myPlayer.removeFromParent();
       respawnPlayer(); // Respawn the player immediately
     }
-  
+
     // Check for collisions with coins
     for (final coin in world.children.whereType<Cion>()) {
       if (myPlayer.toRect().overlaps(coin.toRect())) {
@@ -211,7 +231,7 @@ class Jump1 extends FlameGame
         collectCoin(); // Call collectCoin when a coin is collected
       }
     }
-  
+
     // Ensure the camera follows the player
     camera.follow(myPlayer);
   }
@@ -340,7 +360,8 @@ class Jump1 extends FlameGame
 
   Future<void> unlockNextLevel() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('level2Unlocked', true); // Example for unlocking level 2
+    await prefs.setBool(
+        'level2Unlocked', true); // Example for unlocking level 2
   }
 
   Future<bool> isLevelUnlocked(int level) async {
