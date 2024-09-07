@@ -3,7 +3,9 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_cardgame/game2/components/LevelButton2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../components/game_button.dart';
+
 import 'Quiz/quiz1.dart';
+import 'Quiz/quiz2.dart';
 import 'components/HowToPlay.dart';
 
 class GameJump extends StatefulWidget {
@@ -161,7 +163,9 @@ class _GameJumpState extends State<GameJump> {
                         level: 2,
                         isUnlocked:
                             level1CoinScore != null && level1CoinScore! >= 10,
-                        nextScreen: GameJump(),
+                        nextScreen: Quiz2(
+                            onResumeMusic:
+                                _playBackgroundMusic),
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
