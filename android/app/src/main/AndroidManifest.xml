@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.jamesatomc.somo">
     <application
-        android:label="somo"
+        android:label="เกมเสริมทักษะอังกฤษ"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
