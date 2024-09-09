@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cardgame/game1/components/LevelButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -16,6 +15,7 @@ import 'Level/Level8Screen.dart';
 import 'Level/Level9Screen.dart';
 import 'Level/Level10Screen.dart';
 import 'components/AudioManager.dart';
+import 'components/LevelButton.dart';
 import 'components/MusicToggleButton.dart';
 
 class GameCardScreen extends StatefulWidget {

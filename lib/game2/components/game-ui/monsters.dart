@@ -3,7 +3,8 @@ import 'package:flame_audio/flame_audio.dart';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter_cardgame/game2/components/game-ui/player.dart';
+
+import 'player.dart';
 
 
 class Monsters extends SpriteAnimationComponent with HasGameRef, KeyboardHandler,CollisionCallbacks{

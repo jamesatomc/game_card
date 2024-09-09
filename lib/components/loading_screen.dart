@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_cardgame/components/name_input_screen.dart';
-import 'package:flutter_cardgame/manu_game.dart';
+import 'package:game_somo/components/name_input_screen.dart';
+import 'package:game_somo/manu_game.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoadingScreen extends StatefulWidget {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter_cardgame/game2/components/LevelButton2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../components/game_button.dart';
 
 import 'Quiz/quiz1.dart';
 import 'Quiz/quiz2.dart';
 import 'components/HowToPlay.dart';
+import 'components/LevelButton2.dart';
 
 class GameJump extends StatefulWidget {
   const GameJump({Key? key}) : super(key: key);

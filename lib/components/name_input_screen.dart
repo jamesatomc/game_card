@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cardgame/manu_game.dart';
+import 'package:game_somo/manu_game.dart';
 
 import 'game_button.dart';
 
