@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
-Widget info_card(String title, String info) {
+Widget info_card(String title, String info, IconData icon) {
   return Expanded(
     child: Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -13,14 +13,24 @@ Widget info_card(String title, String info) {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontFamily: 'PixelFont', // Use a pixel font
-                color: Colors.black,
-                fontSize: 15.0, // Adjust font size for pixel art style
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  icon,
+                  color: Colors.black,
+                ),
+                SizedBox(width: 8.0), // Space between icon and title
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontFamily: 'PixelFont', // Use a pixel font
+                    color: Colors.black,
+                    fontSize: 15.0, // Adjust font size for pixel art style
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
             SizedBox(
               height: 8.0, // Adjust spacing for pixel art style
@@ -40,4 +50,3 @@ Widget info_card(String title, String info) {
     ),
   );
 }
-

@@ -410,6 +410,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         future: _loadHighScores(),
                         builder: (context, snapshot) {
                             return PixelGameButton(
+                              icon: Icons.view_list,
                               height: 60,
                               width: 200,
                               text: 'View High Scores',
@@ -447,7 +448,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         _playSound(); // Play sound when button is pressed
                         resetHighScores();
                       },
-                      color: Colors.white, // Set the icon color
+                      color: const Color.fromARGB(255, 255, 0, 0), // Set the icon color
                       iconSize: 48.0, // Set the icon size (adjust as needed)
                     ),
                     MusicToggleButton(),

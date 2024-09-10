@@ -110,20 +110,24 @@ class _ManuGameState extends State<ManuGame> {
             ),
             Align(
               alignment: Alignment.topRight,
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.greenAccent.withOpacity(0.7),
-                  border: Border.all(color: Colors.white, width: 2),
-                  borderRadius:
-                      BorderRadius.circular(10), // Add rounded corners
-                ),
-                child: Text(
-                  '${widget.username}',
-                  style: const TextStyle(
-                    // fontFamily: 'PixelFont',
-                    color: Colors.white,
-                    fontSize: 16,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.greenAccent.withOpacity(0.4),
+                    border: Border.all(color: Colors.white, width: 2),
+                    borderRadius:
+                        BorderRadius.circular(10), // Add rounded corners
+                  ),
+                  child: Text(
+                    '${widget.username}',
+                    style: const TextStyle(
+                      // fontFamily: 'PixelFont',
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),

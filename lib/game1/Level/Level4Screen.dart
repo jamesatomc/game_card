@@ -295,12 +295,21 @@ class _Level4ScreenState extends State<Level4Screen> {
                   Text('Level 4',
                       style: TextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.bold)),
-                  info_card("Score",
-                      "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
-                  info_card("High Score",
-                      "$level4HighScore"), // แสดง high score ของ Level 4
-                  info_card("Time",
-                      "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
+                  info_card(
+                    "Score",
+                    "${score.toStringAsFixed(1)}", // แสดง score เป็นทศนิยม 1 ตำแหน่ง
+                    Icons.score, // Add an appropriate icon
+                  ),
+                  info_card(
+                    "High Score",
+                    "$level4HighScore", // แสดง high score ของ Level 1
+                    Icons.star, // Add an appropriate icon
+                  ),
+                  info_card(
+                    "Time",
+                    "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}", // แสดงเวลา
+                    Icons.timer, // Add an appropriate icon
+                  ),
                 ],
               ),
             ),
