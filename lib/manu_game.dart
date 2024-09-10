@@ -26,74 +26,100 @@ class _ManuGameState extends State<ManuGame> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/gamecard/bg_pixel2.png'), // ใช้พื้นหลังแบบพิกเซล
+            image: AssetImage(
+                'assets/gamecard/bg_pixel2.png'), // ใช้พื้นหลังแบบพิกเซล
             fit: BoxFit.cover,
           ),
         ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'GAME MENU',
-                style: TextStyle(
-                  fontFamily: 'PixelFont',
-                  fontSize: 48,
-                  color: Colors.white,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 0,
-                      color: Colors.black,
-                      offset: Offset(4, 4),
-                    ),
-                  ],
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                height: 300,
+                width: 400,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.7),
+                  border: Border.all(color: Colors.white, width: 2),
+                  borderRadius:
+                      BorderRadius.circular(10), // Add rounded corners
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'GAME MENU',
+                        style: TextStyle(
+                          fontFamily: 'PixelFont',
+                          fontSize: 48,
+                          color: Colors.black,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 0,
+                              color: Colors.white,
+                              offset: Offset(4, 4),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      PixelGameButton(
+                        height: 60,
+                        width: 200,
+                        text: 'จับคู่มหาสนุก',
+                        onTap: () {
+                          _playSound();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const GameCardScreen()),
+                          );
+                        },
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
+                        backgroundColor: Colors.blue,
+                        textColor: Colors.white,
+                        borderRadius: BorderRadius.circular(10) // Set rounded corners
+                      ),
+                      const SizedBox(height: 20),
+                      PixelGameButton(
+                        height: 60,
+                        width: 200,
+                        text: 'หนูน้อยผจญภัย',
+                        onTap: () {
+                          _playSound();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const GameJump()),
+                          );
+                        },
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
+                        backgroundColor: Colors.blue,
+                        textColor: Colors.white,
+                        borderRadius: BorderRadius.circular(10) // Set rounded corners
+                      ),
+                      const SizedBox(height: 40),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 40),
-              PixelGameButton(
-                height: 60,
-                width: 200,
-                text: 'จับคู่มหาสนุก',
-                onTap: () {
-                  _playSound();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const GameCardScreen()),
-                  );
-                },
-                onTapUp: () {},
-                onTapDown: () {},
-                onTapCancel: () {},
-                backgroundColor: Colors.red,
-                textColor: Colors.yellow,
-              ),
-              const SizedBox(height: 20),
-              PixelGameButton(
-                height: 60,
-                width: 200,
-                text: 'หนูน้อยผจญภัย',
-                onTap: () {
-                  _playSound();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const GameJump()),
-                  );
-                },
-                onTapUp: () {},
-                onTapDown: () {},
-                onTapCancel: () {},
-                backgroundColor: Colors.blue,
-                textColor: Colors.white,
-              ),
-              const SizedBox(height: 40),
-              Container(
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.7),
+                  color: Colors.black38.withOpacity(0.7),
                   border: Border.all(color: Colors.white, width: 2),
+                  borderRadius:
+                      BorderRadius.circular(10), // Add rounded corners
                 ),
                 child: Text(
-                  'PLAYER: ${widget.username}',
+                  '${widget.username}',
                   style: const TextStyle(
                     // fontFamily: 'PixelFont',
                     color: Colors.white,
@@ -101,8 +127,8 @@ class _ManuGameState extends State<ManuGame> {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

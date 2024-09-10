@@ -311,7 +311,6 @@ class _Level1ScreenState extends State<Level1Screen> {
                   Text('Level 1',
                       style: TextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.bold)),
-                  info_card("Tries", "$tries"),
                   info_card("Score",
                       "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
                   info_card("High Score",

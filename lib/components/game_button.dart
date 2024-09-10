@@ -12,6 +12,7 @@ class PixelGameButton extends StatefulWidget {
   final Color backgroundColor;
   final Color textColor;
   final Color iconColor; // Optional icon color parameter
+  final BorderRadius? borderRadius; // Optional border radius parameter
 
   const PixelGameButton({
     Key? key,
@@ -26,6 +27,7 @@ class PixelGameButton extends StatefulWidget {
     this.backgroundColor = Colors.blue,
     this.textColor = Colors.white,
     this.iconColor = Colors.white, // Initialize icon color parameter
+    this.borderRadius, // Initialize border radius parameter
   }) : super(key: key);
 
   @override
@@ -56,11 +58,12 @@ class _PixelGameButtonState extends State<PixelGameButton> {
         width: widget.width,
         decoration: BoxDecoration(
           color: widget.backgroundColor,
-          border: Border.all(color: Colors.black, width: 4),
+          border: Border.all(color: Colors.black38, width: 4),
+          borderRadius: widget.borderRadius, // Use the border radius parameter
           boxShadow: [
             if (!_isPressed)
               BoxShadow(
-                color: Colors.black,
+                color: Colors.black38,
                 offset: Offset(4, 4),
               ),
           ],

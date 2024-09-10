@@ -27,20 +27,20 @@ class _MusicToggleButtonState extends State<MusicToggleButton> {
 
   @override
   Widget build(BuildContext context) {
-    return PixelGameButton(
-      height: 60,
-      width: 60,
-      text: '', // No text needed for this button
-      icon: isPlaying ? Icons.play_disabled : Icons.play_arrow, // Pass IconData
-      onTap: () {
+    return IconButton(
+      icon: Icon(isPlaying ? Icons.volume_up : Icons.volume_off),
+      onPressed: () {
         _playSound(); // Play sound when button is pressed
         _toggleMusic();
       },
-      onTapUp: () {},
-      onTapDown: () {},
-      onTapCancel: () {},
-      backgroundColor: isPlaying ? Colors.red : Colors.blue,
-      textColor: Colors.white,
+      color: Colors.white, // Set the icon color
+      iconSize: 60, // Set the icon size
+      padding: EdgeInsets.zero, // Remove padding
+      constraints: BoxConstraints(
+        minHeight: 60,
+        minWidth: 60,
+      ),
+      splashColor: isPlaying ? Colors.red : Colors.blue, // Set the splash color
     );
   }
 }

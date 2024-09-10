@@ -8,7 +8,7 @@ Widget info_card(String title, String info) {
       padding: const EdgeInsets.only(left: 16.0, right: 16.0),
       child: Card(
         shadowColor: Colors.black,
-        color: Colors.white,
+        color: const Color.fromARGB(255, 193, 179, 146),
         elevation: 10.0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
