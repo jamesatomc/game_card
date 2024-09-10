@@ -297,8 +297,8 @@ class _Level4ScreenState extends State<Level4Screen> {
                           fontSize: 20.0, fontWeight: FontWeight.bold)),
                   info_card(
                     "Score",
-                    "${score.toStringAsFixed(1)}", // แสดง score เป็นทศนิยม 1 ตำแหน่ง
-                    Icons.score, // Add an appropriate icon
+                    "${score.toStringAsFixed(0)}", // แสดง score เป็นทศนิยม 1 ตำแหน่ง
+                    Icons.sports_score, // Add an appropriate icon
                   ),
                   info_card(
                     "High Score",
