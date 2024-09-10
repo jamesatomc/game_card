@@ -409,8 +409,6 @@ class _GameCardScreenState extends State<GameCardScreen> {
                       FutureBuilder(
                         future: _loadHighScores(),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
                             return PixelGameButton(
                               height: 60,
                               width: 200,
@@ -426,10 +424,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                               textColor: Colors.white,
                               borderRadius: BorderRadius.circular(10),
                             );
-                          } else {
-                            return const CircularProgressIndicator(); // Show a loading indicator
-                          }
-                        },
+                          } 
                       ),
                     ],
                   ),

@@ -199,7 +199,6 @@ class _Level10ScreenState extends State<Level10Screen> {
             secondIndex
           ]; // Track mismatched cards
         });
-        playCardMismatchSound(); // Play sound when cards do not match
         Future.delayed(Duration(milliseconds: 500), () {
           setState(() {
             _game.gameImg![firstIndex] = _game.hiddenCardpath;

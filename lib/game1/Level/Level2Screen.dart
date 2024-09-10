@@ -200,7 +200,6 @@ class _Level2ScreenState extends State<Level2Screen> {
             secondIndex
           ]; // Track mismatched cards
         });
-        playLevelCompleteSound(); // Play sound when level is completed
         Future.delayed(Duration(milliseconds: 500), () {
           setState(() {
             _game.gameImg![firstIndex] = _game.hiddenCardpath;

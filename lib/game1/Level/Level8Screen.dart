@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:game_somo/game1/components/info_card.dart';
 import 'package:game_somo/game1/utils/game_utils8.dart';
-import 'package:game_somo/components/game_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart'; // Import the audioplayers package
 
@@ -33,8 +32,6 @@ class _Level8ScreenState extends State<Level8Screen> {
   List<int> matchedCardIndices =
       []; // เพิ่ม list สำหรับเก็บ index ของไพ่ที่จับคู่กันแล้ว
 
-  bool _gameStarted = false; // Flag to track if the game has started
-
   @override
   void initState() {
     super.initState();
@@ -45,7 +42,8 @@ class _Level8ScreenState extends State<Level8Screen> {
 
     // Reveal all cards initially
     setState(() {
-      _game.gameImg = _game.cards_list;
+      _game.gameImg = List.filled(_game.cardCount, _game.hiddenCardpath);
+      startTimer();
     });
   }
 
@@ -53,8 +51,7 @@ class _Level8ScreenState extends State<Level8Screen> {
   Future<void> _loadHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      level8HighScore = prefs.getInt('level8HighScore') ??
-          0; // โหลด high score จาก SharedPreferences
+      level8HighScore = prefs.getInt('level8HighScore') ?? 0; // โหลด high score จาก SharedPreferences
     });
   }
 
@@ -62,8 +59,7 @@ class _Level8ScreenState extends State<Level8Screen> {
   Future<void> _saveHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (score > level8HighScore) {
-      prefs.setInt('level8HighScore',
-          score.toInt()); // บันทึก high score ลง SharedPreferences
+      prefs.setInt('level8HighScore', score.toInt()); // บันทึก high score ลง SharedPreferences
       setState(() {
         level8HighScore = score.toInt(); // อัปเดต high score ใน state
       });
@@ -167,7 +163,6 @@ class _Level8ScreenState extends State<Level8Screen> {
       _timeLeft = 80;
       revealedCards.clear();
       matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
-      _gameStarted = false; // Reset game started flag
       _game.gameImg = _game.cards_list; // Reveal all cards again
     });
   }
@@ -204,7 +199,6 @@ class _Level8ScreenState extends State<Level8Screen> {
             secondIndex
           ]; // Track mismatched cards
         });
-        playCardMismatchSound(); // Play sound when cards do not match
         Future.delayed(Duration(milliseconds: 500), () {
           setState(() {
             _game.gameImg![firstIndex] = _game.hiddenCardpath;
@@ -222,15 +216,6 @@ class _Level8ScreenState extends State<Level8Screen> {
         });
       });
     }
-  }
-
-  void startGame() {
-    setState(() {
-      _gameStarted = true;
-      _game.gameImg =
-          List.filled(_game.cardCount, _game.hiddenCardpath); // Hide cards
-      startTimer();
-    });
   }
 
   // Method to play sound
@@ -316,26 +301,6 @@ class _Level8ScreenState extends State<Level8Screen> {
                       "$level8HighScore"), // แสดง high score ของ Level 8
                   info_card("Time",
                       "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
-                  // Wrap the button in an AnimatedCrossFade to control its visibility
-                  AnimatedCrossFade(
-                    firstChild: PixelGameButton(
-                      height: 50,
-                      width: 120,
-                      text: 'Start Game',
-                      onTap: _gameStarted ? () {} : startGame,
-                      onTapUp: () {},
-                      onTapDown: () {},
-                      onTapCancel: () {},
-                      backgroundColor: Colors.blue,
-                      textColor: Colors.white,
-                    ),
-                    secondChild: SizedBox
-                        .shrink(), // Empty space when the button is hidden
-                    crossFadeState: _gameStarted
-                        ? CrossFadeState.showSecond
-                        : CrossFadeState.showFirst,
-                    duration: Duration(milliseconds: 300), // Animation duration
-                  )
                 ],
               ),
             ),
@@ -357,7 +322,7 @@ class _Level8ScreenState extends State<Level8Screen> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      if (_gameStarted && // Check if the game has started
+                      if (// Check if the game has started
                           !revealedCards.contains(index) &&
                           revealedCards.length < 2 &&
                           !matchedCardIndices.contains(index)) {
