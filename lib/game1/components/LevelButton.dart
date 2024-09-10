@@ -5,7 +5,6 @@ class PixelLevelButton extends StatefulWidget {
   final int level;
   final bool isUnlocked;
   final Widget nextScreen;
-  final Function refreshHighScores;
   final VoidCallback onTapUp;
   final VoidCallback onTapDown;
   final VoidCallback onTapCancel;
@@ -14,7 +13,6 @@ class PixelLevelButton extends StatefulWidget {
     required this.level,
     required this.isUnlocked,
     required this.nextScreen,
-    required this.refreshHighScores,
     required this.onTapUp,
     required this.onTapDown,
     required this.onTapCancel,
@@ -55,7 +53,7 @@ class _PixelLevelButtonState extends State<PixelLevelButton> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => widget.nextScreen),
-              ).then((_) => widget.refreshHighScores());
+              );
             }
           : null,
       child: Container(

@@ -43,26 +43,21 @@ class _GameCardScreenState extends State<GameCardScreen> {
     _loadHighScores(); // Reload high scores when the widget becomes visible again
   }
 
-  // refreshHighScores
-  void refreshHighScores() {
-    setState(() {
-      _loadHighScores(); // This will reload the high scores from SharedPreferences
-    });
-  }
-
   // Function to load high scores from SharedPreferences
   Future<void> _loadHighScores() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    level1HighScore = prefs.getInt('level1HighScore');
-    level2HighScore = prefs.getInt('level2HighScore');
-    level3HighScore = prefs.getInt('level3HighScore');
-    level4HighScore = prefs.getInt('level4HighScore');
-    level5HighScore = prefs.getInt('level5HighScore');
-    level6HighScore = prefs.getInt('level6HighScore');
-    level7HighScore = prefs.getInt('level7HighScore');
-    level8HighScore = prefs.getInt('level8HighScore');
-    level9HighScore = prefs.getInt('level9HighScore');
-    level10HighScore = prefs.getInt('level10HighScore');
+    setState(() {
+      level1HighScore = prefs.getInt('level1HighScore');
+      level2HighScore = prefs.getInt('level2HighScore');
+      level3HighScore = prefs.getInt('level3HighScore');
+      level4HighScore = prefs.getInt('level4HighScore');
+      level5HighScore = prefs.getInt('level5HighScore');
+      level6HighScore = prefs.getInt('level6HighScore');
+      level7HighScore = prefs.getInt('level7HighScore');
+      level8HighScore = prefs.getInt('level8HighScore');
+      level9HighScore = prefs.getInt('level9HighScore');
+      level10HighScore = prefs.getInt('level10HighScore');
+    });
   }
 
   // Function to reset high score for all levels
@@ -293,7 +288,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         level: 1,
                         isUnlocked: true,
                         nextScreen: const Level1Screen(),
-                        refreshHighScores: refreshHighScores,
+
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -304,7 +299,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level1HighScore != null && level1HighScore! >= 6,
                         nextScreen: const Level2Screen(),
-                        refreshHighScores: refreshHighScores,
+
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -315,7 +310,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level2HighScore != null && level2HighScore! >= 6,
                         nextScreen: const Level3Screen(),
-                        refreshHighScores: refreshHighScores,
+
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -326,7 +321,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level3HighScore != null && level3HighScore! >= 7,
                         nextScreen: const Level4Screen(),
-                        refreshHighScores: refreshHighScores,
+
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -337,7 +332,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level4HighScore != null && level4HighScore! >= 7,
                         nextScreen: const Level5Screen(),
-                        refreshHighScores: refreshHighScores,
+
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -354,7 +349,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level5HighScore != null && level5HighScore! >= 7,
                         nextScreen: const Level6Screen(),
-                        refreshHighScores: refreshHighScores,
+
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -365,7 +360,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level6HighScore != null && level6HighScore! >= 7.5,
                         nextScreen: const Level7Screen(),
-                        refreshHighScores: refreshHighScores,
+
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -376,7 +371,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level7HighScore != null && level7HighScore! >= 7.5,
                         nextScreen: const Level8Screen(),
-                        refreshHighScores: refreshHighScores,
+
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -387,7 +382,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level8HighScore != null && level8HighScore! >= 7.5,
                         nextScreen: const Level9Screen(),
-                        refreshHighScores: refreshHighScores,
+
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -398,7 +393,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level9HighScore != null && level9HighScore! >= 8,
                         nextScreen: const Level10Screen(),
-                        refreshHighScores: refreshHighScores,
+
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -430,7 +425,6 @@ class _GameCardScreenState extends State<GameCardScreen> {
                               backgroundColor: Colors.blue,
                               textColor: Colors.white,
                               borderRadius: BorderRadius.circular(10),
-
                             );
                           } else {
                             return const CircularProgressIndicator(); // Show a loading indicator
