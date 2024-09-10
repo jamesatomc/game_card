@@ -1,7 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:game_somo/game1/components/AudioManager.dart';
-import 'package:game_somo/components/game_button.dart';
 
 class MusicToggleButton extends StatefulWidget {
   @override
@@ -34,7 +33,7 @@ class _MusicToggleButtonState extends State<MusicToggleButton> {
         _toggleMusic();
       },
       color: Colors.white, // Set the icon color
-      iconSize: 60, // Set the icon size
+      iconSize: 48, // Set the icon size
       padding: EdgeInsets.zero, // Remove padding
       constraints: BoxConstraints(
         minHeight: 60,

@@ -110,7 +110,10 @@ class _Quiz1State extends State<Quiz1> {
             'BackButton': (context, game) => BackButtonOverlay(
                   onPressed: () {
                     Navigator.pop(context);
-                  }, onResumeMusic: () { widget.onResumeMusic?.call(); },
+                  },
+                  onResumeMusic: () {
+                    widget.onResumeMusic?.call();
+                  },
                 ),
           },
         ),
@@ -208,6 +211,9 @@ class _Quiz1State extends State<Quiz1> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
+                          height: 100,
+                          width: 700,
+                          alignment: Alignment.center,
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(
@@ -218,12 +224,16 @@ class _Quiz1State extends State<Quiz1> {
                             currentQuestion.text,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                                fontSize: 18, color: Colors.black),
+                              fontSize: 28,
+                              color: Colors.black,
+                              fontFamily: 'Itim-Regular',
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 30),
                         Padding(
-                          padding: const EdgeInsets.all(6.0),
+                          padding: const EdgeInsets.fromLTRB(70, 0, 70, 0),
                           child: Column(
                             children: [
                               Row(
@@ -231,17 +241,17 @@ class _Quiz1State extends State<Quiz1> {
                                 children: [
                                   _buildAnswerButton(0),
                                   const SizedBox(
-                                      width: 8), // Space between buttons
+                                      width: 10), // Space between buttons
                                   _buildAnswerButton(1),
                                 ],
                               ),
-                              const SizedBox(height: 8), // Space between rows
+                              const SizedBox(height: 10), // Space between rows
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   _buildAnswerButton(2),
                                   const SizedBox(
-                                      width: 8), // Space between buttons
+                                      width: 10), // Space between buttons
                                   _buildAnswerButton(3),
                                 ],
                               ),
@@ -287,7 +297,7 @@ class _Quiz1State extends State<Quiz1> {
         buttonColor = Colors.blueGrey;
       }
     } else {
-      buttonColor = Colors.blueGrey;
+      buttonColor = const Color.fromARGB(255, 216, 125, 7);
     }
 
     return Expanded(
@@ -303,6 +313,7 @@ class _Quiz1State extends State<Quiz1> {
         onTapCancel: () {},
         backgroundColor: buttonColor,
         textColor: Colors.white,
+        borderRadius: BorderRadius.circular(10),
       ),
     );
   }

@@ -113,7 +113,7 @@ class _ManuGameState extends State<ManuGame> {
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.black38.withOpacity(0.7),
+                  color: Colors.greenAccent.withOpacity(0.7),
                   border: Border.all(color: Colors.white, width: 2),
                   borderRadius:
                       BorderRadius.circular(10), // Add rounded corners

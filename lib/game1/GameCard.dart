@@ -251,6 +251,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
               onTapCancel: () {},
               backgroundColor: Colors.blue,
               textColor: Colors.white,
+              borderRadius: BorderRadius.circular(10),
             )
           ],
         );
@@ -417,30 +418,11 @@ class _GameCardScreenState extends State<GameCardScreen> {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 10),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Reset High Scores Button
-
-                      PixelGameButton(
-                        height: 60,
-                        width: 200,
-                        text: 'Reset High Scores',
-                        onTap: () {
-                          _playSound(); // Play sound when button is pressed
-                          resetHighScores();
-                        },
-                        onTapUp: () {},
-                        onTapDown: () {},
-                        onTapCancel: () {},
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                      ),
-                      const SizedBox(width: 10),
-
                       // View High Scores Button
                       FutureBuilder(
                         future: _loadHighScores(),
@@ -460,6 +442,8 @@ class _GameCardScreenState extends State<GameCardScreen> {
                               onTapCancel: () {},
                               backgroundColor: Colors.blue,
                               textColor: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+
                             );
                           } else {
                             return const CircularProgressIndicator(); // Show a loading indicator
@@ -469,9 +453,30 @@ class _GameCardScreenState extends State<GameCardScreen> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  // Music Toggle Button
-                  MusicToggleButton(),
                 ],
+              ),
+            ),
+            // Music Toggle Button
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding:
+                    const EdgeInsets.all(16.0), // Adjust the padding as needed
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.refresh), // Use the desired icon
+                      onPressed: () {
+                        _playSound(); // Play sound when button is pressed
+                        resetHighScores();
+                      },
+                      color: Colors.white, // Set the icon color
+                      iconSize: 48.0, // Set the icon size (adjust as needed)
+                    ),
+                    MusicToggleButton(),
+                  ],
+                ),
               ),
             ),
           ],
