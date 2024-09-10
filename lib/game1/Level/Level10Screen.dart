@@ -15,8 +15,6 @@ class Level10Screen extends StatefulWidget {
 }
 
 class _Level10ScreenState extends State<Level10Screen> {
-  //setting text style
-  bool hideTest = false;
   final Game _game = Game();
   final AudioPlayer _audioPlayer =
       AudioPlayer(); // Create an instance of AudioPlayer
@@ -34,8 +32,6 @@ class _Level10ScreenState extends State<Level10Screen> {
   List<int> matchedCardIndices =
       []; // เพิ่ม list สำหรับเก็บ index ของไพ่ที่จับคู่กันแล้ว
 
-  bool _gameStarted = false; // Flag to track if the game has started
-
   @override
   void initState() {
     super.initState();
@@ -44,9 +40,10 @@ class _Level10ScreenState extends State<Level10Screen> {
     matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
     _loadHighScore(); // เรียกใช้ฟังก์ชัน _loadHighScore() ใน initState()
 
-    // Reveal all cards initially
+    // Hide all cards initially and start the timer
     setState(() {
-      _game.gameImg = _game.cards_list;
+      _game.gameImg = List.filled(_game.cardCount, _game.hiddenCardpath);
+      startTimer();
     });
   }
 
@@ -54,8 +51,7 @@ class _Level10ScreenState extends State<Level10Screen> {
   Future<void> _loadHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      level10HighScore = prefs.getInt('level10HighScore') ??
-          0; // โหลด high score จาก SharedPreferences
+      level10HighScore = prefs.getInt('level10HighScore') ?? 0; // โหลด high score จาก SharedPreferences
     });
   }
 
@@ -63,8 +59,7 @@ class _Level10ScreenState extends State<Level10Screen> {
   Future<void> _saveHighScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (score > level10HighScore) {
-      prefs.setInt('level10HighScore',
-          score.toInt()); // บันทึก high score ลง SharedPreferences
+      prefs.setInt('level10HighScore', score.toInt()); // บันทึก high score ลง SharedPreferences
       setState(() {
         level10HighScore = score.toInt(); // อัปเดต high score ใน state
       });
@@ -168,8 +163,8 @@ class _Level10ScreenState extends State<Level10Screen> {
       _timeLeft = 80;
       revealedCards.clear();
       matchedCardIndices.clear(); // เริ่มต้น list ของไพ่ที่จับคู่กันแล้ว
-      _gameStarted = false; // Reset game started flag
-      _game.gameImg = _game.cards_list; // Reveal all cards again
+      _game.gameImg = List.filled(_game.cardCount, _game.hiddenCardpath); // Hide all cards again
+      startTimer();
     });
   }
 
@@ -183,8 +178,7 @@ class _Level10ScreenState extends State<Level10Screen> {
 
       if (_game.checkMatch(firstIndex, secondIndex)) {
         setState(() {
-          score +=
-              1.428571428571429; // เพิ่มคะแนน 1.428571428571429 คะแนนเมื่อจับคู่ถูก
+          score += 1.428571428571429; // เพิ่มคะแนน 1.428571428571429 คะแนนเมื่อจับคู่ถูก
           matchedPairs++;
           matchedCardIndices.addAll(
               [firstIndex, secondIndex]); // เพิ่ม index ของไพ่ที่จับคู่กันแล้ว
@@ -224,15 +218,6 @@ class _Level10ScreenState extends State<Level10Screen> {
         });
       });
     }
-  }
-
-  void startGame() {
-    setState(() {
-      _gameStarted = true;
-      _game.gameImg =
-          List.filled(_game.cardCount, _game.hiddenCardpath); // Hide cards
-      startTimer();
-    });
   }
 
   // Method to play sound
@@ -311,33 +296,12 @@ class _Level10ScreenState extends State<Level10Screen> {
                   Text('Level 10',
                       style: TextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.bold)),
-                  info_card("Tries", "$tries"),
                   info_card("Score",
                       "${score.toStringAsFixed(1)}"), // แสดง score เป็นทศนิยม 1 ตำแหน่ง
                   info_card("High Score",
                       "$level10HighScore"), // แสดง high score ของ Level 10
                   info_card("Time",
                       "${_timeLeft ~/ 60}:${(_timeLeft % 60).toString().padLeft(2, '0')}"),
-                  // Wrap the button in an AnimatedCrossFade to control its visibility
-                  AnimatedCrossFade(
-                    firstChild: PixelGameButton(
-                      height: 50,
-                      width: 120,
-                      text: 'Start Game',
-                      onTap: _gameStarted ? () {} : startGame,
-                      onTapUp: () {},
-                      onTapDown: () {},
-                      onTapCancel: () {},
-                      backgroundColor: Colors.blue,
-                      textColor: Colors.white,
-                    ),
-                    secondChild: SizedBox
-                        .shrink(), // Empty space when the button is hidden
-                    crossFadeState: _gameStarted
-                        ? CrossFadeState.showSecond
-                        : CrossFadeState.showFirst,
-                    duration: Duration(milliseconds: 300), // Animation duration
-                  )
                 ],
               ),
             ),
@@ -359,7 +323,7 @@ class _Level10ScreenState extends State<Level10Screen> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      if (_gameStarted && // Check if the game has started
+                      if (// Check if the game has started
                           !revealedCards.contains(index) &&
                           revealedCards.length < 2 &&
                           !matchedCardIndices.contains(index)) {

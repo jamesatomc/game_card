@@ -16,8 +16,6 @@ class Level8Screen extends StatefulWidget {
 }
 
 class _Level8ScreenState extends State<Level8Screen> {
-  //setting text style
-  bool hideTest = false;
   final Game _game = Game();
   final AudioPlayer _audioPlayer =
       AudioPlayer(); // Create an instance of AudioPlayer
