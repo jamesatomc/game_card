@@ -79,19 +79,6 @@ class _GameCardScreenState extends State<GameCardScreen> {
     prefs.remove('level9HighScore');
     prefs.remove('level10HighScore');
 
-    // Set levelHighScore variables to null
-    setState(() {
-      level1HighScore = null;
-      level2HighScore = null;
-      level3HighScore = null;
-      level4HighScore = null;
-      level5HighScore = null;
-      level6HighScore = null;
-      level7HighScore = null;
-      level8HighScore = null;
-      level9HighScore = null;
-      level10HighScore = null;
-    });
     _loadHighScores(); // Reload high scores after reset
   }
 
