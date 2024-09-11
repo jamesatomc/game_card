@@ -129,9 +129,7 @@ class _Quiz2State extends State<Quiz2> {
                   MaterialPageRoute(builder: (context) => GameJump()),
                 );
               },
-              onResumeMusic: () {
-                widget.onResumeMusic?.call();
-              },
+              onResumeMusic: () {},
             ),
           },
         ),

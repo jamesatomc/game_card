@@ -5,7 +5,7 @@ class BackButtonOverlay extends StatelessWidget {
   final VoidCallback onPressed;
   final VoidCallback onResumeMusic; // Add onResumeMusic parameter
 
-  BackButtonOverlay({super.key, required this.onPressed, required this.onResumeMusic});
+  BackButtonOverlay({super.key, required this.onPressed, required this.onResumeMusic}); // Add onResumeMusic parameter
 
   final AudioPlayer _audioPlayer = AudioPlayer();
 
