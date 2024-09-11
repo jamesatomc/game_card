@@ -76,11 +76,11 @@ class _Quiz1State extends State<Quiz1> {
       showAnswer = true;
       if (selectedIndex == currentQuestion.correctAnswerIndex) {
         _playCorrectAnswerSound();
+        answeredQuestions++;
       } else {
         _playIncorrectAnswerSound();
         incorrectAnswers++;
       }
-      answeredQuestions++;
     });
   
     // Delay to show the answer before loading the next question

@@ -5,8 +5,8 @@ import 'package:flutter/material.dart' hide Route;
 class JumpButton extends PositionComponent with TapCallbacks {
   final Function(bool) onJumpButtonPressed;
   bool _enabled = true;
-  final Duration cooldown = Duration(seconds: 1); // Cooldown period
-  DateTime? lastJumpTime;
+  int _pressCount = 0;
+  final int _maxPressCount = 2;
 
   JumpButton({required this.onJumpButtonPressed}) {
     size = Vector2(100, 100);
@@ -16,17 +16,13 @@ class JumpButton extends PositionComponent with TapCallbacks {
   @override
   void onTapUp(TapUpEvent event) {
     super.onTapUp(event);
-    if (_enabled && _canJump()) {
+    if (_enabled) {
+      _pressCount++;
       onJumpButtonPressed(true);
-      lastJumpTime = DateTime.now();
+      if (_pressCount >= _maxPressCount) {
+        setEnabled(false);
+      }
     }
-  }
-
-  bool _canJump() {
-    if (lastJumpTime == null) {
-      return true;
-    }
-    return DateTime.now().difference(lastJumpTime!) >= cooldown;
   }
 
   @override
