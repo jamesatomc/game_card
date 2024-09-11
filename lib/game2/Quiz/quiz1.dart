@@ -70,7 +70,7 @@ class _Quiz1State extends State<Quiz1> {
 
   void _checkAnswer(int selectedIndex) {
     if (selectedAnswerIndex != null) return; // Prevent multiple presses
-  
+
     setState(() {
       selectedAnswerIndex = selectedIndex;
       showAnswer = true;
@@ -82,13 +82,14 @@ class _Quiz1State extends State<Quiz1> {
         incorrectAnswers++;
       }
     });
-  
+
     // Delay to show the answer before loading the next question
     Future.delayed(const Duration(seconds: 3), () {
       if (answeredQuestions >= totalQuestions) {
         _showCompletionScreen();
       } else if (incorrectAnswers >= maxIncorrectAnswers) {
-        _showFailScreen();
+        // _resetQuiz();  //  <-- Remove this line
+        _showFailScreen(); // <-- Add this line
       } else {
         _loadRandomQuestion();
       }
@@ -103,9 +104,6 @@ class _Quiz1State extends State<Quiz1> {
     await audioPlayer.play(AssetSource('sounds/wrong-buzzer.mp3'));
   }
 
-  Future<void> _playCompletionSound() async {
-    await audioPlayer.play(AssetSource('sounds/level_complete.mp3'));
-  }
 
   void _resetQuiz() {
     setState(() {
@@ -194,8 +192,7 @@ class _Quiz1State extends State<Quiz1> {
                       onPressed: () {
                         Navigator.of(context).pop(); // ปิด AlertDialog
                         Navigator.pop(context); // กลับไปหน้าหลัก
-                        widget.onResumeMusic
-                            ?.call(); // Call the function to resume music
+                        widget.onResumeMusic?.call(); // Call the function to resume music
                       },
                       child: Text('Yes'),
                     ),
@@ -232,8 +229,7 @@ class _Quiz1State extends State<Quiz1> {
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(
-                                0.8), // Semi-transparent white background
+                            color: Colors.white.withOpacity(0.8), // Semi-transparent white background
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: Text(
@@ -280,11 +276,11 @@ class _Quiz1State extends State<Quiz1> {
                           Text(
                             'คำตอบที่ถูกต้อง: ${currentQuestion.answers[currentQuestion.correctAnswerIndex]}',
                             style: const TextStyle(
-                                color: Color.fromARGB(255, 255, 255, 255), fontSize: 16),
+                                color: Colors.white, fontSize: 16),
                           ),
                         ],
                         if (incorrectAnswers >= maxIncorrectAnswers) ...[
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 20),
                           const Text(
                             'ตอบผิดเกิน 2 ครั้ง',
                             style: TextStyle(color: Colors.red, fontSize: 16),
