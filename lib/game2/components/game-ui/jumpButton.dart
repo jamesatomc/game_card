@@ -16,6 +16,7 @@ class JumpButton extends PositionComponent with TapCallbacks {
 
   @override
   void onTapUp(TapUpEvent event) {
+    // คือการกำหนดการทำงานเมื่อมีการกดปุ่ม
     super.onTapUp(event);
     if (_enabled && _pressCount < 2) {
       onJumpButtonPressed(true);
@@ -25,10 +26,10 @@ class JumpButton extends PositionComponent with TapCallbacks {
       }
     }
   }
-
+  // ฟังก์ชันที่ใช้ในการกำหนดเวลาในการกดปุ่ม
   void _startCooldown() {
     _enabled = false;
-    _cooldownTimer = dart_async.Timer(Duration(seconds: 1), () {
+    _cooldownTimer = dart_async.Timer(const Duration(seconds: 1), () {
       _enabled = true;
       _pressCount = 0;
     });
