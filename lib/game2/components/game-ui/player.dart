@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:game_somo/game2/components/game-ui/medusa.dart';
+import 'package:game_somo/game2/components/game-ui/suriken.dart';
 
 
 import 'bumpy.dart';
@@ -125,6 +127,12 @@ class Player extends SpriteAnimationComponent
     super.onCollision(intersectionPoints, other);
     //เจอมอนสเตอร์
     if (other is Monsters || other is Bumpy) {
+      hasCollided = true;
+    }
+        if (other is Monsters || other is Medusa) {
+      hasCollided = true;
+    }
+        if (other is Monsters || other is Suriken) {
       hasCollided = true;
     }
     // เจอพื้นหรือกำแพง
