@@ -350,7 +350,7 @@ class Jump2 extends FlameGame
       level2CoinScoreReset++; // Increment the reset variable as well
     }
     coinsText.text = 'Coins: $level2CoinScoreReset';
-    saveLevel1CoinScore(level2CoinScore); // Save the coin score
+    saveLevel2CoinScore(level2CoinScore); // Save the coin score
 
     if (level2CoinScoreReset >= 10) {
       unlockNextLevel(); // Unlock the next level
@@ -369,7 +369,7 @@ class Jump2 extends FlameGame
     updateCoinCount(level2CoinScore + 1);
   }
 
-  Future<void> saveLevel1CoinScore(int score) async {
+  Future<void> saveLevel2CoinScore(int score) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('level2CoinScore', score);
   }

@@ -36,7 +36,7 @@ class _ManuGameState extends State<ManuGame> {
             Align(
               alignment: Alignment.center,
               child: Container(
-                height: 300,
+                height: 340,
                 width: 400,
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.7),
@@ -63,75 +63,93 @@ class _ManuGameState extends State<ManuGame> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 40),
-                      PixelGameButton(
-                        height: 60,
-                        width: 200,
-                        text: 'จับคู่มหาสนุก',
-                        onTap: () {
-                          _playSound();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const GameCardScreen()),
-                          );
-                        },
-                        onTapUp: () {},
-                        onTapDown: () {},
-                        onTapCancel: () {},
-                        backgroundColor: Colors.blue,
-                        textColor: Colors.white,
-                        borderRadius: BorderRadius.circular(10) // Set rounded corners
+                      const SizedBox(height: 10),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        // decoration: BoxDecoration(
+                        //   color: Colors.greenAccent.withOpacity(0.4),
+                        //   border: Border.all(color: Colors.white, width: 2),
+                        //   borderRadius:
+                        //       BorderRadius.circular(10), // Add rounded corners
+                        // ),
+                        child: Center(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min, // Center the row content
+                            children: [
+                              Icon(
+                                Icons.person, // Replace with your desired icon
+                                color: Color.fromARGB(255, 135, 82, 3),
+                                size: 24.0,
+                              ),
+                              const SizedBox(width: 8), // Add some space between the icon and the text
+                              Text(
+                                '${widget.username}',
+                                style: const TextStyle(
+                                  // fontFamily: 'PixelFont',
+                                  color: Color.fromARGB(255, 135, 82, 3),
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
+                      const SizedBox(height: 10),
+                      PixelGameButton(
+                          height: 60,
+                          width: 200,
+                          text: 'จับคู่มหาสนุก',
+                          onTap: () {
+                            _playSound();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const GameCardScreen()),
+                            );
+                          },
+                          onTapUp: () {},
+                          onTapDown: () {},
+                          onTapCancel: () {},
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          borderRadius:
+                              BorderRadius.circular(10) // Set rounded corners
+                          ),
                       const SizedBox(height: 20),
                       PixelGameButton(
-                        height: 60,
-                        width: 200,
-                        text: 'หนูน้อยผจญภัย',
-                        onTap: () {
-                          _playSound();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const GameJump()),
-                          );
-                        },
-                        onTapUp: () {},
-                        onTapDown: () {},
-                        onTapCancel: () {},
-                        backgroundColor: Colors.blue,
-                        textColor: Colors.white,
-                        borderRadius: BorderRadius.circular(10) // Set rounded corners
-                      ),
+                          height: 60,
+                          width: 200,
+                          text: 'หนูน้อยผจญภัย',
+                          onTap: () {
+                            _playSound();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const GameJump()),
+                            );
+                          },
+                          onTapUp: () {},
+                          onTapDown: () {},
+                          onTapCancel: () {},
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          borderRadius:
+                              BorderRadius.circular(10) // Set rounded corners
+                          ),
                       const SizedBox(height: 40),
                     ],
                   ),
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.greenAccent.withOpacity(0.4),
-                    border: Border.all(color: Colors.white, width: 2),
-                    borderRadius:
-                        BorderRadius.circular(10), // Add rounded corners
-                  ),
-                  child: Text(
-                    '${widget.username}',
-                    style: const TextStyle(
-                      // fontFamily: 'PixelFont',
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // Align(
+            //   alignment: Alignment.topRight,
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(8.0),
+            //     child:
+            //   ),
+            // ),
           ],
         ),
       ),

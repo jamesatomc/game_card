@@ -207,6 +207,20 @@ class DeveloperInfoScreen extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18),
             ),
+            SizedBox(height: 20),
+                        Text(
+              'อ.',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'E\n E',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18),
+            ),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'dart:math';
 
 import '../../components/game_button.dart';
@@ -46,6 +47,7 @@ class _Quiz1State extends State<Quiz1> {
   final int maxIncorrectAnswers = 2;
   final int totalQuestions = 3;
   final Random random = Random();
+  final AudioPlayer audioPlayer = AudioPlayer();
 
   @override
   void initState() {
@@ -68,27 +70,41 @@ class _Quiz1State extends State<Quiz1> {
 
   void _checkAnswer(int selectedIndex) {
     if (selectedAnswerIndex != null) return; // Prevent multiple presses
-
+  
     setState(() {
       selectedAnswerIndex = selectedIndex;
       showAnswer = true;
-      if (selectedIndex != currentQuestion.correctAnswerIndex) {
+      if (selectedIndex == currentQuestion.correctAnswerIndex) {
+        _playCorrectAnswerSound();
+      } else {
+        _playIncorrectAnswerSound();
         incorrectAnswers++;
       }
       answeredQuestions++;
     });
-
+  
     // Delay to show the answer before loading the next question
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 3), () {
       if (answeredQuestions >= totalQuestions) {
         _showCompletionScreen();
       } else if (incorrectAnswers >= maxIncorrectAnswers) {
-        // _resetQuiz();  //  <-- Remove this line
-        _showFailScreen(); // <-- Add this line
+        _showFailScreen();
       } else {
         _loadRandomQuestion();
       }
     });
+  }
+
+  void _playCorrectAnswerSound() async {
+    await audioPlayer.play(AssetSource('sounds/correct.mp3'));
+  }
+
+  void _playIncorrectAnswerSound() async {
+    await audioPlayer.play(AssetSource('sounds/wrong-buzzer.mp3'));
+  }
+
+  Future<void> _playCompletionSound() async {
+    await audioPlayer.play(AssetSource('sounds/level_complete.mp3'));
   }
 
   void _resetQuiz() {
@@ -211,7 +227,7 @@ class _Quiz1State extends State<Quiz1> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          height: 100,
+                          height: 80,
                           width: 700,
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(10.0),
@@ -264,11 +280,11 @@ class _Quiz1State extends State<Quiz1> {
                           Text(
                             'คำตอบที่ถูกต้อง: ${currentQuestion.answers[currentQuestion.correctAnswerIndex]}',
                             style: const TextStyle(
-                                color: Colors.green, fontSize: 16),
+                                color: Color.fromARGB(255, 255, 255, 255), fontSize: 16),
                           ),
                         ],
                         if (incorrectAnswers >= maxIncorrectAnswers) ...[
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 10),
                           const Text(
                             'ตอบผิดเกิน 2 ครั้ง',
                             style: TextStyle(color: Colors.red, fontSize: 16),
@@ -294,7 +310,7 @@ class _Quiz1State extends State<Quiz1> {
       } else if (index == selectedAnswerIndex) {
         buttonColor = Colors.red;
       } else {
-        buttonColor = Colors.blueGrey;
+        buttonColor = const Color.fromARGB(255, 216, 125, 7);
       }
     } else {
       buttonColor = const Color.fromARGB(255, 216, 125, 7);

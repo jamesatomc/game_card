@@ -36,7 +36,7 @@ class Medusa extends SpriteAnimationComponent with HasGameRef ,CollisionCallback
     add(RectangleHitbox(collisionType: CollisionType.active,));
 
     priority = -1;
-    debugMode = true;
+    // debugMode = true;
 
     if(isVertical){
       rangeNeg = position.y - offNeg * tilesize;

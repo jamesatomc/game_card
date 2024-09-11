@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="60" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="36">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="60" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="54">
  <tileset firstgid="1" name="32x32WoodsItchio" tilewidth="32" tileheight="32" tilecount="1566" columns="58">
-  <image source="../Downloads/TinyForest/32x32WoodsItchio.png" width="1857" height="890"/>
+  <image source="../images/32x32WoodsItchio.png" width="1857" height="890"/>
  </tileset>
- <tileset firstgid="1567" name="Tileset" tilewidth="32" tileheight="32" tilecount="180" columns="15">
-  <image source="../Downloads/Forest Tileset/Forest Tileset/Tileset/Tileset.png" width="480" height="384"/>
+ <tileset firstgid="1567" name="Tileset" tilewidth="32" tileheight="32" tilecount="100" columns="10">
+  <image source="../images/Map Tielset.png" width="320" height="320"/>
  </tileset>
- <layer id="1" name="เลเยอร์ไทล์ 1" width="60" height="20">
+ <layer id="1" name="background" width="60" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -21,44 +21,58 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,73,73,0,0,73,73,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,73,73,0,304,305,0,0,304,305,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,304,305,0,362,363,0,0,362,363,0,0,73,73,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,1685,1686,0,0,0,0,0,0,0,0,0,0,73,73,0,362,363,0,0,0,0,0,0,0,0,0,304,305,0,0,0,0,0,0,0,0,1685,1686,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1685,1686,0,0,0,
-0,1699,1700,1701,0,0,0,0,0,0,0,0,0,0,304,305,0,0,0,0,0,0,0,0,0,0,0,0,362,363,0,73,73,0,0,0,0,1699,1700,1701,0,73,73,0,0,0,0,0,0,0,73,73,0,0,1699,1700,1701,0,0,0,
-0,1714,1715,1716,0,0,0,0,0,306,73,73,0,0,362,363,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,304,305,0,0,0,0,1714,1715,1716,0,304,305,0,0,0,0,0,0,0,304,305,0,0,1714,1715,1716,0,0,0,
-0,0,1730,1731,0,0,0,0,0,0,304,305,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,362,363,0,0,0,0,0,1730,1731,0,362,363,0,0,0,73,73,0,0,362,363,0,0,0,1730,1731,0,0,0,
-183,183,183,183,183,183,183,183,183,0,362,363,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,183,183,183,183,183,183,183,183,0,0,0,0,0,304,305,0,0,0,0,183,183,183,183,183,183,183,183,
-241,241,241,241,241,241,241,241,241,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,241,241,241,241,241,241,241,241,0,0,0,0,0,362,363,0,0,0,0,241,241,241,241,241,241,241,241,
-241,241,241,241,241,241,241,241,241,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,241,241,241,241,241,241,241,241,0,0,0,0,0,0,0,0,0,0,0,241,241,241,241,241,241,241,241
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,73,73,0,362,363,0,0,0,0,0,0,0,0,0,304,305,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,301,301,0,0,304,305,0,0,0,0,0,0,0,0,0,0,0,0,362,363,0,73,73,0,0,0,0,0,0,0,0,73,73,0,0,0,0,0,0,0,73,73,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,306,304,305,0,0,362,363,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,304,305,0,0,0,0,0,0,0,0,304,305,0,0,0,0,0,0,0,304,305,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,362,363,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,362,363,0,0,0,0,0,0,0,0,362,363,0,0,0,73,73,0,0,362,363,0,0,0,0,0,0,0,0,
+183,183,183,183,183,183,183,183,183,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,304,305,0,0,0,0,183,183,183,183,183,183,183,183,
+241,241,241,241,241,241,241,241,241,183,183,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,183,183,183,183,183,183,183,0,0,0,0,0,0,362,363,0,0,0,0,241,241,241,241,241,241,241,241,
+241,241,241,241,241,241,241,241,241,241,241,73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,297,297,241,241,241,241,241,241,241,297,73,73,73,73,73,73,73,73,73,73,73,241,241,241,241,241,241,241,241
 </data>
  </layer>
- <objectgroup id="2" name="Coins">
-  <object id="1" type="Gold" x="643.333" y="254" width="58.6667" height="52"/>
-  <object id="5" type="Gold" x="322" y="412.333" width="58.6667" height="52"/>
-  <object id="7" type="Gold" x="448" y="351.333" width="58.6667" height="52"/>
-  <object id="8" type="Gold" x="548" y="284" width="58.6667" height="52"/>
-  <object id="9" type="Gold" x="769.667" y="253.667" width="58.6667" height="52"/>
-  <object id="10" type="Gold" x="900.667" y="322" width="58.6667" height="52"/>
-  <object id="12" type="Gold" x="1313.33" y="374.333" width="58.6667" height="52"/>
-  <object id="13" type="Gold" x="996" y="382.333" width="58.6667" height="52"/>
-  <object id="14" type="Gold" x="1473.33" y="444" width="58.6667" height="52"/>
-  <object id="15" type="Gold" x="1604.33" y="382" width="58.6667" height="52"/>
-  <object id="25" x="896.042" y="380" width="65.917" height="100"/>
-  <object id="26" x="990.042" y="445" width="67.917" height="95"/>
-  <object id="27" x="1311.04" y="439" width="65.917" height="100"/>
-  <object id="28" x="1471.04" y="509" width="65.917" height="100"/>
-  <object id="29" x="1601.04" y="443" width="65.917" height="93"/>
-  <object id="31" type="floor" x="-77" y="-10" width="84" height="663"/>
-  <object id="32" type="floor" x="1908.67" y="-16.8333" width="84" height="663"/>
-  <object id="33" type="floor" x="-86.5455" y="-66.6667" width="2089.21" height="82.6667"/>
-  <object id="35" type="floor" x="-96.0017" y="629.333" width="2085.34" height="82.6667"/>
+ <objectgroup id="5" name="spawn">
+  <object id="38" type="player" x="47.4921" y="448.536" width="73.8766" height="65.0818"/>
  </objectgroup>
- <objectgroup id="3" name="background">
-  <object id="16" x="1654.67" y="542.667" width="272.667" height="100"/>
-  <object id="17" x="1049.33" y="543.333" width="266.667" height="100"/>
-  <object id="19" x="-2.66683" y="540.667" width="296" height="100"/>
-  <object id="20" x="319.167" y="478" width="65.917" height="100"/>
-  <object id="21" x="445.791" y="411.5" width="65.917" height="100"/>
-  <object id="22" x="545.042" y="348" width="65.917" height="100"/>
-  <object id="23" x="639.042" y="315" width="65.917" height="100"/>
-  <object id="24" x="766.042" y="314" width="65.917" height="100"/>
+ <objectgroup id="2" name="coin">
+  <object id="1" type="coin" x="657.405" y="177.518" width="44.6667" height="52"/>
+  <object id="5" type="coin" x="330" y="370.333" width="46.6667" height="52"/>
+  <object id="7" type="coin" x="450" y="323.333" width="48.6667" height="52"/>
+  <object id="8" type="coin" x="556" y="262" width="42.6667" height="54"/>
+  <object id="9" type="coin" x="777.667" y="175.667" width="44.6667" height="52"/>
+  <object id="10" type="coin" x="904.667" y="278" width="46.6667" height="52"/>
+  <object id="12" type="coin" x="1319.09" y="326.887" width="48.6667" height="52"/>
+  <object id="13" type="coin" x="1002" y="378.333" width="46.6667" height="52"/>
+  <object id="14" type="coin" x="1473.33" y="440" width="58.6667" height="52"/>
+  <object id="15" type="coin" x="1604.33" y="318" width="48.6667" height="52"/>
+ </objectgroup>
+ <objectgroup id="4" name="monsters">
+  <object id="36" type="suriken" x="1166.92" y="571.377" width="22.0459" height="36.528"/>
+  <object id="51" type="bumpy" x="671" y="577" width="34" height="42">
+   <properties>
+    <property name="isVertical" type="bool" value="false"/>
+    <property name="offNeg" type="float" value="10"/>
+    <property name="offPos" type="float" value="10"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="3" name="ground">
+  <object id="16" x="1696.67" y="542.667" width="230.667" height="100"/>
+  <object id="19" x="-2.66683" y="540.667" width="262" height="100"/>
+  <object id="20" x="335.167" y="454" width="31.917" height="62"/>
+  <object id="21" x="469.791" y="411.5" width="25.917" height="88"/>
+  <object id="22" x="565.042" y="348" width="29.917" height="76"/>
+  <object id="23" x="657.042" y="315" width="31.917" height="72"/>
+  <object id="24" x="784.042" y="314" width="31.917" height="82"/>
+  <object id="40" type="floor" x="-56" y="-48" width="90" height="730"/>
+  <object id="41" type="floor" x="-68" y="624" width="2038" height="90"/>
+  <object id="42" type="floor" x="-46" y="-46" width="1998" height="72"/>
+  <object id="43" type="floor" x="1886" y="-38" width="86" height="752"/>
+  <object id="45" x="913.042" y="386" width="29.917" height="74"/>
+  <object id="46" x="1007.04" y="454" width="33.917" height="62"/>
+  <object id="47" x="1329.04" y="448" width="29.917" height="66"/>
+  <object id="48" x="1491.04" y="512" width="27.917" height="100"/>
+  <object id="49" x="1615.04" y="450" width="31.917" height="100"/>
+  <object id="52" x="1050.77" y="584" width="230.364" height="48"/>
+  <object id="53" x="226" y="582" width="100" height="48"/>
  </objectgroup>
 </map>
