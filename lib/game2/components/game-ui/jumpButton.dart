@@ -5,8 +5,6 @@ import 'package:flutter/material.dart' hide Route;
 class JumpButton extends PositionComponent with TapCallbacks {
   final Function(bool) onJumpButtonPressed;
   bool _enabled = true;
-  int _pressCount = 0;
-  final int _maxPressCount = 2;
 
   JumpButton({required this.onJumpButtonPressed}) {
     size = Vector2(100, 100);
@@ -17,11 +15,7 @@ class JumpButton extends PositionComponent with TapCallbacks {
   void onTapUp(TapUpEvent event) {
     super.onTapUp(event);
     if (_enabled) {
-      _pressCount++;
       onJumpButtonPressed(true);
-      if (_pressCount >= _maxPressCount) {
-        setEnabled(false);
-      }
     }
   }
 
