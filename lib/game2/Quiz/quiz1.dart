@@ -123,11 +123,11 @@ class _Quiz1State extends State<Quiz1> {
           overlayBuilderMap: {
             'BackButton': (context, game) => BackButtonOverlay(
               onPressed: () {
+                Navigator.of(context).pop();
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => GameJump()),
                 );
-                Navigator.pop(context);
               },
               onResumeMusic: () {
                 widget.onResumeMusic?.call();

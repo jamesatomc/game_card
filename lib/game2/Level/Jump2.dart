@@ -131,7 +131,7 @@ class Jump2 extends FlameGame
         onNextQuiz: () {
           FlameAudio.bgm.stop(); // Stop the background music
 
-          // Navigate to Quiz2
+          // Navigate to Quiz3
           Navigator.of(context).pop();
           Navigator.pushReplacement(
             context,
