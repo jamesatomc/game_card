@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'dart:math';
 
 import '../../components/game_button.dart';
+import '../GameJump.dart';
 import '../Level/Jump1.dart';
 import '../components/BackButtonOverlay.dart';
 
@@ -121,13 +122,17 @@ class _Quiz1State extends State<Quiz1> {
           game: Jump1(),
           overlayBuilderMap: {
             'BackButton': (context, game) => BackButtonOverlay(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  onResumeMusic: () {
-                    widget.onResumeMusic?.call();
-                  },
-                ),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => GameJump()),
+                );
+                Navigator.pop(context);
+              },
+              onResumeMusic: () {
+                widget.onResumeMusic?.call();
+              },
+            ),
           },
         ),
       ),

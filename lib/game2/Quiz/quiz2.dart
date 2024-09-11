@@ -4,7 +4,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'dart:math';
 
 import '../../components/game_button.dart';
-import '../Level/Jump1.dart';
+import '../GameJump.dart';
+import '../Level/Jump2.dart';
 import '../components/BackButtonOverlay.dart';
 
 class Quiz2 extends StatefulWidget {
@@ -118,16 +119,20 @@ class _Quiz2State extends State<Quiz2> {
       context,
       MaterialPageRoute(
         builder: (context) => GameWidget(
-          game: Jump1(),
+          game: Jump2(),
           overlayBuilderMap: {
             'BackButton': (context, game) => BackButtonOverlay(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  onResumeMusic: () {
-                    widget.onResumeMusic?.call();
-                  },
-                ),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => GameJump()),
+                );
+                Navigator.pop(context);
+              },
+              onResumeMusic: () {
+                widget.onResumeMusic?.call();
+              },
+            ),
           },
         ),
       ),
