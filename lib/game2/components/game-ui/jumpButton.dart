@@ -1,13 +1,14 @@
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart' hide Route;
-import 'dart:async' as dart_async;
+import 'dart:async' as async;
 
 class JumpButton extends PositionComponent with TapCallbacks {
   final Function(bool) onJumpButtonPressed;
   bool _enabled = true;
   int _pressCount = 0;
-  dart_async.Timer? _cooldownTimer;
+  // ignore: unused_field
+  async.Timer? _cooldownTimer;
 
   JumpButton({required this.onJumpButtonPressed}) {
     size = Vector2(100, 100);
@@ -29,7 +30,7 @@ class JumpButton extends PositionComponent with TapCallbacks {
   // ฟังก์ชันที่ใช้ในการกำหนดเวลาในการกดปุ่ม
   void _startCooldown() {
     _enabled = false;
-    _cooldownTimer = dart_async.Timer(const Duration(seconds: 1), () {
+    _cooldownTimer = async.Timer(const Duration(seconds: 1), () {
       _enabled = true;
       _pressCount = 0;
     });

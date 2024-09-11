@@ -1,9 +1,10 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'dart:math';
 
 import '../../components/game_button.dart';
-import '../Level/Jump2.dart';
+import '../Level/Jump1.dart';
 import '../components/BackButtonOverlay.dart';
 
 class Quiz2 extends StatefulWidget {
@@ -46,6 +47,7 @@ class _Quiz2State extends State<Quiz2> {
   final int maxIncorrectAnswers = 2;
   final int totalQuestions = 3;
   final Random random = Random();
+  final AudioPlayer audioPlayer = AudioPlayer();
 
   @override
   void initState() {
@@ -72,14 +74,17 @@ class _Quiz2State extends State<Quiz2> {
     setState(() {
       selectedAnswerIndex = selectedIndex;
       showAnswer = true;
-      if (selectedIndex != currentQuestion.correctAnswerIndex) {
+      if (selectedIndex == currentQuestion.correctAnswerIndex) {
+        _playCorrectAnswerSound();
+        answeredQuestions++;
+      } else {
+        _playIncorrectAnswerSound();
         incorrectAnswers++;
       }
-      answeredQuestions++;
     });
 
     // Delay to show the answer before loading the next question
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 3), () {
       if (answeredQuestions >= totalQuestions) {
         _showCompletionScreen();
       } else if (incorrectAnswers >= maxIncorrectAnswers) {
@@ -89,6 +94,14 @@ class _Quiz2State extends State<Quiz2> {
         _loadRandomQuestion();
       }
     });
+  }
+
+  void _playCorrectAnswerSound() async {
+    await audioPlayer.play(AssetSource('sounds/correct.mp3'));
+  }
+
+  void _playIncorrectAnswerSound() async {
+    await audioPlayer.play(AssetSource('sounds/wrong-buzzer.mp3'));
   }
 
   void _resetQuiz() {
@@ -105,7 +118,7 @@ class _Quiz2State extends State<Quiz2> {
       context,
       MaterialPageRoute(
         builder: (context) => GameWidget(
-          game: Jump2(),
+          game: Jump1(),
           overlayBuilderMap: {
             'BackButton': (context, game) => BackButtonOverlay(
                   onPressed: () {
@@ -132,8 +145,8 @@ class _Quiz2State extends State<Quiz2> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Close the dialog
-                Navigator.pop(context); // Go back to the previous screen
+                Navigator.of(context).pop(); // ปิด AlertDialog
+                Navigator.pop(context); // กลับไปหน้าหลัก
                 widget.onResumeMusic
                     ?.call(); // Call the function to resume music
               },
@@ -211,7 +224,7 @@ class _Quiz2State extends State<Quiz2> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          height: 100,
+                          height: 80,
                           width: 700,
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(10.0),
@@ -264,7 +277,7 @@ class _Quiz2State extends State<Quiz2> {
                           Text(
                             'คำตอบที่ถูกต้อง: ${currentQuestion.answers[currentQuestion.correctAnswerIndex]}',
                             style: const TextStyle(
-                                color: Colors.green, fontSize: 16),
+                                color: Colors.white, fontSize: 16),
                           ),
                         ],
                         if (incorrectAnswers >= maxIncorrectAnswers) ...[
@@ -294,7 +307,7 @@ class _Quiz2State extends State<Quiz2> {
       } else if (index == selectedAnswerIndex) {
         buttonColor = Colors.red;
       } else {
-        buttonColor = Colors.blueGrey;
+        buttonColor = const Color.fromARGB(255, 216, 125, 7);
       }
     } else {
       buttonColor = const Color.fromARGB(255, 216, 125, 7);

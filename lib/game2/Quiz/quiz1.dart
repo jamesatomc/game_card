@@ -104,7 +104,6 @@ class _Quiz1State extends State<Quiz1> {
     await audioPlayer.play(AssetSource('sounds/wrong-buzzer.mp3'));
   }
 
-
   void _resetQuiz() {
     setState(() {
       incorrectAnswers = 0;
@@ -146,8 +145,8 @@ class _Quiz1State extends State<Quiz1> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Close the dialog
-                Navigator.pop(context); // Go back to the previous screen
+                Navigator.of(context).pop(); // ปิด AlertDialog
+                Navigator.pop(context); // กลับไปหน้าหลัก
                 widget.onResumeMusic
                     ?.call(); // Call the function to resume music
               },
@@ -192,7 +191,8 @@ class _Quiz1State extends State<Quiz1> {
                       onPressed: () {
                         Navigator.of(context).pop(); // ปิด AlertDialog
                         Navigator.pop(context); // กลับไปหน้าหลัก
-                        widget.onResumeMusic?.call(); // Call the function to resume music
+                        widget.onResumeMusic
+                            ?.call(); // Call the function to resume music
                       },
                       child: Text('Yes'),
                     ),
@@ -229,7 +229,8 @@ class _Quiz1State extends State<Quiz1> {
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.8), // Semi-transparent white background
+                            color: Colors.white.withOpacity(
+                                0.8), // Semi-transparent white background
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: Text(

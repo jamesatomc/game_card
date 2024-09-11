@@ -11,7 +11,6 @@ import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 
-
 import '../Quiz/quiz2.dart';
 import '../components/game-ui/bumpy.dart';
 import '../components/game-ui/cion.dart';
@@ -133,11 +132,10 @@ class Jump2 extends FlameGame
           FlameAudio.bgm.stop(); // Stop the background music
 
           // Navigate to Quiz2
-          Navigator.push(
+          Navigator.of(context).pop();
+          Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-              builder: (context) => Quiz2(),
-            ),
+            MaterialPageRoute(builder: (context) => const Quiz2()),
           );
         },
       ),
@@ -226,7 +224,7 @@ class Jump2 extends FlameGame
     camera.viewfinder.anchor = Anchor.center;
   }
 
-    @override
+  @override
   void onTapUp(TapUpEvent event) async {
     super.onTapUp(event);
     if (!isPlayerDead) {
@@ -389,6 +387,4 @@ class Jump2 extends FlameGame
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('level${level}Unlocked') ?? false;
   }
-  
- 
 }

@@ -130,11 +130,10 @@ class Jump1 extends FlameGame
           FlameAudio.bgm.stop(); // Stop the background music
 
           // Navigate to Quiz2
-          Navigator.push(
+          Navigator.of(context).pop();
+          Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-              builder: (context) => Quiz2(),
-            ),
+            MaterialPageRoute(builder: (context) => const Quiz2()),
           );
         },
       ),
