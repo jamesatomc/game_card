@@ -1,6 +1,5 @@
 import 'package:flame/camera.dart';
-import 'package:flutter/material.dart';
-import 'package:game_somo/game2/Quiz/quiz5.dart';
+import 'package:flutter/material.dart';;
 import 'package:game_somo/game2/components/game-ui/medusa.dart';
 import 'package:game_somo/game2/components/game-ui/suriken.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,7 +11,7 @@ import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 
-import '../Quiz/quiz2.dart';
+
 import '../components/game-ui/bumpy.dart';
 import '../components/game-ui/cion.dart';
 import '../components/game-ui/game_over_overlay.dart';

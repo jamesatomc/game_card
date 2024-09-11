@@ -288,7 +288,6 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         level: 1,
                         isUnlocked: true,
                         nextScreen: const Level1Screen(),
-
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -299,7 +298,6 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level1HighScore != null && level1HighScore! >= 6,
                         nextScreen: const Level2Screen(),
-
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -310,7 +308,6 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level2HighScore != null && level2HighScore! >= 6,
                         nextScreen: const Level3Screen(),
-
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -321,7 +318,6 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level3HighScore != null && level3HighScore! >= 7,
                         nextScreen: const Level4Screen(),
-
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -332,7 +328,6 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level4HighScore != null && level4HighScore! >= 7,
                         nextScreen: const Level5Screen(),
-
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -349,7 +344,6 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level5HighScore != null && level5HighScore! >= 7,
                         nextScreen: const Level6Screen(),
-
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -360,7 +354,6 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level6HighScore != null && level6HighScore! >= 7.5,
                         nextScreen: const Level7Screen(),
-
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -371,7 +364,6 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level7HighScore != null && level7HighScore! >= 7.5,
                         nextScreen: const Level8Screen(),
-
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -382,7 +374,6 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level8HighScore != null && level8HighScore! >= 7.5,
                         nextScreen: const Level9Screen(),
-
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -393,39 +384,9 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         isUnlocked:
                             level9HighScore != null && level9HighScore! >= 8,
                         nextScreen: const Level10Screen(),
-
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // View High Scores Button
-                      FutureBuilder(
-                        future: _loadHighScores(),
-                        builder: (context, snapshot) {
-                            return PixelGameButton(
-                              icon: Icons.view_list,
-                              height: 60,
-                              width: 200,
-                              text: 'View High Scores',
-                              onTap: () {
-                                _playSound(); // Play sound when button is pressed
-                                showHighScoresDialog(context);
-                              },
-                              onTapUp: () {},
-                              onTapDown: () {},
-                              onTapCancel: () {},
-                              backgroundColor: Colors.blue,
-                              textColor: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            );
-                          } 
                       ),
                     ],
                   ),
@@ -442,13 +403,33 @@ class _GameCardScreenState extends State<GameCardScreen> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    // View High Scores Button
+                    FutureBuilder(
+                      future: _loadHighScores(),
+                      builder: (context, snapshot) {
+                        return IconButton(
+                          icon: Icon(Icons.emoji_events,
+                              color: const Color.fromARGB(255, 233, 200, 66)),
+                          iconSize: 48, // Adjust icon size
+                          onPressed: () {
+                            _playSound(); // Play sound when button is pressed
+                            showHighScoresDialog(context);
+                          },
+                          color: Colors.yellow, // Background color
+                          padding:
+                              EdgeInsets.all(10), // Padding around the icon
+                          splashRadius: 30, // Splash radius for the button
+                        );
+                      },
+                    ),
                     IconButton(
                       icon: Icon(Icons.refresh), // Use the desired icon
                       onPressed: () {
                         _playSound(); // Play sound when button is pressed
                         resetHighScores();
                       },
-                      color: const Color.fromARGB(255, 255, 0, 0), // Set the icon color
+                      color: const Color.fromARGB(
+                          255, 255, 0, 0), // Set the icon color
                       iconSize: 48.0, // Set the icon size (adjust as needed)
                     ),
                     MusicToggleButton(),

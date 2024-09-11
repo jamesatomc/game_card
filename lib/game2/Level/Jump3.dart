@@ -1,6 +1,6 @@
 import 'package:flame/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:game_somo/game2/Quiz/quiz3.dart';
+import 'package:game_somo/game2/Quiz/quiz4.dart';
 import 'package:game_somo/game2/components/game-ui/medusa.dart';
 import 'package:game_somo/game2/components/game-ui/suriken.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,7 +12,6 @@ import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 
-import '../Quiz/quiz2.dart';
 import '../components/game-ui/bumpy.dart';
 import '../components/game-ui/cion.dart';
 import '../components/game-ui/game_over_overlay.dart';
@@ -22,7 +21,7 @@ import '../components/game-ui/monsters.dart';
 import '../components/game-ui/player.dart';
 import '../components/game-ui/win_overlay.dart';
 
-class Jump2 extends FlameGame
+class Jump3 extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection, TapCallbacks {
   late Player myPlayer;
   late Cion myCoin;
@@ -38,8 +37,8 @@ class Jump2 extends FlameGame
 
   int lives = 2; // Start with 2 lives
   int initialLives = 2; // Store the initial number of lives
-  int level2CoinScore = 0; // Track the number of coins collected
-  int level2CoinScoreReset = 0; // New variable for resetting purposes
+  int level3CoinScore = 0; // Track the number of coins collected
+  int level3CoinScoreReset = 0; // New variable for resetting purposes
 
   late TextComponent livesText; // Declare a TextComponent for lives
   late TextComponent coinsText; // Declare a TextComponent for coins
@@ -53,7 +52,7 @@ class Jump2 extends FlameGame
     initialLives = lives; // Initialize initialLives in onLoad
 
     // Load the saved coin score
-    level2CoinScore = await getLevel2CoinScore() ?? 0;
+    level3CoinScore = await getLevel3CoinScore() ?? 0;
 
     // Initialize livesText
     livesText = TextComponent(
@@ -136,7 +135,7 @@ class Jump2 extends FlameGame
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => quiz3(),
+              builder: (context) => Quiz4(),
             ),
           );
         },
@@ -148,7 +147,7 @@ class Jump2 extends FlameGame
 
   Future<void> loadLevel() async {
     final level = await TiledComponent.load(
-      "map2.tmx",
+      "map3.tmx",
       Vector2.all(32),
     );
 
@@ -316,7 +315,7 @@ class Jump2 extends FlameGame
   void resetGame() async {
     lives = initialLives; // Reset lives to the initial value
     livesText.text = 'Lives: $lives'; // Update livesText
-    level2CoinScoreReset = 0; // Reset coin score using the new variable
+    level3CoinScoreReset = 0; // Reset coin score using the new variable
     coinsText.text = 'Coins: 0'; // Reset coinsText to 0
 
     // Remove existing game objects (player, monsters, coins, etc.)
@@ -343,16 +342,16 @@ class Jump2 extends FlameGame
 
   // Function to handle coin collection
   void collectCoin() {
-    if (level2CoinScore < 10) {
-      level2CoinScore++;
+    if (level3CoinScore < 10) {
+      level3CoinScore++;
     }
-    if (level2CoinScoreReset < 10) {
-      level2CoinScoreReset++; // Increment the reset variable as well
+    if (level3CoinScoreReset < 10) {
+      level3CoinScoreReset++; // Increment the reset variable as well
     }
-    coinsText.text = 'Coins: $level2CoinScoreReset';
-    saveLevel2CoinScore(level2CoinScore); // Save the coin score
+    coinsText.text = 'Coins: $level3CoinScoreReset';
+    saveLevel3CoinScore(level3CoinScore); // Save the coin score
 
-    if (level2CoinScoreReset >= 10) {
+    if (level3CoinScoreReset >= 10) {
       unlockNextLevel(); // Unlock the next level
       showWin(); // Show win overlay when 10 coins are collected
     }
@@ -360,29 +359,29 @@ class Jump2 extends FlameGame
 
   // Method to update the coin count
   void updateCoinCount(int newCoinCount) {
-    level2CoinScore = newCoinCount;
-    coinsText.text = 'Coins: $level2CoinScore';
+    level3CoinScore = newCoinCount;
+    coinsText.text = 'Coins: $level3CoinScore';
   }
 
   // Example of updating the coin count
   void onCoinCollected() {
-    updateCoinCount(level2CoinScore + 1);
+    updateCoinCount(level3CoinScore + 1);
   }
 
-  Future<void> saveLevel2CoinScore(int score) async {
+  Future<void> saveLevel3CoinScore(int score) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('level2CoinScore', score);
+    await prefs.setInt('level3CoinScore', score);
   }
 
-  Future<int?> getLevel2CoinScore() async {
+  Future<int?> getLevel3CoinScore() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('level2CoinScore');
+    return prefs.getInt('level3CoinScore');
   }
 
   Future<void> unlockNextLevel() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(
-        'level3Unlocked', true); // Example for unlocking level 2
+        'level4Unlocked', true); // Example for unlocking level 2
   }
 
   Future<bool> isLevelUnlocked(int level) async {

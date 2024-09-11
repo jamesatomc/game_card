@@ -11,7 +11,7 @@ import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 
-import '../Quiz/quiz2.dart';
+import '../Quiz/quiz3.dart';
 import '../components/game-ui/bumpy.dart';
 import '../components/game-ui/cion.dart';
 import '../components/game-ui/game_over_overlay.dart';
@@ -135,7 +135,7 @@ class Jump2 extends FlameGame
           Navigator.of(context).pop();
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const Quiz2()),
+            MaterialPageRoute(builder: (context) => const Quiz3()),
           );
         },
       ),

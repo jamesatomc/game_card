@@ -5,6 +5,7 @@ import '../components/game_button.dart';
 
 import 'Quiz/quiz1.dart';
 import 'Quiz/quiz2.dart';
+import 'Quiz/quiz3.dart';
 import 'components/HowToPlay.dart';
 import 'components/LevelButton2.dart';
 
@@ -163,9 +164,7 @@ class _GameJumpState extends State<GameJump> {
                         level: 2,
                         isUnlocked:
                             level1CoinScore != null && level1CoinScore! >= 10,
-                        nextScreen: Quiz2(
-                            onResumeMusic:
-                                _playBackgroundMusic),
+                        nextScreen: Quiz2(onResumeMusic: _playBackgroundMusic),
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -176,7 +175,7 @@ class _GameJumpState extends State<GameJump> {
                         level: 3,
                         isUnlocked:
                             level2CoinScore != null && level2CoinScore! >= 10,
-                        nextScreen: GameJump(),
+                        nextScreen: Quiz3(onResumeMusic: _playBackgroundMusic),
                         onTapUp: () {},
                         onTapDown: () {},
                         onTapCancel: () {},
@@ -194,31 +193,104 @@ class _GameJumpState extends State<GameJump> {
                         onTap: _stopBackgroundMusic,
                       ),
                       const SizedBox(width: 10),
+                      PixelLevelButton2(
+                        level: 5,
+                        isUnlocked:
+                            level4CoinScore != null && level4CoinScore! >= 10,
+                        nextScreen: GameJump(),
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
+                        onTap: _stopBackgroundMusic,
+                      ),
+                      const SizedBox(width: 10),
                     ],
                   ),
                   const SizedBox(height: 10),
-                  PixelGameButton(
-                    height: 60,
-                    width: 200,
-                    text: 'How to Play',
-                    onTap: () {
-                      _stopBackgroundMusic();
-                      // Navigate to the How to Play screen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Howtoplay2(
-                              onResumeMusic:
-                                  _playBackgroundMusic), // Pass the function
-                        ),
-                      );
-                    },
-                    onTapUp: () {},
-                    onTapDown: () {},
-                    onTapCancel: () {},
-                    backgroundColor: Colors.greenAccent,
-                    textColor: Colors.black,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      PixelLevelButton2(
+                        level: 6,
+                        isUnlocked: true,
+                        nextScreen: Quiz1(
+                            onResumeMusic:
+                                _playBackgroundMusic), // Pass the function
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
+                        onTap: _stopBackgroundMusic,
+                      ),
+                      const SizedBox(width: 10),
+                      PixelLevelButton2(
+                        level: 7,
+                        isUnlocked:
+                            level1CoinScore != null && level1CoinScore! >= 10,
+                        nextScreen: Quiz2(onResumeMusic: _playBackgroundMusic),
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
+                        onTap: _stopBackgroundMusic,
+                      ),
+                      const SizedBox(width: 10),
+                      PixelLevelButton2(
+                        level: 8,
+                        isUnlocked:
+                            level2CoinScore != null && level2CoinScore! >= 10,
+                        nextScreen: Quiz3(onResumeMusic: _playBackgroundMusic),
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
+                        onTap: _stopBackgroundMusic,
+                      ),
+                      const SizedBox(width: 10),
+                      PixelLevelButton2(
+                        level: 9,
+                        isUnlocked:
+                            level3CoinScore != null && level3CoinScore! >= 10,
+                        nextScreen: GameJump(),
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
+                        onTap: _stopBackgroundMusic,
+                      ),
+                      const SizedBox(width: 10),
+                      PixelLevelButton2(
+                        level: 10,
+                        isUnlocked:
+                            level4CoinScore != null && level4CoinScore! >= 10,
+                        nextScreen: GameJump(),
+                        onTapUp: () {},
+                        onTapDown: () {},
+                        onTapCancel: () {},
+                        onTap: _stopBackgroundMusic,
+                      ),
+                      const SizedBox(width: 10),
+                    ],
                   ),
+                  // PixelGameButton(
+                  //   height: 60,
+                  //   width: 200,
+                  //   text: 'How to Play',
+                  //   onTap: () {
+                  //     _stopBackgroundMusic();
+                  //     // Navigate to the How to Play screen
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => Howtoplay2(
+                  //             onResumeMusic:
+                  //                 _playBackgroundMusic), // Pass the function
+                  //       ),
+                  //     );
+                  //   },
+                  //   onTapUp: () {},
+                  //   onTapDown: () {},
+                  //   onTapCancel: () {},
+                  //   backgroundColor: Colors.greenAccent,
+                  //   textColor: Colors.black,
+                  // ),
                 ],
               ),
             ),

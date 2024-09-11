@@ -61,13 +61,14 @@ class _PixelLevelButtonState extends State<PixelLevelButton> {
         height: 80,
         decoration: BoxDecoration(
           color: widget.isUnlocked ? Colors.blue : Colors.grey,
-          border: Border.all(color: Colors.black, width: 4),
+          border: Border.all(color: const Color.fromARGB(255, 163, 195, 249), width: 4),
+          borderRadius: BorderRadius.circular(10), // Add rounded corners
           boxShadow: widget.isUnlocked && !_isPressed
               ? [
                   BoxShadow(
-                    color: Colors.black,
+                    color: Colors.black38,
                     offset: Offset(4, 4),
-                    blurRadius: 0,
+                    blurRadius: 2,
                   )
                 ]
               : [],
