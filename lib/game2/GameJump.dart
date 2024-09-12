@@ -213,7 +213,8 @@ class _GameJumpState extends State<GameJump> {
                     children: [
                       PixelLevelButton2(
                         level: 6,
-                        isUnlocked: true,
+                        isUnlocked:
+                            level5CoinScore != null && level5CoinScore! >= 10,
                         nextScreen: Quiz1(
                             onResumeMusic:
                                 _playBackgroundMusic), // Pass the function
@@ -226,7 +227,7 @@ class _GameJumpState extends State<GameJump> {
                       PixelLevelButton2(
                         level: 7,
                         isUnlocked:
-                            level1CoinScore != null && level1CoinScore! >= 10,
+                            level6CoinScore != null && level6CoinScore! >= 10,
                         nextScreen: Quiz2(onResumeMusic: _playBackgroundMusic),
                         onTapUp: () {},
                         onTapDown: () {},
@@ -237,7 +238,7 @@ class _GameJumpState extends State<GameJump> {
                       PixelLevelButton2(
                         level: 8,
                         isUnlocked:
-                            level2CoinScore != null && level2CoinScore! >= 10,
+                            level7CoinScore != null && level7CoinScore! >= 10,
                         nextScreen: Quiz3(onResumeMusic: _playBackgroundMusic),
                         onTapUp: () {},
                         onTapDown: () {},
@@ -248,7 +249,7 @@ class _GameJumpState extends State<GameJump> {
                       PixelLevelButton2(
                         level: 9,
                         isUnlocked:
-                            level3CoinScore != null && level3CoinScore! >= 10,
+                            level8CoinScore != null && level8CoinScore! >= 10,
                         nextScreen: GameJump(),
                         onTapUp: () {},
                         onTapDown: () {},
@@ -259,7 +260,7 @@ class _GameJumpState extends State<GameJump> {
                       PixelLevelButton2(
                         level: 10,
                         isUnlocked:
-                            level4CoinScore != null && level4CoinScore! >= 10,
+                            level9CoinScore != null && level9CoinScore! >= 10,
                         nextScreen: GameJump(),
                         onTapUp: () {},
                         onTapDown: () {},

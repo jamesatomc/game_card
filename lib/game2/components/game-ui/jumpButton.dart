@@ -30,7 +30,7 @@ class JumpButton extends PositionComponent with TapCallbacks {
   // ฟังก์ชันที่ใช้ในการกำหนดเวลาในการกดปุ่ม
   void _startCooldown() {
     _enabled = false;
-    _cooldownTimer = async.Timer(const Duration(seconds: 1), () {
+    _cooldownTimer = async.Timer(const Duration(seconds: 1, milliseconds: 200), () {
       _enabled = true;
       _pressCount = 0;
     });
