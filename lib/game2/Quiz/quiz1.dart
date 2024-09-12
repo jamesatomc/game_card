@@ -88,9 +88,10 @@ class _Quiz1State extends State<Quiz1> {
     Future.delayed(const Duration(seconds: 3), () {
       if (answeredQuestions >= totalQuestions) {
         _showCompletionScreen();
+      } else if (answeredQuestions >= 2) { // Check if 2 correct answers
+        _showCompletionScreen();
       } else if (incorrectAnswers >= maxIncorrectAnswers) {
-        // _resetQuiz();  //  <-- Remove this line
-        _showFailScreen(); // <-- Add this line
+        _showFailScreen();
       } else {
         _loadRandomQuestion();
       }
