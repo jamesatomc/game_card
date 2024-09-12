@@ -91,32 +91,39 @@ class _InitialScreenState extends State<InitialScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+       return Scaffold(
       body: Container(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Stack(
             children: [
-              SizedBox(
-                width: 200,
-                height: 200,
-                child: Image.asset('assets/gamecard/bg_0.png'), // Replace with your image asset
-              ),
-              const SizedBox(height: 20),
-              DefaultTextStyle(
-                style: const TextStyle(
-                  fontSize: 40.0,
-                  fontFamily: 'Itim-Regular',
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+              Positioned.fill(
+                child: Image.asset(
+                  'assets/gamecard/bg_0.png', // Replace with your image asset
+                  fit: BoxFit.cover, // Ensures the image covers the entire space
                 ),
-                child: AnimatedTextKit(
-                  animatedTexts: [
-                    WavyAnimatedText('เกมเสริมทักษะอังกฤษ'),
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    DefaultTextStyle(
+                      style: const TextStyle(
+                        fontSize: 40.0,
+                        fontFamily: 'Itim-Regular',
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        fontWeight: FontWeight.bold,
+                      ),
+                      child: AnimatedTextKit(
+                        animatedTexts: [
+                          WavyAnimatedText('เกมเสริมทักษะอังกฤษ'),
+                        ],
+                        isRepeatingAnimation: true,
+                        repeatForever: true,
+                        pause: const Duration(seconds: 1),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
                   ],
-                  isRepeatingAnimation: true,
-                  repeatForever: true,
-                  pause: const Duration(seconds: 1),
                 ),
               ),
             ],
