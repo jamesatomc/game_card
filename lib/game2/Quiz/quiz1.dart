@@ -225,7 +225,6 @@ class _Quiz1State extends State<Quiz1> {
                   ),
                   child: IntrinsicHeight(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
                           height: 80,
@@ -233,8 +232,7 @@ class _Quiz1State extends State<Quiz1> {
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(
-                                0.8), // Semi-transparent white background
+                            color: Colors.white.withOpacity(0.8), 
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: Text(
@@ -275,7 +273,7 @@ class _Quiz1State extends State<Quiz1> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 10),
                         if (showAnswer) ...[
                           const SizedBox(height: 6),
                           Text(
@@ -285,7 +283,7 @@ class _Quiz1State extends State<Quiz1> {
                           ),
                         ],
                         if (incorrectAnswers >= maxIncorrectAnswers) ...[
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 10),
                           const Text(
                             'ตอบผิดเกิน 2 ครั้ง',
                             style: TextStyle(color: Colors.red, fontSize: 16),
