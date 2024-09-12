@@ -66,7 +66,7 @@ class _PixelLevelButtonState extends State<PixelLevelButton> {
           boxShadow: widget.isUnlocked && !_isPressed
               ? [
                   BoxShadow(
-                    color: Colors.black38,
+                    color: Colors.black,
                     offset: Offset(4, 4),
                     blurRadius: 2,
                   )
