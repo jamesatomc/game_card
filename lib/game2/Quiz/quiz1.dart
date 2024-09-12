@@ -88,7 +88,7 @@ class _Quiz1State extends State<Quiz1> {
     Future.delayed(const Duration(seconds: 3), () {
       if (answeredQuestions >= totalQuestions) {
         _showCompletionScreen();
-      } else if (answeredQuestions >= 2) { // Check if 2 correct answers
+      } else if (answeredQuestions >= 2 && incorrectAnswers >= 3) { // Check if 2 correct answers
         _showCompletionScreen();
       } else if (incorrectAnswers >= maxIncorrectAnswers) {
         _showFailScreen();
@@ -173,6 +173,8 @@ class _Quiz1State extends State<Quiz1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0, // Remove the shadow
         title: Text('Quiz'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
