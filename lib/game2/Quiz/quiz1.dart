@@ -88,7 +88,8 @@ class _Quiz1State extends State<Quiz1> {
     Future.delayed(const Duration(seconds: 3), () {
       if (answeredQuestions >= totalQuestions) {
         _showCompletionScreen();
-      } else if (answeredQuestions >= 2 && incorrectAnswers >= 3) { // Check if 2 correct answers
+      } else if (answeredQuestions >= 2 && incorrectAnswers >= 3) {
+        // Check if 2 correct answers
         _showCompletionScreen();
       } else if (incorrectAnswers >= maxIncorrectAnswers) {
         _showFailScreen();
@@ -123,15 +124,15 @@ class _Quiz1State extends State<Quiz1> {
           game: Jump1(),
           overlayBuilderMap: {
             'BackButton': (context, game) => BackButtonOverlay(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => GameJump()),
-                );
-              },
-              onResumeMusic: () {},
-            ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => GameJump()),
+                    );
+                  },
+                  onResumeMusic: () {},
+                ),
           },
         ),
       ),
@@ -169,53 +170,45 @@ class _Quiz1State extends State<Quiz1> {
     );
   }
 
+  void showExitDialog(BuildContext context, Function? onResumeMusic) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Exit the game'),
+          content: Text('Do you want to quit the game?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // ปิด AlertDialog
+                // ออกจากเกมส์โดยไม่ทำอะไร
+              },
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // ปิด AlertDialog
+                Navigator.pop(context); // กลับไปหน้าหลัก
+                onResumeMusic?.call(); // Call the function to resume music
+              },
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0, // Remove the shadow
-        title: Text('Quiz'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('Exit the game'),
-                  content: Text('Do you want to quit the game?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(); // ปิด AlertDialog
-                        // ออกจากเกมส์โดยไม่ทำอะไร
-                      },
-                      child: Text('No'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(); // ปิด AlertDialog
-                        Navigator.pop(context); // กลับไปหน้าหลัก
-                        widget.onResumeMusic
-                            ?.call(); // Call the function to resume music
-                      },
-                      child: Text('Yes'),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        ),
-      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
-                    "assets/images/background.png"), // Replace with your image path
+                    "assets/gamecard/bg.png"), // Replace with your image path
                 fit: BoxFit.cover,
               ),
             ),
@@ -228,13 +221,37 @@ class _Quiz1State extends State<Quiz1> {
                   child: IntrinsicHeight(
                     child: Column(
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.arrow_back),
+                                color: Colors.white,
+                                iconSize: 30,
+                                onPressed: () {
+                                  showExitDialog(context, widget.onResumeMusic);
+                                },
+                              ),
+                              Expanded(
+                                child: Text(
+                                  'Quiz',
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         Container(
                           height: 80,
                           width: 700,
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.8), 
+                            color: Colors.white.withOpacity(0.8),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: Text(
@@ -248,7 +265,7 @@ class _Quiz1State extends State<Quiz1> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 26),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(70, 0, 70, 0),
                           child: Column(
@@ -262,7 +279,7 @@ class _Quiz1State extends State<Quiz1> {
                                   _buildAnswerButton(1),
                                 ],
                               ),
-                              const SizedBox(height: 10), // Space between rows
+                              const SizedBox(height: 8), // Space between rows
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -275,7 +292,7 @@ class _Quiz1State extends State<Quiz1> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 6),
                         if (showAnswer) ...[
                           const SizedBox(height: 6),
                           Text(
@@ -285,7 +302,7 @@ class _Quiz1State extends State<Quiz1> {
                           ),
                         ],
                         if (incorrectAnswers >= maxIncorrectAnswers) ...[
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 6),
                           const Text(
                             'ตอบผิดเกิน 2 ครั้ง',
                             style: TextStyle(color: Colors.red, fontSize: 16),
