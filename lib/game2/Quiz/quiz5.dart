@@ -8,17 +8,17 @@ import '../GameJump.dart';
 import '../Level/Jump1.dart';
 import '../components/BackButtonOverlay.dart';
 
-class Quiz3 extends StatefulWidget {
+class Quiz5 extends StatefulWidget {
   final VoidCallback? onResumeMusic; // Add this property
 
-  const Quiz3({Key? key, this.onResumeMusic}) : super(key: key);
+  const Quiz5({Key? key, this.onResumeMusic}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _Quiz3State createState() => _Quiz3State();
+  _Quiz5State createState() => _Quiz5State();
 }
 
-class _Quiz3State extends State<Quiz3> {
+class _Quiz5State extends State<Quiz5> {
   List<Question> questions = [
     // Add your questions here, following the same format as below:
     Question(

@@ -150,8 +150,11 @@ class _Quiz1State extends State<Quiz1> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // ปิด AlertDialog
-                Navigator.pop(context); // กลับไปหน้าหลัก
+                Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => GameJump()),
+                );
                 widget.onResumeMusic
                     ?.call(); // Call the function to resume music
               },
@@ -187,8 +190,11 @@ class _Quiz1State extends State<Quiz1> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // ปิด AlertDialog
-                Navigator.pop(context); // กลับไปหน้าหลัก
+                Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => GameJump()),
+                );
                 onResumeMusic?.call(); // Call the function to resume music
               },
               child: Text('Yes'),

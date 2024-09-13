@@ -1,5 +1,6 @@
 import 'package:flame/camera.dart';
-import 'package:flutter/material.dart';;
+import 'package:flutter/material.dart';
+import 'package:game_somo/game2/Quiz/quiz5.dart';
 import 'package:game_somo/game2/components/game-ui/medusa.dart';
 import 'package:game_somo/game2/components/game-ui/suriken.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -135,7 +136,7 @@ class Jump4 extends FlameGame
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => quiz5(),
+              builder: (context) => Quiz5(),
             ),
           );
         },
