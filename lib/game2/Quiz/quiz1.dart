@@ -191,10 +191,7 @@ class _Quiz1State extends State<Quiz1> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => GameJump()),
-                );
+                Navigator.pop(context);
                 onResumeMusic?.call(); // Call the function to resume music
               },
               child: Text('Yes'),
