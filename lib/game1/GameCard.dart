@@ -428,8 +428,7 @@ class _GameCardScreenState extends State<GameCardScreen> {
                         _playSound(); // Play sound when button is pressed
                         resetHighScores();
                       },
-                      color: const Color.fromARGB(
-                          255, 255, 0, 0), // Set the icon color
+                      color: const Color.fromARGB(255, 255, 255, 255), // Set the icon color
                       iconSize: 48.0, // Set the icon size (adjust as needed)
                     ),
                     MusicToggleButton(),
