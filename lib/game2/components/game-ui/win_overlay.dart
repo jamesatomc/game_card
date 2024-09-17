@@ -61,25 +61,6 @@ class WinOverlay extends StatelessWidget {
         ),
       ),
     );
-    // return Container(
-    //   color: Colors.blueAccent, // Set the background color
-    //   child: Center(
-    //     child: Column(
-    //       mainAxisSize: MainAxisSize.min,
-    //       children: [
 
-    //         // Text(
-    //         //   'Congratulations!',
-    //         //   style: TextStyle(fontSize: 30, color: Colors.green),
-    //         // ),
-    //         SizedBox(height: 20),
-    //         ElevatedButton(
-    //           onPressed: onNextQuiz,
-    //           child: Text('Go to Quiz'),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }

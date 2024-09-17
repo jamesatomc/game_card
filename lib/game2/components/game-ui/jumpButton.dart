@@ -19,10 +19,10 @@ class JumpButton extends PositionComponent with TapCallbacks {
   void onTapUp(TapUpEvent event) {
     // คือการกำหนดการทำงานเมื่อมีการกดปุ่ม
     super.onTapUp(event);
-    if (_enabled && _pressCount < 2) {
+    if (_enabled && _pressCount < 20) {
       onJumpButtonPressed(true);
       _pressCount++;
-      if (_pressCount == 2) {
+      if (_pressCount == 20) {
         _startCooldown();
       }
     }
