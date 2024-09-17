@@ -41,7 +41,9 @@ class Jump3 extends FlameGame
   int level3CoinScoreReset = 0; // New variable for resetting purposes
 
   late TextComponent livesText; // Declare a TextComponent for lives
+  late SpriteComponent livesImage;
   late TextComponent coinsText; // Declare a TextComponent for coins
+  late SpriteComponent coinImage;
 
   bool isPlayerDead = false; // Flag to track if the player is dead
 
@@ -54,11 +56,22 @@ class Jump3 extends FlameGame
     // Load the saved coin score
     level3CoinScore = await getLevel3CoinScore() ?? 0;
 
-    // Initialize livesText
+// Load the lives image
+    final livesSprite = await loadSprite('lives.png');
+
+// Initialize livesImage
+    livesImage = SpriteComponent(
+      sprite: livesSprite,
+      position: Vector2(170, 30),
+      size: Vector2(24, 24), // Set the size of the image
+      anchor: Anchor.topRight,
+    );
+
+// Initialize livesText
     livesText = TextComponent(
-      text: 'Lives: $lives',
+      text: '$lives',
       position: Vector2(200, 30), // Position on the far left
-      anchor: Anchor.topRight, // Align text to top-left
+      anchor: Anchor.topRight, // Align text to top-right
       textRenderer: TextPaint(
         style: const TextStyle(
           color: Color.fromARGB(255, 255, 0, 0),
@@ -67,11 +80,22 @@ class Jump3 extends FlameGame
       ),
     );
 
-    // Initialize coinsText
+// Load the coin image
+    final coinSprite = await loadSprite('coin.png');
+
+// Initialize coinImage
+    coinImage = SpriteComponent(
+      sprite: coinSprite,
+      position: Vector2(livesImage.position.x + livesImage.size.x + 50, 30),
+      size: Vector2(24, 24), // Set the size of the image
+      anchor: Anchor.topRight,
+    );
+
+// Initialize coinsText
     coinsText = TextComponent(
-      text: 'Coins: 0', // Initialize with 0 coins
-      position: Vector2(livesText.position.x + livesText.size.x + 50,
-          30), // Position to the right of livesText
+      text: '0', // Initialize with the saved coin score
+      position: Vector2(coinImage.position.x + coinImage.size.x + 10,
+          30), // Position to the right of coinImage
       anchor: Anchor.topRight, // Align text to top-left
       textRenderer: TextPaint(
         style: const TextStyle(
@@ -89,7 +113,9 @@ class Jump3 extends FlameGame
 
     // Add the background to the game world
     add(background);
+    add(livesImage);
     add(livesText);
+    add(coinImage);
     add(coinsText);
     overlays.add('BackButton');
 
@@ -294,7 +320,7 @@ class Jump3 extends FlameGame
       camera.follow(myPlayer);
       camera.viewfinder.position = playerSpawnPoint;
 
-      livesText.text = 'Lives: $lives';
+      livesText.text = '$lives';
 
       // Re-enable the jump button
       jumpButton.setEnabled(true);
@@ -314,9 +340,9 @@ class Jump3 extends FlameGame
   // Function to reset the game to its initial state
   void resetGame() async {
     lives = initialLives; // Reset lives to the initial value
-    livesText.text = 'Lives: $lives'; // Update livesText
+    livesText.text = '$lives'; // Update livesText
     level3CoinScoreReset = 0; // Reset coin score using the new variable
-    coinsText.text = 'Coins: 0'; // Reset coinsText to 0
+    coinsText.text = '0'; // Reset coinsText to 0
 
     // Remove existing game objects (player, monsters, coins, etc.)
     world.removeAll(world.children);
@@ -325,7 +351,9 @@ class Jump3 extends FlameGame
     await loadLevel();
 
     // Reinitialize UI components
+    add(livesImage);
     add(livesText);
+    add(coinImage);
     add(coinsText);
     await camera.viewport.add(joystick);
     await camera.viewport.add(jumpButton);
@@ -348,7 +376,7 @@ class Jump3 extends FlameGame
     if (level3CoinScoreReset < 10) {
       level3CoinScoreReset++; // Increment the reset variable as well
     }
-    coinsText.text = 'Coins: $level3CoinScoreReset';
+    coinsText.text = '$level3CoinScoreReset';
     saveLevel3CoinScore(level3CoinScore); // Save the coin score
 
     if (level3CoinScoreReset >= 10) {
@@ -360,7 +388,7 @@ class Jump3 extends FlameGame
   // Method to update the coin count
   void updateCoinCount(int newCoinCount) {
     level3CoinScore = newCoinCount;
-    coinsText.text = 'Coins: $level3CoinScore';
+    coinsText.text = '$level3CoinScore';
   }
 
   // Example of updating the coin count
