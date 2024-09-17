@@ -151,12 +151,8 @@ class _Quiz4State extends State<Quiz4> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => GameJump()),
-                );
-                widget.onResumeMusic
-                    ?.call(); // Call the function to resume music
+                Navigator.pop(context);
+                widget.onResumeMusic?.call(); // Call the function to resume music
               },
               child: const Text('ออกจากเกม'),
             ),

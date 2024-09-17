@@ -152,8 +152,7 @@ class _Quiz1State extends State<Quiz1> {
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.pop(context);
-                widget.onResumeMusic
-                    ?.call(); // Call the function to resume music
+                widget.onResumeMusic?.call(); // Call the function to resume music
               },
               child: const Text('ออกจากเกม'),
             ),
