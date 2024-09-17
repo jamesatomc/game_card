@@ -75,24 +75,24 @@ class _Quiz2State extends State<Quiz2> {
     setState(() {
       selectedAnswerIndex = selectedIndex;
       showAnswer = true;
-      if (selectedIndex == currentQuestion.correctAnswerIndex) {
-        _playCorrectAnswerSound();
-        answeredQuestions++;
-      } else {
-        _playIncorrectAnswerSound();
+      if (selectedIndex != currentQuestion.correctAnswerIndex) {
         incorrectAnswers++;
       }
+      if (selectedIndex == currentQuestion.correctAnswerIndex) {
+        _playCorrectAnswerSound();
+      } else {
+        _playIncorrectAnswerSound();
+      }
+      answeredQuestions++;
     });
 
     // Delay to show the answer before loading the next question
     Future.delayed(const Duration(seconds: 3), () {
       if (answeredQuestions >= totalQuestions) {
         _showCompletionScreen();
-      } else if (answeredQuestions >= 2 && incorrectAnswers >= 3) {
-        // Check if 2 correct answers
-        _showCompletionScreen();
       } else if (incorrectAnswers >= maxIncorrectAnswers) {
-        _showFailScreen();
+        // _resetQuiz();  //  <-- Remove this line
+        _showFailScreen(); // <-- Add this line
       } else {
         _loadRandomQuestion();
       }
