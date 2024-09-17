@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 // Import all level screens
-import '../components/game_button.dart';
+// import '../components/game_button.dart';
 import 'Level/Level1Screen.dart';
 import 'Level/Level2Screen.dart';
 import 'Level/Level3Screen.dart';
@@ -122,124 +122,124 @@ class _GameCardScreenState extends State<GameCardScreen> {
     );
   }
 
-  void showHighScoresDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text(
-            'High Scores',
-            style: TextStyle(
-              fontFamily: 'PixelFont', // Use a pixel art font
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Level 1: ${level1HighScore ?? 'N/A'}',
-                  style: const TextStyle(
-                    fontFamily: 'PixelFont', // Use a pixel art font
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  'Level 2: ${level2HighScore ?? 'N/A'}',
-                  style: const TextStyle(
-                    fontFamily: 'PixelFont', // Use a pixel art font
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  'Level 3: ${level3HighScore ?? 'N/A'}',
-                  style: const TextStyle(
-                    fontFamily: 'PixelFont', // Use a pixel art font
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  'Level 4: ${level4HighScore ?? 'N/A'}',
-                  style: const TextStyle(
-                    fontFamily: 'PixelFont', // Use a pixel art font
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  'Level 5: ${level5HighScore ?? 'N/A'}',
-                  style: const TextStyle(
-                    fontFamily: 'PixelFont', // Use a pixel art font
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  'Level 6: ${level6HighScore ?? 'N/A'}',
-                  style: const TextStyle(
-                    fontFamily: 'PixelFont', // Use a pixel art font
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  'Level 7: ${level7HighScore ?? 'N/A'}',
-                  style: const TextStyle(
-                    fontFamily: 'PixelFont', // Use a pixel art font
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  'Level 8: ${level8HighScore ?? 'N/A'}',
-                  style: const TextStyle(
-                    fontFamily: 'PixelFont', // Use a pixel art font
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  'Level 9: ${level9HighScore ?? 'N/A'}',
-                  style: const TextStyle(
-                    fontFamily: 'PixelFont', // Use a pixel art font
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  'Level 10: ${level10HighScore ?? 'N/A'}',
-                  style: const TextStyle(
-                    fontFamily: 'PixelFont', // Use a pixel art font
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'Total: ${((level1HighScore ?? 0) + (level2HighScore ?? 0) + (level3HighScore ?? 0) + (level4HighScore ?? 0) + (level5HighScore ?? 0) + (level6HighScore ?? 0) + (level7HighScore ?? 0) + (level8HighScore ?? 0) + (level9HighScore ?? 0) + (level10HighScore ?? 0))}',
-                  style: const TextStyle(
-                    fontFamily: 'PixelFont', // Use a pixel art font
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            PixelGameButton(
-              height: 60,
-              width: 200,
-              text: 'Close',
-              onTap: () {
-                _playSound(); // Play sound when button is pressed
-                Navigator.pop(context); // Close the dialog
-              },
-              onTapUp: () {},
-              onTapDown: () {},
-              onTapCancel: () {},
-              backgroundColor: Colors.blue,
-              textColor: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            )
-          ],
-        );
-      },
-    );
-  }
+  // void showHighScoresDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text(
+  //           'High Scores',
+  //           style: TextStyle(
+  //             fontFamily: 'PixelFont', // Use a pixel art font
+  //           ),
+  //         ),
+  //         content: SingleChildScrollView(
+  //           child: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               Text(
+  //                 'Level 1: ${level1HighScore ?? 'N/A'}',
+  //                 style: const TextStyle(
+  //                   fontFamily: 'PixelFont', // Use a pixel art font
+  //                   fontSize: 16,
+  //                 ),
+  //               ),
+  //               Text(
+  //                 'Level 2: ${level2HighScore ?? 'N/A'}',
+  //                 style: const TextStyle(
+  //                   fontFamily: 'PixelFont', // Use a pixel art font
+  //                   fontSize: 16,
+  //                 ),
+  //               ),
+  //               Text(
+  //                 'Level 3: ${level3HighScore ?? 'N/A'}',
+  //                 style: const TextStyle(
+  //                   fontFamily: 'PixelFont', // Use a pixel art font
+  //                   fontSize: 16,
+  //                 ),
+  //               ),
+  //               Text(
+  //                 'Level 4: ${level4HighScore ?? 'N/A'}',
+  //                 style: const TextStyle(
+  //                   fontFamily: 'PixelFont', // Use a pixel art font
+  //                   fontSize: 16,
+  //                 ),
+  //               ),
+  //               Text(
+  //                 'Level 5: ${level5HighScore ?? 'N/A'}',
+  //                 style: const TextStyle(
+  //                   fontFamily: 'PixelFont', // Use a pixel art font
+  //                   fontSize: 16,
+  //                 ),
+  //               ),
+  //               Text(
+  //                 'Level 6: ${level6HighScore ?? 'N/A'}',
+  //                 style: const TextStyle(
+  //                   fontFamily: 'PixelFont', // Use a pixel art font
+  //                   fontSize: 16,
+  //                 ),
+  //               ),
+  //               Text(
+  //                 'Level 7: ${level7HighScore ?? 'N/A'}',
+  //                 style: const TextStyle(
+  //                   fontFamily: 'PixelFont', // Use a pixel art font
+  //                   fontSize: 16,
+  //                 ),
+  //               ),
+  //               Text(
+  //                 'Level 8: ${level8HighScore ?? 'N/A'}',
+  //                 style: const TextStyle(
+  //                   fontFamily: 'PixelFont', // Use a pixel art font
+  //                   fontSize: 16,
+  //                 ),
+  //               ),
+  //               Text(
+  //                 'Level 9: ${level9HighScore ?? 'N/A'}',
+  //                 style: const TextStyle(
+  //                   fontFamily: 'PixelFont', // Use a pixel art font
+  //                   fontSize: 16,
+  //                 ),
+  //               ),
+  //               Text(
+  //                 'Level 10: ${level10HighScore ?? 'N/A'}',
+  //                 style: const TextStyle(
+  //                   fontFamily: 'PixelFont', // Use a pixel art font
+  //                   fontSize: 16,
+  //                 ),
+  //               ),
+  //               const SizedBox(height: 10),
+  //               Text(
+  //                 'Total: ${((level1HighScore ?? 0) + (level2HighScore ?? 0) + (level3HighScore ?? 0) + (level4HighScore ?? 0) + (level5HighScore ?? 0) + (level6HighScore ?? 0) + (level7HighScore ?? 0) + (level8HighScore ?? 0) + (level9HighScore ?? 0) + (level10HighScore ?? 0))}',
+  //                 style: const TextStyle(
+  //                   fontFamily: 'PixelFont', // Use a pixel art font
+  //                   fontSize: 16,
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         actions: [
+  //           PixelGameButton(
+  //             height: 60,
+  //             width: 200,
+  //             text: 'Close',
+  //             onTap: () {
+  //               _playSound(); // Play sound when button is pressed
+  //               Navigator.pop(context); // Close the dialog
+  //             },
+  //             onTapUp: () {},
+  //             onTapDown: () {},
+  //             onTapCancel: () {},
+  //             backgroundColor: Colors.blue,
+  //             textColor: Colors.white,
+  //             borderRadius: BorderRadius.circular(10),
+  //           )
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -404,24 +404,24 @@ class _GameCardScreenState extends State<GameCardScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // View High Scores Button
-                    FutureBuilder(
-                      future: _loadHighScores(),
-                      builder: (context, snapshot) {
-                        return IconButton(
-                          icon: Icon(Icons.emoji_events,
-                              color: const Color.fromARGB(255, 233, 200, 66)),
-                          iconSize: 48, // Adjust icon size
-                          onPressed: () {
-                            _playSound(); // Play sound when button is pressed
-                            showHighScoresDialog(context);
-                          },
-                          color: Colors.yellow, // Background color
-                          padding:
-                              EdgeInsets.all(10), // Padding around the icon
-                          splashRadius: 30, // Splash radius for the button
-                        );
-                      },
-                    ),
+                    // FutureBuilder(
+                    //   future: _loadHighScores(),
+                    //   builder: (context, snapshot) {
+                    //     return IconButton(
+                    //       icon: Icon(Icons.emoji_events,
+                    //           color: const Color.fromARGB(255, 233, 200, 66)),
+                    //       iconSize: 48, // Adjust icon size
+                    //       onPressed: () {
+                    //         _playSound(); // Play sound when button is pressed
+                    //         showHighScoresDialog(context);
+                    //       },
+                    //       color: Colors.yellow, // Background color
+                    //       padding:
+                    //           EdgeInsets.all(10), // Padding around the icon
+                    //       splashRadius: 30, // Splash radius for the button
+                    //     );
+                    //   },
+                    // ),
                     IconButton(
                       icon: Icon(Icons.refresh), // Use the desired icon
                       onPressed: () {
