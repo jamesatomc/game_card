@@ -110,7 +110,7 @@ class _InitialScreenState extends State<InitialScreen> {
                       style: const TextStyle(
                         fontSize: 40.0,
                         fontFamily: 'Itim-Regular',
-                        color: Color.fromARGB(255, 0, 0, 0),
+                        color: Color.fromARGB(255, 255, 255, 255),
                         fontWeight: FontWeight.bold,
                       ),
                       child: AnimatedTextKit(
@@ -204,6 +204,7 @@ class DeveloperInfoScreen extends StatelessWidget {
             Text(
               'Developer Information',
               style: TextStyle(
+                fontFamily: 'Itim-Regular',
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -212,21 +213,28 @@ class DeveloperInfoScreen extends StatelessWidget {
             Text(
               'Jiraphon Wansai\n Onusa Bunsorn\n Monticha Saengthong',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(height: 20),
-                        Text(
-              'อ.',
               style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                fontFamily: 'Itim-Regular',
               ),
             ),
             SizedBox(height: 20),
             Text(
-              'E\n E',
+              ' Project Producer ',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Itim-Regular',
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Surajate On-rit\n Egkarin Watanyulertsakul',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(
+                fontSize: 18,
+                fontFamily: 'Itim-Regular',
+              ),
             ),
           ],
         ),
