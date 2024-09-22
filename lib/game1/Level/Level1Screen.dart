@@ -184,6 +184,9 @@ class _Level1ScreenState extends State<Level1Screen> {
               [firstIndex, secondIndex]); // เพิ่ม index ของไพ่ที่จับคู่กันแล้ว
         });
 
+      // Play match sound
+      playMatchSound();
+
         if (matchedPairs == _game.cardCount ~/ 2) {
           _timer.cancel();
           _saveHighScore(); // บันทึก high score เมื่อจบด่าน
@@ -229,6 +232,12 @@ class _Level1ScreenState extends State<Level1Screen> {
   void playLevelCompleteSound() async {
     await _audioPlayer.play(AssetSource(
         'sounds/level_complete.mp3')); // Adjust the path to your sound file
+  }
+
+  // Method to play match sound
+  void playMatchSound() async {
+    await _audioPlayer.play(AssetSource(
+        'sounds/card_match.mp3')); // Adjust the path to your sound file
   }
 
   // Method to play card mismatch sound
