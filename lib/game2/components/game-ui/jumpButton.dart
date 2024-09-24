@@ -19,10 +19,10 @@ class JumpButton extends PositionComponent with TapCallbacks {
   void onTapUp(TapUpEvent event) {
     // คือการกำหนดการทำงานเมื่อมีการกดปุ่ม
     super.onTapUp(event);
-    if (_enabled && _pressCount < 20) {
+    if (_enabled && _pressCount < 2) {
       onJumpButtonPressed(true);
       _pressCount++;
-      if (_pressCount == 20) {
+      if (_pressCount == 2) {
         _startCooldown();
       }
     }
@@ -30,8 +30,8 @@ class JumpButton extends PositionComponent with TapCallbacks {
   // ฟังก์ชันที่ใช้ในการกำหนดเวลาในการกดปุ่ม
   void _startCooldown() {
     _enabled = false;
-    _cooldownTimer = async.Timer(const Duration(seconds: 1, milliseconds: 200), () {
-      _enabled = true;
+    _cooldownTimer = async.Timer(const Duration(milliseconds: 1070), () {
+      // _enabled = true;
       _pressCount = 0;
     });
   }
